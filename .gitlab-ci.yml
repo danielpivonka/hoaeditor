@@ -1,7 +1,8 @@
 image: node:12.17.0
 cache:
   paths:
-    node_modules/
+    - node_modules/
 pages:
-    npm install
-    npx webpack
+    script:
+    - npm install
+    - npx webpack

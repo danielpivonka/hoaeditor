@@ -3,8 +3,12 @@ cache:
   paths:
     - node_modules/
 pages:
+    stage: deploy
     script:
     - npm install
     - npx webpack
     tags:
       - shared-fi
+    artifacts:
+        paths:
+          - public

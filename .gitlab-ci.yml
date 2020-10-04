@@ -6,3 +6,5 @@ pages:
     script:
     - npm install
     - npx webpack
+    tags:
+      - shared-fi

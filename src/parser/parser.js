@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 const antlr4 = require('antlr4/index');
 const hoaLexer = require('./hoaLexer');
 const hoaParser = require('./hoaParser');

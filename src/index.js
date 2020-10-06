@@ -1,3 +1,4 @@
+//@ts-nocheck
 const parse = require('./parser/parser').parse;
 const field = document.getElementById('HOAInput');
 const jsonOutput = document.getElementById('jsonText');

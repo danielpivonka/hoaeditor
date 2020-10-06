@@ -21,7 +21,7 @@ export class HOA {
     }
     /**
      * Sets the ammount of states in automaton
-     * @param  {string} states ammount of states
+     * @param  {number} states ammount of states
      */
     setStateCount(states) {
         this.stateCount = states
@@ -36,12 +36,12 @@ export class HOA {
     }
     /**
      * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof
-     * @param  {string} ANAME - the alias
+     * @param  {string} aname - the alias
      * @param  {string} lexpr - label, atomic proposition, already existing alias, or a group of thereof
      */
-    addAlias(name, expr) {
+    addAlias(aname, lexpr) {
         this.aliases.push({
-            name: name, expr: expr
+            name: aname, expr: lexpr
         });
     }
     /**
@@ -101,7 +101,7 @@ export class HOA {
      * @returns {State} the newly created state
      */
     addStateImplicit() {
-        return addState(this.states.lastIndexOf(this.getLastState()) - 1);
+        return this.addState(this.states.lastIndexOf(this.getLastState()) - 1);
     }
     /**
      * Adds an empty state with given number 

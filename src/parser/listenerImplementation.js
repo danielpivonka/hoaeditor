@@ -48,7 +48,6 @@ class hoaListenerImpl extends listener {
     }
     enterEtc(ctx) {
         this.data.addEtc(ctx.getText());
-        this.data.getState()
     }
     enterStateName(ctx) {
         let state = this.data.addState(parseInt(ctx.INT().getText(), 10));
@@ -75,7 +74,7 @@ class hoaListenerImpl extends listener {
         }
         if (ctx.accSig()) {
             for (let i = 1; i < ctx.accSig().getChildCount() - 1; i++) {
-                edge.addAccSet(parseInt(ctx.accSig().getChild(i).getText()), 10);
+                edge.addAccSet(parseInt(ctx.accSig().getChild(i).getText(), 10));
             }
         }
     }

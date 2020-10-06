@@ -4,6 +4,8 @@ cache:
     - node_modules/
 pages:
     stage: deploy
+    only:
+    - master
     script:
     - npm install
     - npx webpack

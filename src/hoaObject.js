@@ -1,10 +1,10 @@
-export class HOA {
+class HOA {
     constructor() {
         /**@type {number[][]}*/
         this.start = []
         this.aliases = []
         this.ap = []
-        this.properities = []
+        this.properties = []
         this.etc = []
         /**
         * @type {State[]}
@@ -87,10 +87,10 @@ export class HOA {
      * @param  {string} prop IDENTIFIER* - additional property
      */
     addProp(prop) {
-        this.properities.push(prop);
+        this.properties.push(prop);
     }
     /**
-     * @param  {string} etc additional header-item
+     * @param  {any[]} etc additional header-item
      */
     addEtc(etc) {
         this.etc.push(etc);
@@ -161,19 +161,23 @@ export class HOA {
             string += "\n";
         }
         if (this.tool) {
-            string += "tool: " + this.tool + "\n";
+            string += "tool: " + "\"" + this.tool + "\"" + "\n";
         }
         if (this.name) {
-            string += "name: " + this.name + "\n";
+            string += "name: " + "\"" + this.name + "\"" + "\n";
         }
         for (const alias of this.aliases) {
             string += "Alias: " + alias.name + " " + alias.expr + "\n";
         }
-        for (const property of this.properities) {
-            string += "properties: " + property + "\n";
+        if (this.properties.length > 0) {
+            string += "properties:";
+            for (const property of this.properties) {
+                string += " " + property;
+            }
+            string += "\n";
         }
         for (const etc of this.etc) {
-            string += etc + "\n";
+            string += etc.join(" ") + "\n";
         }
         string += "--BODY--\n";
         for (const state of this.states) {
@@ -213,16 +217,16 @@ class State {
         return edge;
     }
     stringify() {
-        let str = "State: "
+        let str = "State:"
         if (this.label) {
-            str += "[" + this.label + "] ";
+            str += " [" + this.label + "]";
         }
-        str += this.number;
+        str += " " + this.number;
         if (this.name) {
-            str += " \"" + this.name + "\" ";
+            str += " \"" + this.name + "\"";
         }
         if (this.accSets.length > 0) {
-            str += "{";
+            str += " {";
             for (const set of this.accSets) {
                 str += set + " ";
             }
@@ -267,3 +271,4 @@ class Edge {
         return str;
     }
 }
+exports.HOA = HOA;

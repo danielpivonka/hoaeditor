@@ -1,4 +1,4 @@
-const listener = require('./hoaListener').hoaListener;
+const listener = require('./generated/hoaListener').hoaListener;
 const hoaObject = require('../hoaObject').HOA;
 
 class hoaListenerImpl extends listener {
@@ -38,16 +38,22 @@ class hoaListenerImpl extends listener {
         this.data.setAccname(accname);
     }
     enterTool(ctx) {
-        this.data.setTool(ctx.toolstr().getText());
+        this.data.setTool(ctx.toolstr().getText().slice(1, -1));
     }
     enterName(ctx) {
-        this.data.setName(ctx.STRING().getText());
+        this.data.setName(ctx.STRING().getText().slice(1, -1));
     }
     enterProps(ctx) {
-        this.data.addProp(ctx.propval().getText());
+        for (let i = 0; i < ctx.propval().getChildCount(); i++) {
+            this.data.addProp(ctx.propval().getChild(i).getText());
+        }
     }
     enterEtc(ctx) {
-        this.data.addEtc(ctx.getText());
+        let etc = [];
+        for (let i = 0; i < ctx.getChildCount(); i++) {
+            etc.push(ctx.getChild(i).getText());
+        }
+        this.data.addEtc(etc);
     }
     enterStateName(ctx) {
         let state = this.data.addState(parseInt(ctx.INT().getText(), 10));

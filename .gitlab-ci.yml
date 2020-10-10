@@ -7,6 +7,8 @@ test:
   script:
     - npm install
     - npm run test
+  tags:
+    - shared-fi
 pages:
     stage: deploy
     only:

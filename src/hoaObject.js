@@ -5,6 +5,8 @@ class HOA {
         this.aliases = []
         this.ap = []
         this.properties = []
+        /**@type {Position[]}*/
+        this.positions = []
         this.etc = []
         /**
         * @type {State[]}
@@ -95,7 +97,6 @@ class HOA {
     addEtc(etc) {
         this.etc.push(etc);
     }
-
     /**
      * Adds an empty state with implicit number
      * @returns {State} the newly created state
@@ -132,6 +133,19 @@ class HOA {
     getLastState() {
         return this.states.slice(-1)[0];
     }
+    setPosition(key, x, y) {
+        this.positions[key] = new Position(x, y);
+    }
+    setImplicitPositions() {
+        let positionsSet = 0;
+        for (const key of this.states.keys()) {
+            if (!this.positions[key]) {
+                this.positions[key] = new Position(positionsSet * 20, 0);
+                positionsSet++;
+            }
+        }
+    }
+
     /**
      * Returns automaton in hoa format
      * @returns {string} hoa string
@@ -271,4 +285,15 @@ class Edge {
         return str;
     }
 }
+class Position {
+    /**
+     * @param  {number} x
+     * @param  {number} y
+     */
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
 exports.HOA = HOA;
+exports.Position = Position;

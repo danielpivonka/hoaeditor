@@ -34,7 +34,6 @@ class Editor {
             let pos = this.automaton.positions[state.number];
             this.drawCircle(pos.x, pos.y, this.circleSize);
         }
-        console.log(JSON.stringify(this.automaton));
     }
     drawCircle(x, y, r) {
         this.ctx.fillStyle = "#000044";
@@ -56,21 +55,18 @@ class Editor {
         if (this.selected != null) {
             this.downLocation = new Position(x, y);
         }
-        console.log("down");
     }
     mouseUp(e) {
         e.preventDefault();
         e.stopPropagation();
         this.selected = null;
         this.downLocation = null;
-        console.log("up");
     }
     mouseMove(e) {
-        if (this.selected == null) {
+        if (this.selected == null || this.downLocation == null) {
             console.log("move cancelled");
             return;
         }
-        console.log("move");
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
@@ -78,7 +74,8 @@ class Editor {
         let dy = y - this.downLocation.y;
         this.automaton.positions[this.selected].x += dx;
         this.automaton.positions[this.selected].y += dy;
-        this.downLocation = new Position(x, y);
+        this.downLocation.x = x;
+        this.downLocation.y = y;
         this.draw();
     }
     getObjectIndexAtPosition(x, y) {
@@ -87,7 +84,6 @@ class Editor {
             let a = pos.x - x;
             let b = pos.y - y;
             var dist = Math.sqrt(a * a + b * b);
-            console.log(dist);
             if (dist < this.circleSize) {
                 return state.number
             }

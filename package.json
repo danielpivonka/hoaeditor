@@ -7,7 +7,8 @@
     "acorn": "8.0.1"
   },
   "dependencies": {
-    "antlr4": "^4.8.0"
+    "antlr4": "^4.8.0",
+    "victor": "^1.1.0"
   },
   "devDependencies": {
     "extract-loader": "^5.1.0",

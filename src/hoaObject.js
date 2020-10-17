@@ -7,6 +7,8 @@ class HOA {
         this.properties = []
         /**@type {Position[]}*/
         this.positions = []
+        /**@type {number[][]}*/
+        this.edgeOffsets = []
         this.etc = []
         /**
         * @type {State[]}
@@ -140,8 +142,32 @@ class HOA {
         let positionsSet = 0;
         for (const key of this.states.keys()) {
             if (!this.positions[key]) {
-                this.positions[key] = new Position(positionsSet * 20, 0);
+                this.positions[key] = new Position(positionsSet * 100, 100);
                 positionsSet++;
+            }
+        }
+    }
+    SetImplicitOffsets() {
+        for (const stateIndex of this.states.keys()) {
+            let count = new Array(this.stateCount).fill(0);
+            this.edgeOffsets[stateIndex] = [];
+            for (const edgeIndex of this.states[stateIndex].edges.keys()) {
+                let edgeDirection = this.states[stateIndex].edges[edgeIndex].stateConj[0];
+                let offset = ++count[edgeDirection];
+                if (this.getEdgeCount(edgeDirection, stateIndex)) { //single or multiple edges to state with reverse edge(s)
+                    this.edgeOffsets[stateIndex][edgeIndex] = offset * 30
+                }
+                else if (count[edgeDirection] > 1 || this.getEdgeCount(stateIndex, edgeDirection) > 1) { //multiple edges to state without reverse edge
+                    if (offset % 2) {
+                        this.edgeOffsets[stateIndex][edgeIndex] = (offset / 2) * 20;
+                    }
+                    else {
+                        this.edgeOffsets[stateIndex][edgeIndex] = ((offset + 1) / 2) * (-20);
+                    }
+                }
+                else {
+                    this.edgeOffsets[stateIndex][edgeIndex] = 0;
+                }
             }
         }
     }
@@ -199,6 +225,11 @@ class HOA {
         }
         string += "--END--\n";
         return string;
+    }
+    getEdgeCount(fromIndex, toIndex) {
+        let count = this.states[fromIndex].edges.filter((element) => element.stateConj.includes(toIndex)).length;
+        console.log("Counted: " + count);
+        return count;
     }
 }
 class State {

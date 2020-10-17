@@ -1,5 +1,7 @@
 const HOA = require('../hoaObject').HOA;
 const Position = require('../hoaObject').Position;
+const State = require('../hoaObject').State;
+const Edge = require('../hoaObject').Edge;
 const Victor = require('victor');
 class Editor {
     constructor(canvas) {
@@ -7,7 +9,9 @@ class Editor {
         this.canvas = canvas;
         /**@type {CanvasRenderingContext2D}*/
         this.ctx = canvas.getContext("2d");
-        this.circleSize = 10;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.circleSize = 25;
         this.selected = null;
         this.downLocation = null;
         this.canvas.onmousedown = this.mouseDown.bind(this);
@@ -33,28 +37,35 @@ class Editor {
         this.drawnEdges = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         for (const state of this.automaton.states) {
-            this.drawState(state.number);
+            this.drawState(state);
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj[0] == state.number) {
                     continue;
                 }
-                this.drawEdge(state.number, edge.stateConj[0], this.automaton.edgeOffsets[state.number][edgeIndex]);
+                this.drawEdge(state, edgeIndex);
             }
         }
 
     }
-    drawState(index) {
-        let pos = this.automaton.positions[index];
-        this.ctx.fillStyle = "#44444444";
+    drawState(state) {
+        let pos = this.automaton.positions[state.number];
+        this.ctx.fillStyle = 'black';
         this.ctx.beginPath();
         this.ctx.arc(pos.x, pos.y, this.circleSize, 0, Math.PI * 2);
-        this.ctx.closePath();
-        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.font = "36px Arial";
+        this.ctx.fillText(state.number, pos.x, pos.y);
     }
-    drawEdge(origin, destination, curveOffset) {
-        let originVector = Victor.fromObject(this.automaton.positions[origin]);
-        let destinationVector = Victor.fromObject(this.automaton.positions[destination]);
+    /**
+ * @param  {State} state
+ * @param  {number} edgeIndex
+ */
+    drawEdge(state, edgeIndex) {
+        let destinationIndex = state.edges[edgeIndex].stateConj[0];
+        let curveOffset = this.automaton.edgeOffsets[state.number][edgeIndex];
+        let originVector = Victor.fromObject(this.automaton.positions[state.number]);
+        let destinationVector = Victor.fromObject(this.automaton.positions[destinationIndex]);
         let midpoint = this.calculateMiddleWithOffset(originVector, destinationVector, curveOffset);
         let fromPoint = this.getNearestPointOnCircle(originVector, midpoint);
         let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint);
@@ -63,6 +74,35 @@ class Editor {
         this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
         this.ctx.stroke();
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
+        this.drawAccSets(fromPoint, midpoint, toPoint, state.edges[edgeIndex].accSets)
+    }
+    /**
+     * @param  {Victor} from
+     * @param  {Victor} mid
+     * @param  {Victor} end
+     * @param  {number[]} sets
+     */
+    drawAccSets(from, mid, end, sets) {
+        let setCount = sets.length;
+        console.log("entered acc set, len: " + setCount);
+        for (let i = 0; i < setCount; i++) {
+            let t = 0.5 - 0.05 * (setCount - 1) + 0.1 * i;
+            let point = this.getPointOnBezier(from, mid, end, t);
+            this.ctx.beginPath();
+            this.ctx.arc(point.x, point.y, this.circleSize / 2.5, 0, Math.PI * 2);
+            this.ctx.closePath();
+            this.ctx.fillStyle = 'blue';
+            this.ctx.fill();
+            this.ctx.font = "16px Arial";
+            console.log("drawing acc set");
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillText(sets[i], point.x, point.y);
+        }
+    }
+    getPointOnBezier(p0, p1, p2, t) {
+        let x = (1 - t) * (1 - t) * p0.x + 2 * (1 - t) * t * p1.x + t * t * p2.x;
+        let y = (1 - t) * (1 - t) * p0.y + 2 * (1 - t) * t * p1.y + t * t * p2.y;
+        return new Victor(x, y);
     }
     /**
      * @param  {Victor} p1

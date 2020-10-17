@@ -239,6 +239,7 @@ class State {
      */
     constructor(number) {
         this.number = number;
+        /**@type {number[]}*/
         this.accSets = [];
         /**@type {Edge[]}*/
         this.edges = [];
@@ -327,4 +328,6 @@ class Position {
     }
 }
 exports.HOA = HOA;
+exports.State = State;
+exports.Edge = Edge;
 exports.Position = Position;

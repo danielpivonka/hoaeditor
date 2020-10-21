@@ -159,10 +159,11 @@ class HOA {
                 }
                 else if (count[edgeDirection] > 1 || this.getEdgeCount(stateIndex, edgeDirection) > 1) { //multiple edges to state without reverse edge
                     if (offset % 2) {
-                        this.edgeOffsets[stateIndex][edgeIndex] = (offset / 2) * 20;
+                        this.edgeOffsets[stateIndex][edgeIndex] = ((offset + 1) / 2) * (-20);
                     }
                     else {
-                        this.edgeOffsets[stateIndex][edgeIndex] = ((offset + 1) / 2) * (-20);
+                        this.edgeOffsets[stateIndex][edgeIndex] = (offset / 2) * 20;
+
                     }
                 }
                 else {

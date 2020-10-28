@@ -52,10 +52,28 @@ class Editor {
             if (loopbacks) {
                 this.drawLoop(state, loopbacks);
             }
+            this.drawAccSetsOnState(state);
         }
 
     }
+    /**
+     * @param  {string} label - the text of the label
+     * @param  {Victor} anchor - where the label should be anchored
+     * @param  {Victor} perpendicular - perpendicular to the edge in direction of anchor
+     */
+    drawLabelEdge(label, anchor, perpendicular) {
+        this.ctx.font = "20px Arial";
+        let textMeasurements = this.ctx.measureText(label);
+        let height = 20; // TextMetrics.fontBoundingBox is not widely supported
+        let width = (textMeasurements.width + 20) / 2; // +20 to give extra padding
+        let anchorOffset = new Victor(width, height).rotateTo(perpendicular.multiplyScalar(-1).angle());
+        anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
+        console.log(anchorOffset.toString());
+        let pos = anchor.clone().add(anchorOffset);
+        this.ctx.fillStyle = 'black';
+        this.ctx.fillText(label, pos.x, pos.y);
 
+    }
     drawState(state) {
         let pos = this.automaton.positions[state.number];
         this.ctx.fillStyle = 'black';
@@ -67,25 +85,21 @@ class Editor {
     }
     drawLoop(state, loopbacks) {
         let interval = this.getFreeAngleInterval(state.number);
-        let prints = state.number == 1;
         for (let i = 0; i < loopbacks.length; i++) {
             let t = (i + 1) / (loopbacks.length + 1);
             let distance = (interval[1] - interval[0]);
             distance = distance > 0 ? distance : distance + 360;
             let angle = interval[0] + distance * t
-            if (prints) {
-                console.log("angle: " + angle);
-            }
             let center = new Victor(1, 0)
-                .rotateByDeg(angle)
+                .rotateDeg(angle)
                 .multiplyScalar(this.circleSize * 4)
                 .add(Victor.fromObject(this.automaton.positions[state.number]));
             let left = new Victor(1, 0)
-                .rotateByDeg(angle - 15)
+                .rotateDeg(angle - 15)
                 .multiplyScalar(this.circleSize)
                 .add(Victor.fromObject(this.automaton.positions[state.number]));
             let right = new Victor(1, 0)
-                .rotateByDeg(angle + 15)
+                .rotateDeg(angle + 15)
                 .multiplyScalar(this.circleSize)
                 .add(Victor.fromObject(this.automaton.positions[state.number]));
             let diff = left.clone().subtract(right).multiplyScalar(3);
@@ -120,6 +134,9 @@ class Editor {
         this.addBlockedAngle(state.edges[edgeIndex].stateConj[0], destinationVector, toPoint);
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
         this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, state.edges[edgeIndex].accSets)
+        let perpendicular = this.calculatePerpendicular(fromPoint, toPoint);
+        let anchor = this.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
+        this.drawLabelEdge(state.edges[edgeIndex].label, anchor, perpendicular);
     }
 
     /**
@@ -129,24 +146,32 @@ class Editor {
      * @param  {number[]} sets
      */
     drawAccSetsQuadratic(from, mid, end, sets) {
-        let setCount = sets.length;
-        for (let i = 0; i < setCount; i++) {
-            let t = 0.5 - 0.2 * (setCount - 1) + 0.4 * i;
+        for (let i = 0; i < sets.length; i++) {
+            let t = (i + 1) / (sets.length + 1);
             let point = this.getPointOnQuadraticBezier(from, mid, end, t);
             this.drawAccSet(point, sets[i]);
         }
     }
     drawAccSetsCubic(p0, p1, p2, p3, sets) {
-        let setCount = sets.length;
-        for (let i = 0; i < setCount; i++) {
-            let t = 0.5 - 0.2 * (setCount - 1) + 0.4 * i;
+        for (let i = 0; i < sets.length; i++) {
+            let t = (i + 1) / (sets.length + 1);
             let point = this.getPointOnCubicBezier(p0, p1, p2, p3, t);
             this.drawAccSet(point, sets[i]);
         }
     }
+    drawAccSetsOnState(state) {
+        let stateCenter = Victor.fromObject(this.automaton.positions[state.number]);
+        let sets = state.accSets;
+        for (let i = 0; i < sets.length; i++) {
+            let t = (i + 1) / (sets.length + 1);
+            let angle = 170 - 60 * t;
+            let position = new Victor(0, this.circleSize * 0.9).rotateDeg(angle).add(stateCenter);
+            this.drawAccSet(position, sets[i]);
+        }
+    }
     drawAccSet(point, label) {
         this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, this.circleSize / 2.5, 0, Math.PI * 2);
+        this.ctx.arc(point.x, point.y, this.circleSize / 3, 0, Math.PI * 2);
         this.ctx.closePath();
         this.ctx.fillStyle = 'blue';
         this.ctx.fill();
@@ -183,6 +208,13 @@ class Editor {
         perpendicular.multiplyScalar(offset);
         perpendicular.add(midpoint);
         return perpendicular;
+    }
+    clamp(min, max, value) {
+        return Math.min(max, Math.max(min, value));
+    }
+    calculatePerpendicular(p1, p2) {
+        let dir = p2.clone().subtract(p1);
+        return new Victor(dir.y, -dir.x).normalize();
     }
     /**
      * @param  {Victor} center
@@ -233,18 +265,11 @@ class Editor {
             let next = (i + 1) % angles.length //modulo is used to compare last element with first
             let distance = angles[next] - angles[i];
             distance = distance > 0 ? distance : distance + 360;
-            if (stateIndex == 1) {
-                console.log("comparing: " + [angles[i], angles[next]]);
-                console.log("dist: " + distance);
-            }
             if (distance > maxDistance) {
                 maxDistance = distance;
                 a1 = angles[i];
                 a2 = angles[next];
             }
-        }
-        if (stateIndex == 1) {
-            console.log("returning: " + [a1, a2] + "with dist " + maxDistance);
         }
         return [a1, a2];
     }

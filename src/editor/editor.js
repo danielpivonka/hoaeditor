@@ -59,14 +59,14 @@ class Editor {
     /**
      * @param  {string} label - the text of the label
      * @param  {Victor} anchor - where the label should be anchored
-     * @param  {Victor} perpendicular - perpendicular to the edge in direction of anchor
+     * @param  {number} angle - perpendicular angle to the edge in direction of anchor
      */
-    drawLabelEdge(label, anchor, perpendicular) {
+    drawLabelEdge(label, anchor, angle) {
         this.ctx.font = "20px Arial";
         let textMeasurements = this.ctx.measureText(label);
         let height = 20; // TextMetrics.fontBoundingBox is not widely supported
         let width = (textMeasurements.width + 20) / 2; // +20 to give extra padding
-        let anchorOffset = new Victor(width, height).rotateTo(perpendicular.multiplyScalar(-1).angle());
+        let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
         console.log(anchorOffset.toString());
         let pos = anchor.clone().add(anchorOffset);
@@ -90,10 +90,7 @@ class Editor {
             let distance = (interval[1] - interval[0]);
             distance = distance > 0 ? distance : distance + 360;
             let angle = interval[0] + distance * t
-            let center = new Victor(1, 0)
-                .rotateDeg(angle)
-                .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(this.automaton.positions[state.number]));
+
             let left = new Victor(1, 0)
                 .rotateDeg(angle - 15)
                 .multiplyScalar(this.circleSize)
@@ -101,10 +98,15 @@ class Editor {
             let right = new Victor(1, 0)
                 .rotateDeg(angle + 15)
                 .multiplyScalar(this.circleSize)
+                .add(Victor.fromObject(this.automaton.positions[state.number]
+                ));
+            let upperCenter = new Victor(1, 0)
+                .rotateDeg(angle)
+                .multiplyScalar(this.circleSize * 4)
                 .add(Victor.fromObject(this.automaton.positions[state.number]));
             let diff = left.clone().subtract(right).multiplyScalar(3);
-            let upperLeft = (center.clone().add(diff));
-            let upperRight = (center.clone().subtract(diff));
+            let upperLeft = (upperCenter.clone().add(diff));
+            let upperRight = (upperCenter.clone().subtract(diff));
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
@@ -112,6 +114,8 @@ class Editor {
             this.ctx.beginPath();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopbacks[i].accSets)
+            let anchor = this.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
+            this.drawLabelEdge(loopbacks[i].label, anchor, angle);
         }
     }
     /**
@@ -136,7 +140,8 @@ class Editor {
         this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, state.edges[edgeIndex].accSets)
         let perpendicular = this.calculatePerpendicular(fromPoint, toPoint);
         let anchor = this.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
-        this.drawLabelEdge(state.edges[edgeIndex].label, anchor, perpendicular);
+        let angle = perpendicular.multiplyScalar(-1).angleDeg()
+        this.drawLabelEdge(state.edges[edgeIndex].label, anchor, angle);
     }
 
     /**

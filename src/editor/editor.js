@@ -43,11 +43,11 @@ class Editor {
             let loopbacks = [];
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
-                if (edge.stateConj[0] == state.number) {
-                    loopbacks.push(edge);
-                }
-                else if (edge.stateConj.length > 1) {
+                if (edge.stateConj.length > 1) {
                     this.drawMultiEdge(state, edgeIndex);
+                }
+                else if (edge.stateConj[0] == state.number) {
+                    loopbacks.push(edge);
                 }
                 else {
                     this.drawEdge(state, edgeIndex);
@@ -64,18 +64,47 @@ class Editor {
         let destStateList = state.edges[edgeIndex].stateConj;
         let originVector = Victor.fromObject(this.automaton.positions[state.number]);
         let midpoint = new Victor(0, 0);
+        let divider = 0;
         for (const destination of destStateList) {
+            if (destination == state.number) {
+                continue;
+            }
             let destinationVector = Victor.fromObject(this.automaton.positions[destination]);
             let directionVector = destinationVector.subtract(originVector);
             midpoint.add(directionVector);
+            divider++;
         }
-        midpoint.divideScalar(destStateList.length * 2);
+        let angle = midpoint.angleDeg();
+        midpoint.divideScalar(divider * 2);
         midpoint.add(originVector);
         let fromPoint = this.getNearestPointOnCircle(originVector, midpoint);
         for (const destination of destStateList) {
             let destinationVector = Victor.fromObject(this.automaton.positions[destination]);
             if (destination == state.number) {
-
+                let left = new Victor(1, 0)
+                    .rotateDeg(angle)
+                    .multiplyScalar(this.circleSize)
+                    .add(Victor.fromObject(this.automaton.positions[state.number]));
+                let right = new Victor(1, 0)
+                    .rotateDeg(angle + 20)
+                    .multiplyScalar(this.circleSize)
+                    .add(Victor.fromObject(this.automaton.positions[state.number]
+                    ));
+                let upperLeft = new Victor(1, 0)
+                    .rotateDeg(angle)
+                    .multiplyScalar(this.circleSize * 4)
+                    .add(Victor.fromObject(this.automaton.positions[state.number]
+                    ));
+                let upperRight = new Victor(1, 0)
+                    .rotateDeg(angle + 30)
+                    .multiplyScalar(this.circleSize * 4)
+                    .add(Victor.fromObject(this.automaton.positions[state.number]
+                    ));
+                this.ctx.beginPath();
+                this.ctx.moveTo(left.x, left.y);
+                this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
+                this.ctx.stroke();
+                this.drawArrowhead(right.clone().subtract(upperRight), right)
             }
             else {
                 let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint);
@@ -87,6 +116,7 @@ class Editor {
                 this.addBlockedAngle(destination, destinationVector, toPoint);
             }
         }
+        this.drawLabelEdge(state.edges[edgeIndex].label, midpoint, 0);
 
 
     }
@@ -124,7 +154,6 @@ class Editor {
             let distance = (interval[1] - interval[0]);
             distance = distance > 0 ? distance : distance + 360;
             let angle = interval[0] + distance * t
-
             let left = new Victor(1, 0)
                 .rotateDeg(angle - 15)
                 .multiplyScalar(this.circleSize)

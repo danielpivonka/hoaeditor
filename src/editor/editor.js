@@ -114,9 +114,12 @@ class Editor {
                 this.ctx.stroke();
                 this.addBlockedAngle(state.number, originVector, fromPoint);
                 this.addBlockedAngle(destination, destinationVector, toPoint);
+                this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
             }
         }
-        this.drawLabelEdge(state.edges[edgeIndex].label, midpoint, 0);
+        let perpendicular = this.calculatePerpendicular(fromPoint, midpoint);
+        let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
+        this.drawLabelEdge(state.edges[edgeIndex].label, midpoint, labelAngle);
 
 
     }

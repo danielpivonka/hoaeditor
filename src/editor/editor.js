@@ -45,7 +45,11 @@ class Editor {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj[0] == state.number) {
                     loopbacks.push(edge);
-                } else {
+                }
+                else if (edge.stateConj.length > 1) {
+                    this.drawMultiEdge(state, edgeIndex);
+                }
+                else {
                     this.drawEdge(state, edgeIndex);
                 }
             }
@@ -54,6 +58,36 @@ class Editor {
             }
             this.drawAccSetsOnState(state);
         }
+
+    }
+    drawMultiEdge(state, edgeIndex) {
+        let destStateList = state.edges[edgeIndex].stateConj;
+        let originVector = Victor.fromObject(this.automaton.positions[state.number]);
+        let midpoint = new Victor(0, 0);
+        for (const destination of destStateList) {
+            let destinationVector = Victor.fromObject(this.automaton.positions[destination]);
+            let directionVector = destinationVector.subtract(originVector);
+            midpoint.add(directionVector);
+        }
+        midpoint.divideScalar(destStateList.length * 2);
+        midpoint.add(originVector);
+        let fromPoint = this.getNearestPointOnCircle(originVector, midpoint);
+        for (const destination of destStateList) {
+            let destinationVector = Victor.fromObject(this.automaton.positions[destination]);
+            if (destination == state.number) {
+
+            }
+            else {
+                let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint);
+                this.ctx.beginPath();
+                this.ctx.moveTo(fromPoint.x, fromPoint.y);
+                this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
+                this.ctx.stroke();
+                this.addBlockedAngle(state.number, originVector, fromPoint);
+                this.addBlockedAngle(destination, destinationVector, toPoint);
+            }
+        }
+
 
     }
     /**
@@ -100,18 +134,20 @@ class Editor {
                 .multiplyScalar(this.circleSize)
                 .add(Victor.fromObject(this.automaton.positions[state.number]
                 ));
-            let upperCenter = new Victor(1, 0)
-                .rotateDeg(angle)
+            let upperLeft = new Victor(1, 0)
+                .rotateDeg(angle - 20)
                 .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(this.automaton.positions[state.number]));
-            let diff = left.clone().subtract(right).multiplyScalar(3);
-            let upperLeft = (upperCenter.clone().add(diff));
-            let upperRight = (upperCenter.clone().subtract(diff));
+                .add(Victor.fromObject(this.automaton.positions[state.number]
+                ));
+            let upperRight = new Victor(1, 0)
+                .rotateDeg(angle + 20)
+                .multiplyScalar(this.circleSize * 4)
+                .add(Victor.fromObject(this.automaton.positions[state.number]
+                ));
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
             this.ctx.stroke();
-            this.ctx.beginPath();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopbacks[i].accSets)
             let anchor = this.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);

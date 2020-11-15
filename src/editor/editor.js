@@ -38,6 +38,7 @@ class Editor {
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawStarts(this.automaton.start);
         for (const state of this.automaton.states) {
             this.drawState(state);
             let loopbacks = [];
@@ -60,6 +61,35 @@ class Editor {
         }
 
     }
+    drawStarts(starts) {
+        for (const startSet of starts) {
+            if (startSet.length > 1) {
+                this.drawMultiStart(startSet);
+            }
+        }
+    }
+    drawMultiStart(states) {
+        let midpoint = new Victor(0, 0);
+        let divider = 0;
+        for (const destination of states) {
+            midpoint.add(Victor.fromObject(this.automaton.positions[destination]));
+            divider++;
+        }
+        midpoint.divideScalar(divider);
+        let offsetDir = (this.canvas.width / 2) < midpoint.x ? 1 : -1;
+        let offset = new Victor(50, 0).multiplyScalar(offsetDir);
+        let originVector = midpoint.clone().add(offset);
+        for (const destination of states) {
+            let destinationVector = this.getNearestPointOnCircle(Victor.fromObject(this.automaton.positions[destination]), midpoint);
+            this.ctx.beginPath();
+            this.ctx.moveTo(originVector.x, originVector.y);
+            this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, destinationVector.x, destinationVector.y);
+            this.ctx.stroke();
+            this.addBlockedAngle(destination, this.automaton.positions[destination], destinationVector);
+            this.drawArrowhead(destinationVector.clone().subtract(midpoint), destinationVector);
+        }
+
+    }
     drawMultiEdge(state, edgeIndex) {
         let destStateList = state.edges[edgeIndex].stateConj;
         let originVector = Victor.fromObject(this.automaton.positions[state.number]);
@@ -75,7 +105,7 @@ class Editor {
             divider++;
         }
         let angle = midpoint.angleDeg();
-        midpoint.divideScalar(divider * 2);
+        midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
         let fromPoint = this.getNearestPointOnCircle(originVector, midpoint);
         for (const destination of destStateList) {
@@ -114,7 +144,7 @@ class Editor {
                 this.ctx.stroke();
                 this.addBlockedAngle(state.number, originVector, fromPoint);
                 this.addBlockedAngle(destination, destinationVector, toPoint);
-                this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
+                this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
             }
         }
         let perpendicular = this.calculatePerpendicular(fromPoint, midpoint);

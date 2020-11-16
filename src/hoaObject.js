@@ -9,6 +9,8 @@ class HOA {
         this.positions = []
         /**@type {number[][]}*/
         this.edgeOffsets = []
+        /**@type {Position[]}*/
+        this.startOffsets = []
         this.etc = []
         /**
         * @type {State[]}
@@ -148,7 +150,12 @@ class HOA {
         }
     }
     SetImplicitOffsets() {
+        this.startOffsets = new Array(this.start.length);
+        for (var i = 0; i < this.start.length; i++) {
+            this.startOffsets[i] = new Position(0, 0);
+        }
         for (const stateIndex of this.states.keys()) {
+
             let count = new Array(this.stateCount).fill(0);
             this.edgeOffsets[stateIndex] = [];
             for (const edgeIndex of this.states[stateIndex].edges.keys()) {

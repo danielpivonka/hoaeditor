@@ -3,6 +3,7 @@ const Position = require('../hoaObject').Position;
 const State = require('../hoaObject').State;
 const Edge = require('../hoaObject').Edge;
 const Victor = require('victor');
+
 class Editor {
     constructor(canvas) {
         /**@type {HTMLCanvasElement}*/
@@ -12,13 +13,19 @@ class Editor {
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.circleSize = 25;
+        /**@type {number}*/
         this.selected = null;
+        this.selectedType = null;
         this.downLocation = null;
         this.canvas.onmousedown = this.mouseDown.bind(this);
         this.canvas.onmouseup = this.mouseUp.bind(this);
         this.canvas.onmousemove = this.mouseMove.bind(this);
         this.drawnEdges = [];
         this.blockedAngles = [];
+        this.selectedEnum = {
+            STATE: 0,
+            START: 1
+        }
     }
     /**
      * binds automaton to editor
@@ -62,22 +69,16 @@ class Editor {
 
     }
     drawStarts(starts) {
-        for (const startSet of starts) {
-            if (startSet.length > 1) {
-                this.drawMultiStart(startSet);
+        for (let i = 0; i < starts.length; i++) {
+            if (starts[i].length > 1) {
+                this.drawMultiStart(i);
             }
         }
     }
-    drawMultiStart(states) {
-        let midpoint = new Victor(0, 0);
-        let divider = 0;
-        for (const destination of states) {
-            midpoint.add(Victor.fromObject(this.automaton.positions[destination]));
-            divider++;
-        }
-        midpoint.divideScalar(divider);
-        let offsetDir = (this.canvas.width / 2) < midpoint.x ? 1 : -1;
-        let offset = new Victor(50, 0).multiplyScalar(offsetDir);
+    drawMultiStart(startIndex) {
+        let states = this.automaton.start[startIndex]
+        let midpoint = this.calculateMidpointBetweenStates(states);
+        let offset = Victor.fromObject(this.automaton.startOffsets[startIndex]);
         let originVector = midpoint.clone().add(offset);
         for (const destination of states) {
             let destinationVector = this.getNearestPointOnCircle(Victor.fromObject(this.automaton.positions[destination]), midpoint);
@@ -88,7 +89,20 @@ class Editor {
             this.addBlockedAngle(destination, this.automaton.positions[destination], destinationVector);
             this.drawArrowhead(destinationVector.clone().subtract(midpoint), destinationVector);
         }
-
+    }
+    /**
+     * @param  {Number[]} states
+     * @returns {Victor} vector representing midpoint
+     */
+    calculateMidpointBetweenStates(states) {
+        let midpoint = new Victor(0, 0);
+        let divider = 0;
+        for (const destination of states) {
+            midpoint.add(Victor.fromObject(this.automaton.positions[destination]));
+            divider++;
+        }
+        midpoint.divideScalar(divider);
+        return midpoint
     }
     drawMultiEdge(state, edgeIndex) {
         let destStateList = state.edges[edgeIndex].stateConj;
@@ -382,7 +396,7 @@ class Editor {
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
-        this.selected = this.getObjectIndexAtPosition(x, y);
+        this.checkCollisionsAtPosition(new Victor(x, y));
         if (this.selected != null) {
             this.downLocation = new Position(x, y);
         }
@@ -402,23 +416,48 @@ class Editor {
         let y = e.clientY - boundingBox.top;
         let dx = x - this.downLocation.x;
         let dy = y - this.downLocation.y;
-        this.automaton.positions[this.selected].x += dx;
-        this.automaton.positions[this.selected].y += dy;
+        this.moveSelectedItem(dx, dy);
         this.downLocation.x = x;
         this.downLocation.y = y;
         this.draw();
     }
-    getObjectIndexAtPosition(x, y) {
+    checkCollisionsAtPosition(position) {
         for (const state of this.automaton.states) {
-            let pos = this.automaton.positions[state.number];
-            let a = pos.x - x;
-            let b = pos.y - y;
-            var dist = Math.sqrt(a * a + b * b);
-            if (dist < this.circleSize) {
-                return state.number
+            let centre = this.automaton.positions[state.number];
+            if (this.checkCircleCollision(centre, this.circleSize, position)) {
+                this.selected = state.number;
+                this.selectedType = this.selectedEnum.STATE;
+                return
+            }
+            for (let i = 0; i < this.automaton.start.length; i++) {
+                let pos = this.calculateMidpointBetweenStates(this.automaton.start[i]);
+                let offset = this.automaton.startOffsets[i];
+                let center = new Victor(pos.x + offset.x, pos.y + offset.y);
+                if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
+                    this.selected = i;
+                    this.selectedType = this.selectedEnum.START;
+                    return
+                }
             }
         }
-        return null;
+        this.selected = null;
+    }
+    moveSelectedItem(dx, dy) {
+        if (this.selectedType == this.selectedEnum.STATE) {
+            this.automaton.positions[this.selected].x += dx;
+            this.automaton.positions[this.selected].y += dy;
+        }
+        else {
+            this.automaton.startOffsets[this.selected].x += dx;
+            this.automaton.startOffsets[this.selected].y += dy;
+
+        }
+    }
+    checkCircleCollision(center, size, point) {
+        let a = center.x - point.x;
+        let b = center.y - point.y;
+        var dist = Math.sqrt(a * a + b * b);
+        return dist < size
     }
 }
 exports.Editor = Editor;

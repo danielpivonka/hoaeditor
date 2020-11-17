@@ -236,7 +236,6 @@ class HOA {
     }
     getEdgeCount(fromIndex, toIndex) {
         let count = this.states[fromIndex].edges.filter((element) => element.stateConj.includes(toIndex)).length;
-        console.log("Counted: " + count);
         return count;
     }
 }

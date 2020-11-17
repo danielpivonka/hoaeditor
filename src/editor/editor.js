@@ -188,7 +188,6 @@ class Editor {
         let width = (textMeasurements.width + 20) / 2; // +20 to give extra padding
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
-        console.log(anchorOffset.toString());
         let pos = anchor.clone().add(anchorOffset);
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(label, pos.x, pos.y);

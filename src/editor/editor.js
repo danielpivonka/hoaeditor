@@ -78,7 +78,7 @@ class Editor {
         }
     }
     drawStateLabels(state) {
-        let interval = this.getFreeAngleInterval(state.number, 1);
+        let interval = this.getFreeAngleInterval(state.number);
         let distance = (interval[1] - interval[0]);
         distance = distance > 0 ? distance : distance + 360;
         let angle = interval[0] + distance * 0.5;
@@ -186,7 +186,7 @@ class Editor {
                     .multiplyScalar(this.circleSize)
                     .add(Victor.fromObject(this.automaton.positions[state.number]));
                 let right = new Victor(1, 0)
-                    .rotateDeg(angle + 20)
+                    .rotateDeg(angle - 20)
                     .multiplyScalar(this.circleSize)
                     .add(Victor.fromObject(this.automaton.positions[state.number]
                     ));
@@ -196,7 +196,7 @@ class Editor {
                     .add(Victor.fromObject(this.automaton.positions[state.number]
                     ));
                 let upperRight = new Victor(1, 0)
-                    .rotateDeg(angle + 30)
+                    .rotateDeg(angle - 30)
                     .multiplyScalar(this.circleSize * 4)
                     .add(Victor.fromObject(this.automaton.positions[state.number]
                     ));
@@ -257,11 +257,11 @@ class Editor {
             distance = distance > 0 ? distance : distance + 360;
             let angle = interval[0] + distance * t
             let left = new Victor(1, 0)
-                .rotateDeg(angle - 15)
+                .rotateDeg(angle - 14)
                 .multiplyScalar(this.circleSize)
                 .add(Victor.fromObject(this.automaton.positions[state.number]));
             let right = new Victor(1, 0)
-                .rotateDeg(angle + 15)
+                .rotateDeg(angle + 16)
                 .multiplyScalar(this.circleSize)
                 .add(Victor.fromObject(this.automaton.positions[state.number]
                 ));
@@ -275,6 +275,8 @@ class Editor {
                 .multiplyScalar(this.circleSize * 4)
                 .add(Victor.fromObject(this.automaton.positions[state.number]
                 ));
+            this.addBlockedAngle(state.number, this.automaton.positions[state.number], left);
+            this.addBlockedAngle(state.number, this.automaton.positions[state.number], right);
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);

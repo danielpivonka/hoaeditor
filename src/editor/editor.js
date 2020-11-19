@@ -46,6 +46,7 @@ class Editor {
         this.drawnEdges = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(this.automaton.start);
+        let stateLoopbacks = new Map();
         for (const state of this.automaton.states) {
             this.drawState(state);
             let loopbacks = [];
@@ -61,10 +62,13 @@ class Editor {
                     this.drawEdge(state, edgeIndex);
                 }
             }
+            this.drawAccSetsOnState(state);
+            stateLoopbacks.set(state, loopbacks);
+        }
+        for (let [state, loopbacks] of stateLoopbacks) {
             if (loopbacks) {
                 this.drawLoop(state, loopbacks);
             }
-            this.drawAccSetsOnState(state);
         }
 
     }

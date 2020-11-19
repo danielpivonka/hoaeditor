@@ -70,7 +70,23 @@ class Editor {
                 this.drawLoop(state, loopbacks);
             }
         }
+        for (const state of this.automaton.states) {
+            if (state.name) {
+                this.drawStateLabels(state);
+            }
 
+        }
+    }
+    drawStateLabels(state) {
+        let interval = this.getFreeAngleInterval(state.number, 1);
+        let distance = (interval[1] - interval[0]);
+        distance = distance > 0 ? distance : distance + 360;
+        let angle = interval[0] + distance * 0.5;
+        let anchor = new Victor(1, 0);
+        anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
+        let statePosition = this.stateToPosition(state.number);
+        anchor.add(statePosition);
+        this.drawLabelEdge(state.name, anchor, angle);
     }
     drawStarts(starts) {
         for (let i = 0; i < starts.length; i++) {
@@ -139,7 +155,10 @@ class Editor {
      * @returns {Victor[]} vectors with state positions
      */
     statesToPositions(states) {
-        return states.map((index) => { return Victor.fromObject(this.automaton.positions[index]) });
+        return states.map((index) => { return this.stateToPosition(index); });
+    }
+    stateToPosition(index) {
+        return Victor.fromObject(this.automaton.positions[index])
     }
     drawMultiEdge(state, edgeIndex) {
         let destStateList = state.edges[edgeIndex].stateConj;

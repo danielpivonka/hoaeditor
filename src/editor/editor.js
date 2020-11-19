@@ -404,23 +404,22 @@ class Editor {
         }
         this.blockedAngles[stateIndex].push(angle);
     }
-    getFreeAngleInterval(stateIndex) {
+    getFreeAngleInterval(stateIndex, offset = 0) {
         let angles = this.blockedAngles[stateIndex];
         angles.sort((a, b) => { return a - b });
-        let maxDistance = 0;
-        let a1;
-        let a2;
+
+        let intervals = [];
         for (let i = 0; i < angles.length; i++) {
-            let next = (i + 1) % angles.length //modulo is used to compare last element with first
-            let distance = angles[next] - angles[i];
-            distance = distance > 0 ? distance : distance + 360;
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                a1 = angles[i];
-                a2 = angles[next];
-            }
+            let a1 = angles[i];
+            let a2 = angles[(i + 1) % angles.length] //modulo is used to compare last element with first
+            intervals.push([a1, a2]);
         }
-        return [a1, a2];
+        intervals.sort((a, b) => { return this.angleDistance(a[0], a[1]) - this.angleDistance(b[0], b[1]) });
+        return intervals[offset];
+    }
+    angleDistance(a1, a2) {
+        let distance = a1 - a2;
+        return distance > 0 ? distance : distance + 360;
     }
     mouseDown(e) {
         e.preventDefault();

@@ -73,6 +73,9 @@ class Editor {
             if (starts[i].length > 1) {
                 this.drawMultiStart(i);
             }
+            else {
+                this.drawMonoStart(i);
+            }
         }
     }
     drawMultiStart(startIndex) {
@@ -81,6 +84,10 @@ class Editor {
         let offset = Victor.fromObject(this.automaton.startOffsets[startIndex]);
         let originVector = anchor.clone().add(offset);
         let midpoint = this.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
+        this.ctx.fillStyle = "#000000";
+        this.ctx.beginPath();
+        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
+        this.ctx.fill();
         for (const destination of this.automaton.start[startIndex]) {
             let destinationVector = this.getNearestPointOnCircle(Victor.fromObject(this.automaton.positions[destination]), midpoint);
             this.ctx.beginPath();
@@ -90,6 +97,23 @@ class Editor {
             this.addBlockedAngle(destination, this.automaton.positions[destination], destinationVector);
             this.drawArrowhead(destinationVector.clone().subtract(midpoint), destinationVector);
         }
+    }
+    drawMonoStart(startIndex) {
+        let stateIndexes = this.automaton.start[startIndex];
+        let statePositions = this.statesToPositions(stateIndexes)[0];
+        let offset = Victor.fromObject(this.automaton.startOffsets[startIndex]);
+        let originVector = statePositions.clone().add(offset);
+        this.ctx.fillStyle = "#000000";
+        this.ctx.beginPath();
+        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
+        this.ctx.fill();
+        let destinationVector = this.getNearestPointOnCircle(Victor.fromObject(this.automaton.positions[stateIndexes[0]]), originVector);
+        this.ctx.beginPath();
+        this.ctx.moveTo(originVector.x, originVector.y);
+        this.ctx.lineTo(destinationVector.x, destinationVector.y);
+        this.ctx.stroke();
+        this.addBlockedAngle(stateIndexes[0], this.automaton.positions[stateIndexes[0]], destinationVector);
+        this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
 
     /**

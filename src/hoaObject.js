@@ -152,7 +152,12 @@ class HOA {
     SetImplicitOffsets() {
         this.startOffsets = new Array(this.start.length);
         for (var i = 0; i < this.start.length; i++) {
-            this.startOffsets[i] = new Position(0, 0);
+            if (this.start[i].length > 1) {
+                this.startOffsets[i] = new Position(0, 0);
+            }
+            else {
+                this.startOffsets[i] = new Position(0, 50);
+            }
         }
         for (const stateIndex of this.states.keys()) {
 

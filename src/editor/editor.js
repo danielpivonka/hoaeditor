@@ -311,6 +311,7 @@ class Editor {
         let anchor = this.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg()
         this.drawLabelEdge(state.edges[edgeIndex].label, anchor, angle);
+        console.log(curveOffset);
     }
 
     /**

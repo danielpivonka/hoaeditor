@@ -86,7 +86,8 @@ class Editor {
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         let statePosition = this.stateToPosition(state.number);
         anchor.add(statePosition);
-        this.drawLabelEdge(state.name, anchor, angle);
+        let offset = 30 * state.edges.length / 5 + state.name.length;
+        this.drawLabelEdge(state.name, anchor, angle, offset);
     }
     drawStarts(starts) {
         for (let i = 0; i < starts.length; i++) {
@@ -229,11 +230,11 @@ class Editor {
      * @param  {Victor} anchor - where the label should be anchored
      * @param  {number} angle - perpendicular angle to the edge in direction of anchor
      */
-    drawLabelEdge(label, anchor, angle) {
+    drawLabelEdge(label, anchor, angle, extraPadding = 0) {
         this.ctx.font = "20px Arial";
         let textMeasurements = this.ctx.measureText(label);
-        let height = 20; // TextMetrics.fontBoundingBox is not widely supported
-        let width = (textMeasurements.width + 20) / 2; // +20 to give extra padding
+        let height = 10 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
+        let width = (textMeasurements.width + 5 + extraPadding) / 2; // +5 to give extra padding
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
         let pos = anchor.clone().add(anchorOffset);
@@ -247,8 +248,19 @@ class Editor {
         this.ctx.beginPath();
         this.ctx.arc(pos.x, pos.y, this.circleSize, 0, Math.PI * 2);
         this.ctx.stroke();
-        this.ctx.font = "36px Arial";
-        this.ctx.fillText(state.number, pos.x, pos.y);
+        if (state.label) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(pos.x - this.circleSize, pos.y);
+            this.ctx.lineTo(pos.x + this.circleSize, pos.y);
+            this.ctx.stroke();
+            this.ctx.font = "18px Arial";
+            this.ctx.fillText(state.number, pos.x, pos.y - this.circleSize / 2);
+            this.ctx.fillText(state.label, pos.x, pos.y + this.circleSize / 2);
+        }
+        else {
+            this.ctx.font = "36px Arial";
+            this.ctx.fillText(state.number, pos.x, pos.y);
+        }
     }
     drawLoop(state, loopbacks) {
         let interval = this.getFreeAngleInterval(state.number);
@@ -316,7 +328,6 @@ class Editor {
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
         let label = this.getLabel(state, edgeIndex);
         this.drawLabelEdge(label, anchor, angle);
-        console.log(curveOffset);
     }
     getLabel(state, edgeIndex) {
         if (state.edges[edgeIndex].label) {

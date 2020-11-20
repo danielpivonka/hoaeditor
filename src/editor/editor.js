@@ -49,14 +49,14 @@ class Editor {
         let stateLoopbacks = new Map();
         for (const state of this.automaton.states) {
             this.drawState(state);
-            let loopbacks = [];
+            let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
                     this.drawMultiEdge(state, edgeIndex);
                 }
                 else if (edge.stateConj[0] == state.number) {
-                    loopbacks.push(edge);
+                    loopbacks.set(edgeIndex, edge);
                 }
                 else {
                     this.drawEdge(state, edgeIndex);
@@ -219,7 +219,8 @@ class Editor {
         }
         let perpendicular = this.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        this.drawLabelEdge(state.edges[edgeIndex].label, midpoint, labelAngle);
+        let label = this.getLabel(state, edgeIndex);
+        this.drawLabelEdge(label, midpoint, labelAngle);
 
 
     }
@@ -251,8 +252,9 @@ class Editor {
     }
     drawLoop(state, loopbacks) {
         let interval = this.getFreeAngleInterval(state.number);
-        for (let i = 0; i < loopbacks.length; i++) {
-            let t = (i + 1) / (loopbacks.length + 1);
+        let i = 0;
+        for (let [index, loopback] of loopbacks) {
+            let t = (i + 1) / (loopbacks.size + 1);
             let distance = (interval[1] - interval[0]);
             distance = distance > 0 ? distance : distance + 360;
             let angle = interval[0] + distance * t
@@ -282,9 +284,11 @@ class Editor {
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
             this.ctx.stroke();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
-            this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopbacks[i].accSets)
+            this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = this.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            this.drawLabelEdge(loopbacks[i].label, anchor, angle);
+            let label = this.calculateImplicitLabel(index, this.automaton.ap.length);
+            this.drawLabelEdge(label, anchor, angle);
+            i++;
         }
     }
     /**
@@ -309,11 +313,20 @@ class Editor {
         this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, state.edges[edgeIndex].accSets)
         let perpendicular = this.calculatePerpendicular(fromPoint, toPoint);
         let anchor = this.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
-        let angle = perpendicular.multiplyScalar(-1).angleDeg()
-        this.drawLabelEdge(state.edges[edgeIndex].label, anchor, angle);
+        let angle = perpendicular.multiplyScalar(-1).angleDeg();
+        let label = this.getLabel(state, edgeIndex);
+        this.drawLabelEdge(label, anchor, angle);
         console.log(curveOffset);
     }
-
+    getLabel(state, edgeIndex) {
+        if (state.edges[edgeIndex].label) {
+            return state.edges[edgeIndex].label;
+        }
+        if (state.edges.length == Math.pow(2, this.automaton.ap.length)) {
+            return this.calculateImplicitLabel(edgeIndex, this.automaton.ap.length)
+        }
+        return "";
+    }
     /**
      * @param  {Victor} from
      * @param  {Victor} mid
@@ -442,6 +455,20 @@ class Editor {
         }
         intervals.sort((a, b) => { return this.angleDistance(a[0], a[1]) - this.angleDistance(b[0], b[1]) });
         return intervals[offset];
+    }
+    calculateImplicitLabel(edgeIndex, propositionCount) {
+        let result = "";
+        for (let i = 0; i < propositionCount; i++) {
+            let mask = 1 << i;
+            if (!(mask & edgeIndex)) {
+                result += "!";
+            }
+            result += i
+            if (i + 1 < propositionCount) {
+                result += "&"
+            }
+        }
+        return result;
     }
     angleDistance(a1, a2) {
         let distance = a1 - a2;

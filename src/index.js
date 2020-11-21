@@ -1,18 +1,22 @@
 //@ts-nocheck
+require('./index.html')
 const parse = require('./parser/parser').parse;
+const Editor = require('./editor/editor').Editor;
 const field = document.getElementById('HOAInput');
 const jsonOutput = document.getElementById('jsonText');
 const hoaOutput = document.getElementById('hoaText');
 const raw = document.getElementById('rawText');
 const button = document.getElementById('HOAParse');
-require('./index.html')
+const canvas = document.getElementById('canvas');
 function onParseClicked(e) {
     if (field && field.value) {
         let oa = parse(field.value);
         raw.innerHTML = field.value;
         jsonOutput.innerHTML = JSON.stringify(oa);
         hoaOutput.innerHTML = oa.toHoaString();
+        editor.setAutomaton(oa);
     }
 }
 
+let editor = new Editor(canvas);
 button.addEventListener('click', onParseClicked);

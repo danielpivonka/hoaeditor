@@ -5,6 +5,12 @@ class HOA {
         this.aliases = []
         this.ap = []
         this.properties = []
+        /**@type {Position[]}*/
+        this.positions = []
+        /**@type {number[][]}*/
+        this.edgeOffsets = []
+        /**@type {Position[]}*/
+        this.startOffsets = []
         this.etc = []
         /**
         * @type {State[]}
@@ -95,7 +101,6 @@ class HOA {
     addEtc(etc) {
         this.etc.push(etc);
     }
-
     /**
      * Adds an empty state with implicit number
      * @returns {State} the newly created state
@@ -132,6 +137,57 @@ class HOA {
     getLastState() {
         return this.states.slice(-1)[0];
     }
+    setPosition(key, x, y) {
+        this.positions[key] = new Position(x, y);
+    }
+    setImplicitPositions() {
+        let positionsSet = 0;
+        for (const key of this.states.keys()) {
+            if (!this.positions[key]) {
+                this.positions[key] = new Position(positionsSet * 100, 100);
+                positionsSet++;
+            }
+        }
+    }
+    SetImplicitOffsets() {
+        if (this.stateCount == null) {
+            this.stateCount = this.states.length;
+        }
+        this.startOffsets = new Array(this.start.length);
+        for (var i = 0; i < this.start.length; i++) {
+            if (this.start[i].length > 1) {
+                this.startOffsets[i] = new Position(0, 0);
+            }
+            else {
+                this.startOffsets[i] = new Position(0, 50);
+            }
+        }
+        for (const stateIndex of this.states.keys()) {
+
+            let count = new Array(this.stateCount).fill(0);
+            this.edgeOffsets[stateIndex] = [];
+            for (const edgeIndex of this.states[stateIndex].edges.keys()) {
+                let edgeDirection = this.states[stateIndex].edges[edgeIndex].stateConj[0];
+                let offset = ++count[edgeDirection];
+                if (this.getEdgeCount(edgeDirection, stateIndex)) { //single or multiple edges to state with reverse edge(s)
+                    this.edgeOffsets[stateIndex][edgeIndex] = offset * 30
+                }
+                else if (count[edgeDirection] > 1 || this.getEdgeCount(stateIndex, edgeDirection) > 1) { //multiple edges to state without reverse edge
+                    if (offset % 2) {
+                        this.edgeOffsets[stateIndex][edgeIndex] = ((offset + 1) / 2) * (-40);
+                    }
+                    else {
+                        this.edgeOffsets[stateIndex][edgeIndex] = (offset / 2) * 40;
+
+                    }
+                }
+                else {
+                    this.edgeOffsets[stateIndex][edgeIndex] = 0;
+                }
+            }
+        }
+    }
+
     /**
      * Returns automaton in hoa format
      * @returns {string} hoa string
@@ -186,6 +242,10 @@ class HOA {
         string += "--END--\n";
         return string;
     }
+    getEdgeCount(fromIndex, toIndex) {
+        let count = this.states[fromIndex].edges.filter((element) => element.stateConj.includes(toIndex)).length;
+        return count;
+    }
 }
 class State {
     /**
@@ -194,6 +254,7 @@ class State {
      */
     constructor(number) {
         this.number = number;
+        /**@type {number[]}*/
         this.accSets = [];
         /**@type {Edge[]}*/
         this.edges = [];
@@ -271,4 +332,17 @@ class Edge {
         return str;
     }
 }
+class Position {
+    /**
+     * @param  {number} x
+     * @param  {number} y
+     */
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
 exports.HOA = HOA;
+exports.State = State;
+exports.Edge = Edge;
+exports.Position = Position;

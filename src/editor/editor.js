@@ -86,7 +86,7 @@ class Editor {
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         let statePosition = this.stateToPosition(state.number);
         anchor.add(statePosition);
-        let offset = 30 * state.edges.length / 5 + state.name.length;
+        let offset = 5 * state.edges.length + 3 * state.name.length - 25;
         this.drawLabelEdge(state.name, anchor, angle, offset);
     }
     drawStarts(starts) {
@@ -233,8 +233,8 @@ class Editor {
     drawLabelEdge(label, anchor, angle, extraPadding = 0) {
         this.ctx.font = "20px Arial";
         let textMeasurements = this.ctx.measureText(label);
-        let height = 10 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
-        let width = (textMeasurements.width + 5 + extraPadding) / 2; // +5 to give extra padding
+        let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
+        let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
         let pos = anchor.clone().add(anchorOffset);
@@ -298,7 +298,7 @@ class Editor {
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = this.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = this.calculateImplicitLabel(index, this.automaton.ap.length);
+            let label = this.getLabel(state, index);
             this.drawLabelEdge(label, anchor, angle);
             i++;
         }
@@ -333,8 +333,8 @@ class Editor {
         if (state.edges[edgeIndex].label) {
             return state.edges[edgeIndex].label;
         }
-        if (state.edges.length == Math.pow(2, this.automaton.ap.length)) {
-            return this.calculateImplicitLabel(edgeIndex, this.automaton.ap.length)
+        if (state.edges.length == Math.pow(2, this.automaton.ap.length) && !state.label) {
+            return this.calculateImplicitLabel(edgeIndex, this.automaton.ap.length);
         }
         return "";
     }

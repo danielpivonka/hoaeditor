@@ -33,7 +33,7 @@ class Editor {
      */
     setAutomaton(automaton) {
         this.automaton = automaton;
-        this.automaton.setImplicitPositions();
+        this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
         this.automaton.SetImplicitOffsets();
         this.draw();
     }

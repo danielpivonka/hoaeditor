@@ -1,3 +1,4 @@
+
 class HOA {
     constructor() {
         /**@type {number[][]}*/
@@ -140,11 +141,21 @@ class HOA {
     setPosition(key, x, y) {
         this.positions[key] = new Position(x, y);
     }
-    setImplicitPositions() {
+    setImplicitPositions(width, height) {
+        console.log(width);
+        console.log(height);
+        let rows = Math.round(Math.sqrt(this.states.length));
+        let columns = Math.ceil(this.states.length / rows);
         let positionsSet = 0;
         for (const key of this.states.keys()) {
             if (!this.positions[key]) {
-                this.positions[key] = new Position(positionsSet * 100, 100);
+                let currentRow = Math.floor(positionsSet / columns);
+                let currentColumn = positionsSet % columns;
+                console.log(currentRow);
+                console.log(currentColumn);
+                let x = width * (1 + currentColumn) / (columns + 1);
+                let y = height * (1 + currentRow) / (rows + 1);
+                this.positions[key] = new Position(x, y);
                 positionsSet++;
             }
         }

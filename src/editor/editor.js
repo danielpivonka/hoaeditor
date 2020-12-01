@@ -66,9 +66,7 @@ class Editor {
             stateLoopbacks.set(state, loopbacks);
         }
         for (let [state, loopbacks] of stateLoopbacks) {
-            if (loopbacks) {
-                this.drawLoop(state, loopbacks);
-            }
+            this.drawLoop(state, loopbacks);
         }
         for (const state of this.automaton.states) {
             if (state.name) {

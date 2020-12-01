@@ -142,8 +142,6 @@ class HOA {
         this.positions[key] = new Position(x, y);
     }
     setImplicitPositions(width, height) {
-        console.log(width);
-        console.log(height);
         let rows = Math.round(Math.sqrt(this.states.length));
         let columns = Math.ceil(this.states.length / rows);
         let positionsSet = 0;
@@ -151,8 +149,6 @@ class HOA {
             if (!this.positions[key]) {
                 let currentRow = Math.floor(positionsSet / columns);
                 let currentColumn = positionsSet % columns;
-                console.log(currentRow);
-                console.log(currentColumn);
                 let x = width * (1 + currentColumn) / (columns + 1);
                 let y = height * (1 + currentRow) / (rows + 1);
                 this.positions[key] = new Position(x, y);

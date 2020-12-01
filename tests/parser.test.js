@@ -1,6 +1,5 @@
 // @ts-nocheck
 let parse = require('../src/parser/parser').parse;
-let HoaObj = require('../src/hoaObject.js').HOA;
 
 
 test('correct with etc', () => {

@@ -3,6 +3,7 @@ const Position = require('../hoaObject').Position;
 const State = require('../hoaObject').State;
 const Edge = require('../hoaObject').Edge;
 const Victor = require('victor');
+const EditorUtils = require('./editorUtils').EditorUtils;
 
 class Editor {
     constructor(canvas) {
@@ -99,10 +100,10 @@ class Editor {
     }
     drawMultiStart(startIndex) {
         let statePositions = this.statesToPositions(this.automaton.start[startIndex]);
-        let anchor = this.calculateMidpointBetweenVectors(statePositions);
+        let anchor = EditorUtils.calculateMidpointBetweenVectors(statePositions);
         let offset = Victor.fromObject(this.automaton.startOffsets[startIndex]);
         let originVector = anchor.clone().add(offset);
-        let midpoint = this.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
+        let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
         this.ctx.fillStyle = "#000000";
         this.ctx.beginPath();
         this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
@@ -135,20 +136,7 @@ class Editor {
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
 
-    /**
-     * @param  {Victor[]} vectors
-     * @returns {Victor} vector representing midpoint
-     */
-    calculateMidpointBetweenVectors(vectors) {
-        let midpoint = new Victor(0, 0);
-        let divider = 0;
-        for (const vector of vectors) {
-            midpoint.add(vector);
-            divider++;
-        }
-        midpoint.divideScalar(divider);
-        return midpoint
-    }
+
     /**
      * @param  {Number[]} states indexes
      * @returns {Victor[]} vectors with state positions
@@ -216,7 +204,7 @@ class Editor {
                 this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
             }
         }
-        let perpendicular = this.calculatePerpendicular(fromPoint, midpoint);
+        let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         let label = this.getLabel(state, edgeIndex);
         this.drawLabelEdge(label, midpoint, labelAngle);
@@ -234,7 +222,7 @@ class Editor {
         let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
         let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
-        anchorOffset = new Victor(this.clamp(-width, width, anchorOffset.x), this.clamp(-height, height, anchorOffset.y));
+        anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
         let pos = anchor.clone().add(anchorOffset);
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(label, pos.x, pos.y);
@@ -295,7 +283,7 @@ class Editor {
             this.ctx.stroke();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
-            let anchor = this.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
+            let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = this.getLabel(state, index);
             this.drawLabelEdge(label, anchor, angle);
             i++;
@@ -310,7 +298,7 @@ class Editor {
         let curveOffset = this.automaton.edgeOffsets[state.number][edgeIndex];
         let originVector = Victor.fromObject(this.automaton.positions[state.number]);
         let destinationVector = Victor.fromObject(this.automaton.positions[destinationIndex]);
-        let midpoint = this.calculateMiddleWithOffset(originVector, destinationVector, curveOffset);
+        let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, curveOffset);
         let fromPoint = this.getNearestPointOnCircle(originVector, midpoint);
         let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint);
         this.ctx.beginPath();
@@ -321,8 +309,8 @@ class Editor {
         this.addBlockedAngle(state.edges[edgeIndex].stateConj[0], destinationVector, toPoint);
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
         this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, state.edges[edgeIndex].accSets)
-        let perpendicular = this.calculatePerpendicular(fromPoint, toPoint);
-        let anchor = this.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
+        let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
+        let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
         let label = this.getLabel(state, edgeIndex);
         this.drawLabelEdge(label, anchor, angle);
@@ -345,14 +333,14 @@ class Editor {
     drawAccSetsQuadratic(from, mid, end, sets) {
         for (let i = 0; i < sets.length; i++) {
             let t = (i + 1) / (sets.length + 1);
-            let point = this.getPointOnQuadraticBezier(from, mid, end, t);
+            let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, t);
             this.drawAccSet(point, sets[i]);
         }
     }
     drawAccSetsCubic(p0, p1, p2, p3, sets) {
         for (let i = 0; i < sets.length; i++) {
             let t = (i + 1) / (sets.length + 1);
-            let point = this.getPointOnCubicBezier(p0, p1, p2, p3, t);
+            let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, t);
             this.drawAccSet(point, sets[i]);
         }
     }
@@ -376,46 +364,10 @@ class Editor {
         this.ctx.fillStyle = 'white';
         this.ctx.fillText(label, point.x, point.y);
     }
-    getPointOnQuadraticBezier(p0, p1, p2, t) {
-        let b0 = (1 - t) * (1 - t);
-        let b1 = 2 * (1 - t) * t;
-        let b2 = t * t;
-        let x = b0 * p0.x + b1 * p1.x + b2 * p2.x;
-        let y = b0 * p0.y + b1 * p1.y + b2 * p2.y;
-        return new Victor(x, y);
-    }
-    getPointOnCubicBezier(p0, p1, p2, p3, t) {
-        let b0 = (1 - t) * (1 - t) * (1 - t);
-        let b1 = 3 * t * (1 - t) * (1 - t);
-        let b2 = 3 * t * t * (1 - t);
-        let b3 = t * t * t;
-        let x = b0 * p0.x + b1 * p1.x + b2 * p2.x + b3 * p3.x;
-        let y = b0 * p0.y + b1 * p1.y + b2 * p2.y + b3 * p3.y;
-        return new Victor(x, y);
-    }
+
     /**
-     * @param  {Victor} p1
-     * @param  {Victor} p2
-     * @param  {number} offset
-     */
-    calculateMiddleWithOffset(p1, p2, offset) {
-        let dir = p1.clone().subtract(p2).multiplyScalar(0.5);
-        let midpoint = dir.clone().add(p2);
-        let perpendicular = new Victor(dir.y, -dir.x).normalize();
-        perpendicular.multiplyScalar(offset);
-        perpendicular.add(midpoint);
-        return perpendicular;
-    }
-    clamp(min, max, value) {
-        return Math.min(max, Math.max(min, value));
-    }
-    calculatePerpendicular(p1, p2) {
-        let dir = p2.clone().subtract(p1);
-        return new Victor(dir.y, -dir.x).normalize();
-    }
-    /**
-     * @param  {Victor} center
-     * @param  {Victor} point - the point to which the resulting point will be the nearest on circle
+     * @param  {Victor} center the coenter of the circle
+     * @param  {Victor} point the point to which the resulting point will be the nearest on circle
      * @param  {number} offset
      */
     getNearestPointOnCircle(center, point, offset = 0) {
@@ -462,7 +414,7 @@ class Editor {
             let a2 = angles[(i + 1) % angles.length] //modulo is used to compare last element with first
             intervals.push([a1, a2]);
         }
-        intervals.sort((a, b) => { return this.angleDistance(a[0], a[1]) - this.angleDistance(b[0], b[1]) });
+        intervals.sort((a, b) => { return EditorUtils.angleDistance(a[0], a[1]) - EditorUtils.angleDistance(b[0], b[1]) });
         return intervals[offset];
     }
     calculateImplicitLabel(edgeIndex, propositionCount) {
@@ -479,10 +431,7 @@ class Editor {
         }
         return result;
     }
-    angleDistance(a1, a2) {
-        let distance = a1 - a2;
-        return distance > 0 ? distance : distance + 360;
-    }
+
     mouseDown(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -523,7 +472,7 @@ class Editor {
                 return
             }
             for (let i = 0; i < this.automaton.start.length; i++) {
-                let pos = this.calculateMidpointBetweenVectors(this.statesToPositions(this.automaton.start[i]));
+                let pos = EditorUtils.calculateMidpointBetweenVectors(this.statesToPositions(this.automaton.start[i]));
                 let offset = this.automaton.startOffsets[i];
                 let center = new Victor(pos.x + offset.x, pos.y + offset.y);
                 if (this.checkCircleCollision(center, this.circleSize / 5, position)) {

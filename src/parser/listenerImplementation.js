@@ -9,10 +9,10 @@ class hoaListenerImpl extends listener {
     }
     enterFormatVersion(ctx) {
         this.data.setVersion(ctx.IDENTIFIER().getText());
-    };
+    }
     enterStates(ctx) {
         this.data.setStateCount(parseInt(ctx.INT().getText()));
-    };
+    }
     enterStart(ctx) {
         let stateConj = ctx.stateConj().getText();
         let stateConjArray = stateConj.split("&");

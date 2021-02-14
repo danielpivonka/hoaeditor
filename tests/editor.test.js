@@ -1,17 +1,18 @@
 // @ts-nocheck
 let parse = require('../src/parser/parser').parse;
-let HoaObj = require('../src/hoaObject.js').HOA;
 const Editor = require('../src/editor/editor').Editor;
-
+let canvas;
+let ctx;
+let editor;
 beforeEach(() => {
-    canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 600;
-    ctx = canvas.getContext("2d");
-    editor = new Editor(canvas);
+  canvas = document.createElement('canvas');
+  canvas.width = 800;
+  canvas.height = 600;
+  ctx = canvas.getContext("2d");
+  editor = new Editor(canvas);
 });
 test('implicit state labels', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     States: 3\
     Start: 0\
     acc-name: Rabin 1\
@@ -29,13 +30,13 @@ test('implicit state labels', () => {
     2 2 2 2\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 test('alternating start', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "(Fa & G(b&Xc)) | c"\
     States: 4\
     Start: 0&2\
@@ -55,13 +56,13 @@ test('alternating start', () => {
     [2] 1\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 test('alternating edge', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "GFa | G(b <-> Xa)"\
     Start: 0\
     acc-name: Buchi\
@@ -84,14 +85,14 @@ test('alternating edge', () => {
      [!0&!1] 3 {0}\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 
 test('unlabeled edge', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     Start: 0\
     Acceptance: 1 Inf(0)\
     AP: 2 "a" "b"\
@@ -106,14 +107,14 @@ test('unlabeled edge', () => {
      [0&1] 2 {0}\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 
 test('state label', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "GFa"\
     States: 2\
     Start: 0\
@@ -128,13 +129,13 @@ test('state label', () => {
       0 1\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 test('move state', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "GFa"\
     States: 2\
     Start: 0\
@@ -149,31 +150,31 @@ test('move state', () => {
       0 1\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    var downEvt = new MouseEvent("mouseDown", {
-        clientX: 270,
-        clientY: 300,
-    });
-    editor.mouseDown(downEvt);
-    var moveEvt = new MouseEvent("mouseDown", {
-        clientX: 400,
-        clientY: 400,
-    });
-    editor.mouseMove(moveEvt);
-    editor.mouseUp(moveEvt);
-    let automaton = editor.getAutomaton();
-    let position = automaton.positions[0];
-    expect(position.x).toBeLessThan(400 + editor.circleSize / 2);
-    expect(position.y).toBeLessThan(400 + editor.circleSize / 2);
-    expect(position.x).toBeGreaterThan(400 - editor.circleSize / 2);
-    expect(position.y).toBeGreaterThan(400 - editor.circleSize / 2);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  var downEvt = new MouseEvent("mouseDown", {
+    clientX: 270,
+    clientY: 300,
+  });
+  editor.mouseDown(downEvt);
+  var moveEvt = new MouseEvent("mouseDown", {
+    clientX: 400,
+    clientY: 400,
+  });
+  editor.mouseMove(moveEvt);
+  editor.mouseUp(moveEvt);
+  let automaton = editor.getAutomaton();
+  let position = automaton.getStateByNumber(0).position;
+  expect(position.x).toBeLessThan(400 + editor.circleSize / 2);
+  expect(position.y).toBeLessThan(400 + editor.circleSize / 2);
+  expect(position.x).toBeGreaterThan(400 - editor.circleSize / 2);
+  expect(position.y).toBeGreaterThan(400 - editor.circleSize / 2);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 
 test('move start', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "GFa"\
     States: 2\
     Start: 0\
@@ -188,30 +189,30 @@ test('move start', () => {
       0 1\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    var downEvt = new MouseEvent("mouseDown", {
-        clientX: 269,
-        clientY: 353,
-    });
-    editor.mouseDown(downEvt);
-    var moveEvt = new MouseEvent("mouseDown", {
-        clientX: 279,
-        clientY: 363,
-    });
-    editor.mouseMove(moveEvt);
-    editor.mouseUp(moveEvt);
-    let automaton = editor.getAutomaton();
-    let position = automaton.startOffsets[0];
-    expect(position.x).toBeLessThan(10 + editor.circleSize / 4);
-    expect(position.y).toBeLessThan(60 + editor.circleSize / 4);
-    expect(position.x).toBeGreaterThan(10 - editor.circleSize / 4);
-    expect(position.y).toBeGreaterThan(60 - editor.circleSize / 4);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  var downEvt = new MouseEvent("mouseDown", {
+    clientX: 269,
+    clientY: 353,
+  });
+  editor.mouseDown(downEvt);
+  var moveEvt = new MouseEvent("mouseDown", {
+    clientX: 279,
+    clientY: 363,
+  });
+  editor.mouseMove(moveEvt);
+  editor.mouseUp(moveEvt);
+  let automaton = editor.getAutomaton();
+  let position = automaton.startOffsets[0];
+  expect(position.x).toBeLessThan(10 + editor.circleSize / 4);
+  expect(position.y).toBeLessThan(60 + editor.circleSize / 4);
+  expect(position.x).toBeGreaterThan(10 - editor.circleSize / 4);
+  expect(position.y).toBeGreaterThan(60 - editor.circleSize / 4);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })
 test('move miss', () => {
-    let hoaIn = 'HOA: v1\
+  let hoaIn = 'HOA: v1\
     name: "GFa"\
     States: 2\
     Start: 0\
@@ -226,19 +227,19 @@ test('move miss', () => {
       0\
     --END--';
 
-    let result = parse(hoaIn);
-    editor.setAutomaton(result);
-    var downEvt = new MouseEvent("mouseDown", {
-        clientX: 100,
-        clientY: 100,
-    });
-    editor.mouseDown(downEvt);
-    var moveEvt = new MouseEvent("mouseDown", {
-        clientX: 200,
-        clientY: 200,
-    });
-    editor.mouseMove(moveEvt);
-    editor.mouseUp(moveEvt);
-    const events = ctx.__getEvents();
-    expect(events).toMatchSnapshot();
+  let result = parse(hoaIn);
+  editor.setAutomaton(result);
+  var downEvt = new MouseEvent("mouseDown", {
+    clientX: 100,
+    clientY: 100,
+  });
+  editor.mouseDown(downEvt);
+  var moveEvt = new MouseEvent("mouseDown", {
+    clientX: 200,
+    clientY: 200,
+  });
+  editor.mouseMove(moveEvt);
+  editor.mouseUp(moveEvt);
+  const events = ctx.__getEvents();
+  expect(events).toMatchSnapshot();
 })

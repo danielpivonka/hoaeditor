@@ -2,9 +2,12 @@
 const Victor = require('victor');
 class EditorUtils {
     /**
-     * @param  {Victor} p1 first point
-     * @param  {Victor} p2 second point
-     * @param  {number} offset offset in pixels, perpendicular to the line form p1 to p2
+     * Calculates midpoint between two points with given offset.
+     * 
+     * @param {Victor} p1 - First point.
+     * @param {Victor} p2 - Second point.
+     * @param {number} offset - Offset in pixels, perpendicular to the line form p1 to p2.
+     * @returns {Victor} Vector between the two points with given offset.
      */
     static calculateMiddleWithOffset(p1, p2, offset) {
         let dir = p1.clone().subtract(p2).multiplyScalar(0.5);
@@ -15,27 +18,32 @@ class EditorUtils {
         return perpendicular;
     }
     /**
-     * Clamps the given value between the min and max values
-     * @param  {number} min
-     * @param  {number} max
-     * @param  {number} value the value to be clamped
-     * @return {number} value clamped between min and max
+     * Clamps the given value between the min and max values.
+     * 
+     * @param {number} min - Minimum value.
+     * @param {number} max - Maximum value.
+     * @param {number} value - The value to be clamped.
+     * @returns {number} Value clamped between min and max.
      */
     static clamp(min, max, value) {
         return Math.min(max, Math.max(min, value));
     }
     /**
-     * @param  {Victor} p1 first point
-     * @param  {Victor} p2 second point
-     * @return {Victor} vector with direction perpendicular to line form p1 to p2
+     * Calculates vector perpendicular to line between p1 and p2.
+     * 
+     * @param {Victor} p1 - First point.
+     * @param {Victor} p2 - Second point.
+     * @returns {Victor} Vector with direction perpendicular to line form p1 to p2.
      */
     static calculatePerpendicular(p1, p2) {
         let dir = p2.clone().subtract(p1);
         return new Victor(dir.y, -dir.x).normalize();
     }
     /**
-     * @param  {Victor[]} vectors
-     * @returns {Victor} vector representing midpoint
+     * Calculates the midpoint between multiple points.
+     * 
+     * @param {Victor[]} vectors - Array of points.
+     * @returns {Victor} Vector representing midpoint.
      */
     static calculateMidpointBetweenVectors(vectors) {
         let midpoint = new Victor(0, 0);
@@ -48,11 +56,13 @@ class EditorUtils {
         return midpoint
     }
     /**
-     * @param  {Victor} p0 first point
-     * @param  {Victor} p1 second point
-     * @param  {Victor} p2 third point
-     * @param  {number} t
-     * @returns {Victor} vector representing point on bezier curve for given t
+     * Calculates point at given quadratic curve.
+     *
+     * @param {Victor} p0 - First point.
+     * @param {Victor} p1 - Second point.
+     * @param {Victor} p2 - Third point.
+     * @param {number} t - Progress along the path.
+     * @returns {Victor} Vector representing point on bezier curve for given t.
      */
     static getPointOnQuadraticBezier(p0, p1, p2, t) {
         let b0 = (1 - t) * (1 - t);
@@ -63,12 +73,14 @@ class EditorUtils {
         return new Victor(x, y);
     }
     /**
-     * @param  {Victor} p0 first point
-     * @param  {Victor} p1 second point
-     * @param  {Victor} p2 third point
-     * @param  {Victor} p3 fourth point
-     * @param  {number} t
-     * @returns {Victor} vector representing point on bezier curve for given t
+     * Calculates point at given quadratic curve.
+     * 
+     * @param {Victor} p0 - First point.
+     * @param {Victor} p1 - Second point.
+     * @param {Victor} p2 - Third point.
+     * @param {Victor} p3 - Fourth point.
+     * @param {number} t - Progress along the path.
+     * @returns {Victor} Vector representing point on bezier curve for given t.
      */
     static getPointOnCubicBezier(p0, p1, p2, p3, t) {
         let b0 = (1 - t) * (1 - t) * (1 - t);
@@ -80,13 +92,47 @@ class EditorUtils {
         return new Victor(x, y);
     }
     /**
-     * @param  {number} a1 first angle in degrees
-     * @param  {number} a2 second angle in degrees
-     * @returns {number} the difference between a1 and a2 in degrees, between 0 and 360
+     * Calculates distance between two angles.
+     * 
+     * @param {number} a1 - First angle in degrees.
+     * @param {number} a2 - Second angle in degrees.
+     * @returns {number} The difference between a1 and a2 in degrees, between 0 and 360.
      */
     static angleDistance(a1, a2) {
         let distance = a1 - a2;
         return distance > 0 ? distance : distance + 360;
+    }
+    static statesToPositions(states) {
+        return states.map((state) => {
+            return state.position;
+        });
+    }
+    /**
+     * Finds the nearest point to given point on a given circle with an optional rotation around the circle.
+     * 
+     * @param {Victor} center - The center of the circle.
+     * @param {Victor} point - The point to which the resulting point will be the nearest on circle.
+     * @param {number} size - Circle radius.
+     * @param {number} [offset=0] - How much to rotate the point around the circle center in radians.
+     * @returns {Victor} Nearest point to given point on a given circle.
+     */
+    static getNearestPointOnCircle(center, point, size, offset = 0) {
+        let direction = point.clone().subtract(center).normalize();
+        //No idea why this must be cloned so many times, but it does not work otherwise
+        direction = direction.clone().multiplyScalar(size).clone().rotate(offset);
+        return direction.clone().add(center);
+    }
+
+    static getFreeAngleInterval(angles, offset = 0) {
+        angles.sort((a, b) => { return a - b });
+        let intervals = [];
+        for (let i = 0; i < angles.length; i++) {
+            let a1 = angles[i];
+            let a2 = angles[(i + 1) % angles.length] //modulo is used to compare last element with first
+            intervals.push([a1, a2]);
+        }
+        intervals.sort((a, b) => { return EditorUtils.angleDistance(a[0], a[1]) - EditorUtils.angleDistance(b[0], b[1]) });
+        return intervals[offset];
     }
 }
 exports.EditorUtils = EditorUtils;

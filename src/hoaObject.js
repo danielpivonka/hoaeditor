@@ -1,3 +1,4 @@
+
 class HOA {
     constructor() {
         /**@type {number[][]}*/
@@ -12,38 +13,40 @@ class HOA {
         /**@type {Position[]}*/
         this.startOffsets = []
         this.etc = []
-        /**
-        * @type {State[]}
-        */
+        /**@type {State[]}*/
         this.states = []
     }
     /**
-     * Sets the hoa format version
-     * @param  {string} version hoa format version
+     * Sets the hoa format version.
+     * 
+     * @param {string} version - Hoa format version.
      */
     setVersion(version) {
         this.version = version
         //TODO duplicate error
     }
     /**
-     * Sets the ammount of states in automaton
-     * @param  {number} states ammount of states
+     * Sets the ammount of states in automaton.
+     * 
+     * @param {number} states - Ammount of states.
      */
     setStateCount(states) {
         this.stateCount = states
         //TODO duplicate error
     }
     /**
-     * Adds starting state or state conjunction
-     * @param  {number[]} start array of numbers representing stateConj
+     * Adds starting state or state conjunction.
+     * 
+     * @param {number[]} start - Array of numbers representing stateConj.
      */
     addStart(start) {
         this.start.push(start);
     }
     /**
-     * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof
-     * @param  {string} aname - the alias
-     * @param  {string} lexpr - label, atomic proposition, already existing alias, or a group of thereof
+     * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof.
+     * 
+     * @param {string} aname - The alias.
+     * @param {string} lexpr - Label, atomic proposition, already existing alias, or a group of thereof.
      */
     addAlias(aname, lexpr) {
         this.aliases.push({
@@ -51,16 +54,18 @@ class HOA {
         });
     }
     /**
-     * Adds an atomic proposition
-     * @param  {number} ap Atomic proposition
+     * Adds an atomic proposition.
+     * 
+     * @param {number} ap - Atomic proposition.
      */
     addAp(ap) {
         this.ap.push(ap)
     }
     /**
-     * Sets the acceptance condition for this automaton
-     * @param  {number} count ammount of acceptance sets
-     * @param  {string} str string defining the acceptance condition
+     * Sets the acceptance condition for this automaton.
+     * 
+     * @param {number} count - Ammount of acceptance sets.
+     * @param {string} str - String defining the acceptance condition.
      */
     setAcceptance(count, str) {
         this.acceptance = {
@@ -68,50 +73,58 @@ class HOA {
         };
     }
     /**
-     * Sets the symbolic name of the acceptance conditions
-     * @param  {string} name
+     * Sets the symbolic name of the acceptance conditions.
+     * 
+     * @param {string} name - Symbolinc name for the acceptance conditions.
      */
     setAccname(name) {
         this.accname = name;
     }
     /**
-     * Sets the toolname header-item
-     * @param  {string} toolname
+     * Sets the toolname header-item.
+     * 
+     * @param {string} toolname - Toolname.
      */
     setTool(toolname) {
         this.tool = toolname;
     }
     /**
-     * Sets the name of the automaton
-     * @param  {string} name
+     * Sets the name of the automaton.
+     * 
+     * @param {string} name - Name to set.
      */
     setName(name) {
         this.name = name;
     }
     /**
-     * Adds a property to the automaton header
-     * @param  {string} prop IDENTIFIER* - additional property
+     * Adds a property to the automaton header.
+     * 
+     * @param {string} prop - IDENTIFIER* Additional property.
      */
     addProp(prop) {
         this.properties.push(prop);
     }
     /**
-     * @param  {any[]} etc additional header-item
+     * Adds aditional header items.
+     * 
+     * @param {any[]} etc - Additional header-item.
      */
     addEtc(etc) {
         this.etc.push(etc);
     }
     /**
-     * Adds an empty state with implicit number
-     * @returns {State} the newly created state
+     * Adds an empty state with implicit number.
+     * 
+     * @returns {State} The newly created state.
      */
     addStateImplicit() {
         return this.addState(this.states.lastIndexOf(this.getLastState()) - 1);
     }
     /**
-     * Adds an empty state with given number 
-     * @param  {number} number
-     * @returns {State} the newly created state
+     * Adds an empty state with given number.
+     * 
+     * @param {number} number - The number of the new state.
+     * @returns {State} The newly created state.
      */
     addState(number) {
         if (this.states[number]) {
@@ -123,28 +136,48 @@ class HOA {
         }
     }
     /**
-     * Returns state at index
-     * @param  {number} index
-     * @returns {State} Reference to state
+     * Returns state at number.
+     * 
+     * @param {number} number - The nimber of the state to return.
+     * @returns {State} Reference to state.
      */
-    getStateAt(index) {
-        return this.states[index];
+
+    getStateByNumber(number) {
+        return this.states[number];
+    }
+    numbersToStates(numbers) {
+        return numbers.map((number) => { return this.getStateByNumber(number); });
+    }
+    getStarts() {
+        let stateGroups = []
+        for (const stateSet of this.start) {
+            let group = [];
+            for (const state of stateSet) {
+                group.push(this.getStateByNumber(state));
+            }
+            stateGroups.push(group);
+        }
+        return stateGroups;
     }
     /**
-     * Returns the last state
-     * @returns {State} Reference to last added state
+     * Returns the last state.
+     * 
+     * @returns {State} Reference to last added state.
      */
     getLastState() {
         return this.states.slice(-1)[0];
     }
-    setPosition(key, x, y) {
-        this.positions[key] = new Position(x, y);
-    }
-    setImplicitPositions() {
+    setImplicitPositions(width, height) {
+        let rows = Math.round(Math.sqrt(this.states.length));
+        let columns = Math.ceil(this.states.length / rows);
         let positionsSet = 0;
-        for (const key of this.states.keys()) {
-            if (!this.positions[key]) {
-                this.positions[key] = new Position(positionsSet * 100, 100);
+        for (const state of this.states) {
+            if (!state.position) {
+                let currentRow = Math.floor(positionsSet / columns);
+                let currentColumn = positionsSet % columns;
+                let x = width * (1 + currentColumn) / (columns + 1);
+                let y = height * (1 + currentRow) / (rows + 1);
+                state.position = new Position(x, y);
                 positionsSet++;
             }
         }
@@ -162,35 +195,36 @@ class HOA {
                 this.startOffsets[i] = new Position(0, 50);
             }
         }
-        for (const stateIndex of this.states.keys()) {
+        for (const state of this.states) {
 
             let count = new Array(this.stateCount).fill(0);
-            this.edgeOffsets[stateIndex] = [];
-            for (const edgeIndex of this.states[stateIndex].edges.keys()) {
-                let edgeDirection = this.states[stateIndex].edges[edgeIndex].stateConj[0];
+
+            for (const edge of state.edges) {
+                let edgeDirection = edge.stateConj[0];
                 let offset = ++count[edgeDirection];
-                if (this.getEdgeCount(edgeDirection, stateIndex)) { //single or multiple edges to state with reverse edge(s)
-                    this.edgeOffsets[stateIndex][edgeIndex] = offset * 30
+                if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
+                    edge.offset = offset * 30
                 }
-                else if (count[edgeDirection] > 1 || this.getEdgeCount(stateIndex, edgeDirection) > 1) { //multiple edges to state without reverse edge
+                else if (count[edgeDirection] > 1 || this.getEdgeCount(state.number, edgeDirection) > 1) { //multiple edges to state without reverse edge
                     if (offset % 2) {
-                        this.edgeOffsets[stateIndex][edgeIndex] = ((offset + 1) / 2) * (-40);
+                        edge.offset = ((offset + 1) / 2) * (-40);
                     }
                     else {
-                        this.edgeOffsets[stateIndex][edgeIndex] = (offset / 2) * 40;
+                        edge.offset = (offset / 2) * 40;
 
                     }
                 }
                 else {
-                    this.edgeOffsets[stateIndex][edgeIndex] = 0;
+                    edge.offset = 0;
                 }
             }
         }
     }
 
     /**
-     * Returns automaton in hoa format
-     * @returns {string} hoa string
+     * Returns automaton in hoa format.
+     * 
+     * @returns {string} Hoa string.
      */
     toHoaString() {
         let string = "";
@@ -249,8 +283,9 @@ class HOA {
 }
 class State {
     /**
-     * Constructs an empty state with given number
-     * @param  {number} number
+     * Constructs an empty state with given number.
+     * 
+     * @param {number} number - Number of the state.
      */
     constructor(number) {
         this.number = number;
@@ -258,6 +293,8 @@ class State {
         this.accSets = [];
         /**@type {Edge[]}*/
         this.edges = [];
+        /**@type {Position}*/
+        this.position;
     }
     setLabel(label) {
         this.label = label;
@@ -265,12 +302,17 @@ class State {
     setName(name) {
         this.name = name;
     }
+    setPosition(x, y) {
+        this.position = new Position(x, y);
+    }
     addAccSet(setNumber) {
         this.accSets.push(setNumber);
     }
     /**
-     * @param  {number[]} stateConj - array of numbers representing stateConj
-     * @returns {Edge} the newly created edge
+     * Adds edge to this state.
+     * 
+     * @param {number[]} stateConj - Array of numbers representing stateConj.
+     * @returns {Edge} The newly created edge.
      */
     addEdge(stateConj) {
         let edge = new Edge(stateConj);
@@ -303,11 +345,14 @@ class State {
 }
 class Edge {
     /**
-     * @param  {number[]} stateConj - array of numbers representing stateConj
+     * Constructs a new edge with given destinations.
+     * 
+     * @param {number[]} stateConj - Array of numbers representing stateConj.
      */
     constructor(stateConj) {
         this.stateConj = stateConj;
         this.accSets = [];
+        this.offset = 0;
     }
     setLabel(label) {
         this.label = label;
@@ -334,8 +379,10 @@ class Edge {
 }
 class Position {
     /**
-     * @param  {number} x
-     * @param  {number} y
+     * Constructs new position.
+     * 
+     * @param {number} x - X coord.
+     * @param {number} y - Y coord.
      */
     constructor(x, y) {
         this.x = x;

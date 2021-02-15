@@ -8,9 +8,10 @@ const HOA = require('../hoaObject').HOA;
 
 
 /**
- * Parses hoa string
- * @param  {string} input string in hoa format
- * @returns {HOA} automaton object
+ * Parses hoa string.
+ * 
+ * @param {string} input - String in hoa format.
+ * @returns {HOA} Automaton object.
  */
 function parse(input) {
     var chars = new antlr4.InputStream(input);

@@ -166,9 +166,7 @@ class EditorRenderer {
     }
     drawState(state, circleSize) {
         this.ctx.fillStyle = 'black';
-        this.ctx.beginPath();
-        this.ctx.arc(state.position.x, state.position.y, circleSize, 0, Math.PI * 2);
-        this.ctx.stroke();
+        this.drawCircle(state.position.x, state.position.y, circleSize)
         if (state.label) {
             this.ctx.beginPath();
             this.ctx.moveTo(state.position.x - circleSize, state.position.y);
@@ -182,6 +180,11 @@ class EditorRenderer {
             this.ctx.font = "36px Arial";
             this.ctx.fillText(state.number, state.position.x, state.position.y);
         }
+    }
+    drawCircle(x, y, size) {
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, size, 0, Math.PI * 2);
+        this.ctx.stroke();
     }
     drawLoop(state, loopbacks, aps) {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);

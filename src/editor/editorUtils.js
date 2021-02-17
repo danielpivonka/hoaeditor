@@ -124,6 +124,9 @@ class EditorUtils {
     }
 
     static getFreeAngleInterval(angles, offset = 0) {
+        if (angles == null) {
+            return [0, 359];
+        }
         angles.sort((a, b) => { return a - b });
         let intervals = [];
         for (let i = 0; i < angles.length; i++) {

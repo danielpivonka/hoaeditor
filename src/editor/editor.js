@@ -9,7 +9,6 @@ class Editor {
     constructor(canvas) {
         /**@type {HTMLCanvasElement}*/
         this.canvas = canvas;
-        /**@type {CanvasRenderingContext2D}*/
         this.circleSize = 25;
         /**@type {number}*/
         this.selected = null;
@@ -23,6 +22,12 @@ class Editor {
             STATE: 0,
             START: 1
         }
+        this.stateEnum = {
+            IDLE: 0,
+            ADD_STATE: 1,
+            ADD_EDGE: 2
+        }
+        this.editorState = this.stateEnum.IDLE;
     }
 
     /**
@@ -44,16 +49,32 @@ class Editor {
     getAutomaton() {
         return this.automaton;
     }
+    addButtonClicked() {
+        this.editorState = this.stateEnum.ADD_STATE;
+    }
     mouseDown(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        let boundingBox = this.canvas.getBoundingClientRect()
+        let boundingBox = this.canvas.getBoundingClientRect();
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
-        this.checkCollisionsAtPosition(new Victor(x, y));
-        if (this.selected != null) {
-            this.downLocation = new Position(x, y);
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.editorState == this.stateEnum.IDLE) {
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            if (this.selected != null) {
+                this.downLocation = new Position(x, y);
+            }
         }
+        else {
+            this.editorState = this.stateEnum.IDLE;
+            this.addStateAtPosition(x, y);
+            this.draw();
+        }
+
+    }
+    addStateAtPosition(x, y) {
+        let state = this.automaton.addStateImplicit();
+        state.setPosition(x, y);
+
     }
     mouseUp(e) {
         e.preventDefault();
@@ -62,18 +83,25 @@ class Editor {
         this.downLocation = null;
     }
     mouseMove(e) {
-        if (this.selected == null || this.downLocation == null) {
-            return;
-        }
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
-        let dx = x - this.downLocation.x;
-        let dy = y - this.downLocation.y;
-        this.moveSelectedItem(dx, dy);
-        this.downLocation.x = x;
-        this.downLocation.y = y;
-        this.draw();
+        if (this.editorState == this.stateEnum.IDLE) {
+            if (this.selected == null || this.downLocation == null) {
+                return;
+            }
+            let dx = x - this.downLocation.x;
+            let dy = y - this.downLocation.y;
+            this.moveSelectedItem(dx, dy);
+            this.downLocation.x = x;
+            this.downLocation.y = y;
+            this.draw();
+        }
+        else if (this.editorState == this.stateEnum.ADD_STATE) {
+            console.log("drawing at: " + x + ", " + y);
+            this.draw();
+            this.renderer.drawCircle(x, y, this.circleSize);
+        }
     }
     checkCollisionsAtPosition(position) {
         for (const state of this.automaton.states) {

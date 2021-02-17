@@ -6,7 +6,8 @@ const field = document.getElementById('HOAInput');
 const jsonOutput = document.getElementById('jsonText');
 const hoaOutput = document.getElementById('hoaText');
 const raw = document.getElementById('rawText');
-const button = document.getElementById('HOAParse');
+const parseButton = document.getElementById('HOAParse');
+const addStateButton = document.getElementById('addButton');
 const canvas = document.getElementById('canvas');
 function onParseClicked(e) {
     if (field && field.value) {
@@ -17,6 +18,9 @@ function onParseClicked(e) {
         editor.setAutomaton(oa);
     }
 }
-
+function clickerino() {
+    editor.addButtonClicked();
+}
 let editor = new Editor(canvas);
-button.addEventListener('click', onParseClicked);
+parseButton.addEventListener('click', onParseClicked);
+addStateButton.addEventListener('click', clickerino);

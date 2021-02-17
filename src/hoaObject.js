@@ -118,7 +118,9 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addStateImplicit() {
-        return this.addState(this.states.lastIndexOf(this.getLastState()) - 1);
+        let n = this.addState(this.states.lastIndexOf(this.getLastState()) + 1);
+        console.log(JSON.stringify(n));
+        return n;
     }
     /**
      * Adds an empty state with given number.
@@ -128,10 +130,12 @@ class HOA {
      */
     addState(number) {
         if (this.states[number]) {
+            console.log("you done messed up");
             //TODO error message
         }
         else {
             this.states[number] = new State(number);
+            console.log(JSON.stringify(this.states[number]));
             return this.states[number];
         }
     }

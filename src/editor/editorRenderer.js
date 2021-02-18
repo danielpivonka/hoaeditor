@@ -255,6 +255,17 @@ class EditorRenderer {
         let label = this.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, anchor, angle);
     }
+    drawEdgeFromStateToPosition(originState, position) {
+        console.log("to: " + JSON.stringify(position))
+        let fromPoint = EditorUtils.getNearestPointOnCircle(Victor.fromObject(originState.position), position, this.circleSize);
+        this.ctx.beginPath();
+        console.log("from " + JSON.stringify(fromPoint) + " to " + position.toString());
+        this.ctx.moveTo(fromPoint.x, fromPoint.y);
+        this.ctx.lineTo(position.x, position.y);
+        this.ctx.stroke();
+        this.drawArrowhead(position.clone().subtract(fromPoint), position)
+
+    }
     /**
      * Draws an arrowhead onto bound canvas.
      * 

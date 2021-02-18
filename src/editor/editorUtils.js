@@ -117,6 +117,7 @@ class EditorUtils {
      * @returns {Victor} Nearest point to given point on a given circle.
      */
     static getNearestPointOnCircle(center, point, size, offset = 0) {
+
         let direction = point.clone().subtract(center).normalize();
         //No idea why this must be cloned so many times, but it does not work otherwise
         direction = direction.clone().multiplyScalar(size).clone().rotate(offset);

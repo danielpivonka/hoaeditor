@@ -25,8 +25,11 @@ class Editor {
         this.stateEnum = {
             IDLE: 0,
             ADD_STATE: 1,
-            ADD_EDGE: 2
+            ADD_EDGE: 2,
+
         }
+        this.makredState1 = null;
+        this.makredState2 = null;
         this.editorState = this.stateEnum.IDLE;
     }
 
@@ -49,8 +52,11 @@ class Editor {
     getAutomaton() {
         return this.automaton;
     }
-    addButtonClicked() {
+    addStateClicked() {
         this.editorState = this.stateEnum.ADD_STATE;
+    }
+    addEdgeClicked() {
+        this.editorState = this.stateEnum.ADD_EDGE;
     }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
@@ -64,10 +70,29 @@ class Editor {
                 this.downLocation = new Position(x, y);
             }
         }
-        else {
+        else if (this.editorState == this.stateEnum.ADD_STATE) {
             this.editorState = this.stateEnum.IDLE;
             this.addStateAtPosition(x, y);
             this.draw();
+        }
+        else if (this.makredState1 == null) {
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            if (this.selectedType == this.selectedEnum.STATE) {
+                this.makredState1 = this.selected;
+            }
+        }
+        else {
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            if (this.selectedType == this.selectedEnum.STATE) {
+                this.makredState2 = this.selected;
+                console.log("Connecting " + this.makredState1 + " and " + this.makredState2)
+                this.automaton.getStateByNumber(this.makredState1).addEdge([this.makredState2]);
+                this.editorState = this.stateEnum.IDLE;
+                this.makredState1 = null;
+                this.makredState2 = null;
+                this.automaton.SetImplicitOffsets();
+                this.draw();
+            }
         }
 
     }
@@ -98,9 +123,13 @@ class Editor {
             this.draw();
         }
         else if (this.editorState == this.stateEnum.ADD_STATE) {
-            console.log("drawing at: " + x + ", " + y);
             this.draw();
             this.renderer.drawCircle(x, y, this.circleSize);
+        }
+        else if (this.editorState == this.stateEnum.ADD_EDGE && this.makredState1 != null) {
+            console.log("drawing edge")
+            this.draw();
+            this.renderer.drawEdgeFromStateToPosition(this.automaton.getStateByNumber(this.makredState1), new Victor(x, y));
         }
     }
     checkCollisionsAtPosition(position) {

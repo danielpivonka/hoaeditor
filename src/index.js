@@ -9,6 +9,7 @@ const raw = document.getElementById('rawText');
 const parseButton = document.getElementById('HOAParse');
 const addStateButton = document.getElementById('addStateButton');
 const addEdgeButton = document.getElementById('addEdgeButton');
+const removeButton = document.getElementById('removeButton');
 
 const canvas = document.getElementById('canvas');
 function onParseClicked(e) {
@@ -26,8 +27,13 @@ function clickerino() {
 function clickerino2() {
     editor.addEdgeClicked();
 }
+function clickerino3() {
+    editor.removeClicked();
+}
 let editor = new Editor(canvas);
 parseButton.addEventListener('click', onParseClicked);
 addStateButton.addEventListener('click', clickerino);
 addEdgeButton.addEventListener('click', clickerino2);
+removeButton.addEventListener('click', clickerino3);
+
 

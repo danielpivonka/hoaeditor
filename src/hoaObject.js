@@ -13,8 +13,8 @@ class HOA {
         /**@type {Position[]}*/
         this.startOffsets = []
         this.etc = []
-        /**@type {State[]}*/
-        this.states = []
+        /**@type {Map<number,State>}*/
+        this.states = new Map();
     }
     /**
      * Sets the hoa format version.
@@ -118,7 +118,7 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addStateImplicit() {
-        let n = this.addState(this.states.lastIndexOf(this.getLastState()) + 1);
+        let n = this.addState(Math.max(...this.states.keys()) + 1);
         console.log(JSON.stringify(n));
         return n;
     }
@@ -129,14 +129,13 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addState(number) {
-        if (this.states[number]) {
+        if (this.states.get(number)) {
             console.log("you done messed up");
             //TODO error message
         }
         else {
-            this.states[number] = new State(number);
-            console.log(JSON.stringify(this.states[number]));
-            return this.states[number];
+            this.states.set(number, new State(number));
+            return this.states.get(number);
         }
     }
     /**
@@ -147,7 +146,7 @@ class HOA {
      */
 
     getStateByNumber(number) {
-        return this.states[number];
+        return this.states.get(number);
     }
     numbersToStates(numbers) {
         return numbers.map((number) => { return this.getStateByNumber(number); });
@@ -163,19 +162,11 @@ class HOA {
         }
         return stateGroups;
     }
-    /**
-     * Returns the last state.
-     * 
-     * @returns {State} Reference to last added state.
-     */
-    getLastState() {
-        return this.states.slice(-1)[0];
-    }
     setImplicitPositions(width, height) {
-        let rows = Math.round(Math.sqrt(this.states.length));
-        let columns = Math.ceil(this.states.length / rows);
+        let rows = Math.round(Math.sqrt(this.states.size));
+        let columns = Math.ceil(this.states.size / rows);
         let positionsSet = 0;
-        for (const state of this.states) {
+        for (const state of this.states.values()) {
             if (!state.position) {
                 let currentRow = Math.floor(positionsSet / columns);
                 let currentColumn = positionsSet % columns;
@@ -188,7 +179,7 @@ class HOA {
     }
     SetImplicitOffsets() {
         if (this.stateCount == null) {
-            this.stateCount = this.states.length;
+            this.stateCount = this.states.size;
         }
         this.startOffsets = new Array(this.start.length);
         for (var i = 0; i < this.start.length; i++) {
@@ -199,7 +190,7 @@ class HOA {
                 this.startOffsets[i] = new Position(0, 50);
             }
         }
-        for (const state of this.states) {
+        for (const state of this.states.values()) {
 
             let count = new Array(this.stateCount).fill(0);
 
@@ -224,6 +215,15 @@ class HOA {
             }
         }
     }
+    removeState(number) {
+        for (const state of this.states.values()) {
+            state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(number) });
+        }
+        this.start = this.start.filter((stateConj) => { return !stateConj.includes(number) });
+
+        this.states.delete(number);
+    }
+
 
     /**
      * Returns automaton in hoa format.
@@ -274,14 +274,14 @@ class HOA {
             string += etc.join(" ") + "\n";
         }
         string += "--BODY--\n";
-        for (const state of this.states) {
+        for (const state of this.states.values()) {
             string += state.stringify();
         }
         string += "--END--\n";
         return string;
     }
     getEdgeCount(fromIndex, toIndex) {
-        let count = this.states[fromIndex].edges.filter((element) => element.stateConj.includes(toIndex)).length;
+        let count = this.states.get(fromIndex).edges.filter((element) => element.stateConj.includes(toIndex)).length;
         return count;
     }
 }

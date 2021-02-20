@@ -6,6 +6,7 @@ class hoaListenerImpl extends listener {
         super()
         listener.call(this);
         this.data = new hoaObject();
+        this.lastState = null;
     }
     enterFormatVersion(ctx) {
         this.data.setVersion(ctx.IDENTIFIER().getText());
@@ -68,13 +69,13 @@ class hoaListenerImpl extends listener {
                 state.addAccSet(parseInt(ctx.accSig().getChild(i).getText(), 10));
             }
         }
+        this.lastState = state;
     }
     enterEdge(ctx) {
-        let state = this.data.getLastState();
         let stateConj = ctx.stateConj().getText();
         let stateConjArray = stateConj.split("&");
         let intArray = stateConjArray.map(x => parseInt(x, 10));
-        let edge = state.addEdge(intArray);
+        let edge = this.lastState.addEdge(intArray);
         if (ctx.label()) {
             edge.setLabel(ctx.label().lexpr().getText());
         }

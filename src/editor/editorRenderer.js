@@ -31,7 +31,7 @@ class EditorRenderer {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton.getStarts(), automaton.startOffsets);
         let stateLoopbacks = new Map();
-        for (const state of automaton.states) {
+        for (const state of automaton.states.values()) {
             this.drawState(state, this.circleSize);
             let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
@@ -52,7 +52,7 @@ class EditorRenderer {
         for (let [state, loopbacks] of stateLoopbacks) {
             this.drawLoop(state, loopbacks, automaton.ap);
         }
-        for (const state of automaton.states) {
+        for (const state of automaton.states.values()) {
             if (state.name) {
                 this.drawStateLabels(state);
             }
@@ -264,7 +264,6 @@ class EditorRenderer {
         this.ctx.lineTo(position.x, position.y);
         this.ctx.stroke();
         this.drawArrowhead(position.clone().subtract(fromPoint), position)
-
     }
     /**
      * Draws an arrowhead onto bound canvas.

@@ -26,6 +26,7 @@ class Editor {
             IDLE: 0,
             ADD_STATE: 1,
             ADD_EDGE: 2,
+            REMOVE: 3
 
         }
         this.makredState1 = null;
@@ -58,6 +59,9 @@ class Editor {
     addEdgeClicked() {
         this.editorState = this.stateEnum.ADD_EDGE;
     }
+    removeClicked() {
+        this.editorState = this.stateEnum.REMOVE;
+    }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = e.clientX - boundingBox.left;
@@ -74,6 +78,15 @@ class Editor {
             this.editorState = this.stateEnum.IDLE;
             this.addStateAtPosition(x, y);
             this.draw();
+        }
+        else if (this.editorState == this.stateEnum.REMOVE) {
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            if (this.selectedType == this.selectedEnum.STATE) {
+                this.automaton.removeState(this.selected);
+                this.editorState = this.stateEnum.IDLE;
+                this.draw();
+            }
+
         }
         else if (this.makredState1 == null) {
             this.checkCollisionsAtPosition(new Victor(x, y));
@@ -133,7 +146,7 @@ class Editor {
         }
     }
     checkCollisionsAtPosition(position) {
-        for (const state of this.automaton.states) {
+        for (const state of this.automaton.states.values()) {
             if (this.checkCircleCollision(state.position, this.circleSize, position)) {
                 this.selected = state.number;
                 this.selectedType = this.selectedEnum.STATE;

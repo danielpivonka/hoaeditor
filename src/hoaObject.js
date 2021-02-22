@@ -118,8 +118,11 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addStateImplicit() {
-        let n = this.addState(Math.max(...this.states.keys()) + 1);
-        console.log(JSON.stringify(n));
+        let index = 0;
+        if (this.states.size != 0) {
+            index = Math.max(...this.states.keys()) + 1;
+        }
+        let n = this.addState(index);
         return n;
     }
     /**
@@ -178,9 +181,7 @@ class HOA {
         }
     }
     SetImplicitOffsets() {
-        if (this.stateCount == null) {
-            this.stateCount = this.states.size;
-        }
+        this.stateCount = this.states.size;
         this.startOffsets = new Array(this.start.length);
         for (var i = 0; i < this.start.length; i++) {
             if (this.start[i].length > 1) {
@@ -191,16 +192,19 @@ class HOA {
             }
         }
         for (const state of this.states.values()) {
-
-            let count = new Array(this.stateCount).fill(0);
-
+            console.log("State count: " + this.stateCount);
+            let count = new Array(Math.max(...this.states.keys()) + 1).fill(0);
+            console.log("Edges from: " + state.number);
             for (const edge of state.edges) {
                 let edgeDirection = edge.stateConj[0];
                 let offset = ++count[edgeDirection];
                 if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
+                    console.log("Reverse");
+                    console.log("State conj: " + JSON.stringify(edgeDirection));
                     edge.offset = offset * 30
                 }
                 else if (count[edgeDirection] > 1 || this.getEdgeCount(state.number, edgeDirection) > 1) { //multiple edges to state without reverse edge
+                    console.log("Multi");
                     if (offset % 2) {
                         edge.offset = ((offset + 1) / 2) * (-40);
                     }
@@ -210,6 +214,7 @@ class HOA {
                     }
                 }
                 else {
+                    console.log("Zero");
                     edge.offset = 0;
                 }
             }

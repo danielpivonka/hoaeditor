@@ -21,19 +21,32 @@ function onParseClicked(e) {
         editor.setAutomaton(oa);
     }
 }
-function clickerino() {
-    editor.addStateClicked();
+function editorStateChanged(state) {
+    addStateButton.style["background-color"] = "#dddddd"
+    addEdgeButton.style["background-color"] = "#dddddd"
+    removeButton.style["background-color"] = "#dddddd"
+    switch (state) {
+        case Editor.stateEnum.ADD_STATE:
+            addStateButton.style["background-color"] = "#a5a5a5";
+            break;
+        case Editor.stateEnum.ADD_EDGE:
+            addEdgeButton.style["background-color"] = "#a5a5a5";
+            break;
+        case Editor.stateEnum.REMOVE:
+            removeButton.style["background-color"] = "#a5a5a5";
+            break;
+        default:
+            break;
+    }
 }
-function clickerino2() {
-    editor.addEdgeClicked();
-}
-function clickerino3() {
-    editor.removeClicked();
-}
-let editor = new Editor(canvas);
-parseButton.addEventListener('click', onParseClicked);
-addStateButton.addEventListener('click', clickerino);
-addEdgeButton.addEventListener('click', clickerino2);
-removeButton.addEventListener('click', clickerino3);
 
+let editor = new Editor(canvas);
+editor.addOnStateonStateChangedListener(editorStateChanged.bind(this));
+parseButton.addEventListener('click', onParseClicked);
+addStateButton.addEventListener('click', () => { editor.addStateClicked(); });
+addEdgeButton.addEventListener('click', () => { editor.addEdgeClicked(); });
+removeButton.addEventListener('click', () => { editor.removeClicked(); });
+addStateButton.style["background-color"] = "#dddddd"
+addEdgeButton.style["background-color"] = "#dddddd"
+removeButton.style["background-color"] = "#dddddd"
 

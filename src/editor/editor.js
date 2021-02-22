@@ -7,6 +7,8 @@ const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 class Editor {
     constructor(canvas) {
+        /**@type {HOA}*/
+        this.automaton = new HOA();
         /**@type {HTMLCanvasElement}*/
         this.canvas = canvas;
         this.circleSize = 25;
@@ -18,22 +20,25 @@ class Editor {
         this.canvas.onmousedown = this.mouseDown.bind(this);
         this.canvas.onmouseup = this.mouseUp.bind(this);
         this.canvas.onmousemove = this.mouseMove.bind(this);
-        this.selectedEnum = {
-            STATE: 0,
-            START: 1
-        }
-        this.stateEnum = {
-            IDLE: 0,
-            ADD_STATE: 1,
-            ADD_EDGE: 2,
-            REMOVE: 3
 
-        }
         this.makredState1 = null;
         this.makredState2 = null;
-        this.editorState = this.stateEnum.IDLE;
-    }
+        this.editorState = Editor.stateEnum.IDLE;
+        this.onStateChangedListeners = [];
 
+    }
+    addOnStateonStateChangedListener(fn) {
+        this.onStateChangedListeners.push(fn);
+    }
+    removeOnStateonStateChangedListener(fn) {
+        this.onStateChangedListeners = this.onStateChangedListeners.filter(e => e !== fn)
+    }
+    changeState(state) {
+        this.editorState = state;
+        for (const fn of this.onStateChangedListeners) {
+            fn(state);
+        }
+    }
     /**
      * Binds automaton to editor.
      * 
@@ -47,20 +52,31 @@ class Editor {
         this.automaton.SetImplicitOffsets();
         this.draw();
     }
+    replacer(key, value) {
+        if (value instanceof Map) {
+            return {
+                dataType: 'Map',
+                value: Array.from(value.entries()), // or with spread: value: [...value]
+            };
+        } else {
+            return value;
+        }
+    }
     draw() {
+        console.log(JSON.stringify(this.automaton, this.replacer));
         this.renderer.draw(this.automaton);
     }
     getAutomaton() {
         return this.automaton;
     }
     addStateClicked() {
-        this.editorState = this.stateEnum.ADD_STATE;
+        this.changeState(Editor.stateEnum.ADD_STATE)
     }
     addEdgeClicked() {
-        this.editorState = this.stateEnum.ADD_EDGE;
+        this.changeState(Editor.stateEnum.ADD_EDGE)
     }
     removeClicked() {
-        this.editorState = this.stateEnum.REMOVE;
+        this.changeState(Editor.stateEnum.REMOVE)
     }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
@@ -68,39 +84,39 @@ class Editor {
         let y = e.clientY - boundingBox.top;
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == this.stateEnum.IDLE) {
+        if (this.editorState == Editor.stateEnum.IDLE) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected != null) {
                 this.downLocation = new Position(x, y);
             }
         }
-        else if (this.editorState == this.stateEnum.ADD_STATE) {
-            this.editorState = this.stateEnum.IDLE;
+        else if (this.editorState == Editor.stateEnum.ADD_STATE) {
+            this.changeState(Editor.stateEnum.IDLE);
             this.addStateAtPosition(x, y);
             this.draw();
         }
-        else if (this.editorState == this.stateEnum.REMOVE) {
+        else if (this.editorState == Editor.stateEnum.REMOVE) {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selectedType == this.selectedEnum.STATE) {
+            if (this.selectedType == Editor.selectedEnum.STATE) {
                 this.automaton.removeState(this.selected);
-                this.editorState = this.stateEnum.IDLE;
+                this.changeState(Editor.stateEnum.IDLE);
                 this.draw();
             }
 
         }
         else if (this.makredState1 == null) {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selectedType == this.selectedEnum.STATE) {
+            if (this.selectedType == Editor.selectedEnum.STATE && this.selected != null) {
                 this.makredState1 = this.selected;
             }
         }
         else {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selectedType == this.selectedEnum.STATE) {
+            if (this.selectedType == Editor.selectedEnum.STATE && this.selected != null) {
                 this.makredState2 = this.selected;
                 console.log("Connecting " + this.makredState1 + " and " + this.makredState2)
                 this.automaton.getStateByNumber(this.makredState1).addEdge([this.makredState2]);
-                this.editorState = this.stateEnum.IDLE;
+                this.changeState(Editor.stateEnum.IDLE);
                 this.makredState1 = null;
                 this.makredState2 = null;
                 this.automaton.SetImplicitOffsets();
@@ -124,7 +140,7 @@ class Editor {
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
-        if (this.editorState == this.stateEnum.IDLE) {
+        if (this.editorState == Editor.stateEnum.IDLE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
             }
@@ -135,11 +151,11 @@ class Editor {
             this.downLocation.y = y;
             this.draw();
         }
-        else if (this.editorState == this.stateEnum.ADD_STATE) {
+        else if (this.editorState == Editor.stateEnum.ADD_STATE) {
             this.draw();
             this.renderer.drawCircle(x, y, this.circleSize);
         }
-        else if (this.editorState == this.stateEnum.ADD_EDGE && this.makredState1 != null) {
+        else if (this.editorState == Editor.stateEnum.ADD_EDGE && this.makredState1 != null) {
             console.log("drawing edge")
             this.draw();
             this.renderer.drawEdgeFromStateToPosition(this.automaton.getStateByNumber(this.makredState1), new Victor(x, y));
@@ -149,7 +165,7 @@ class Editor {
         for (const state of this.automaton.states.values()) {
             if (this.checkCircleCollision(state.position, this.circleSize, position)) {
                 this.selected = state.number;
-                this.selectedType = this.selectedEnum.STATE;
+                this.selectedType = Editor.selectedEnum.STATE;
                 return
             }
             for (let i = 0; i < this.automaton.start.length; i++) {
@@ -158,7 +174,7 @@ class Editor {
                 let center = new Victor(pos.x + offset.x, pos.y + offset.y);
                 if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
                     this.selected = i;
-                    this.selectedType = this.selectedEnum.START;
+                    this.selectedType = Editor.selectedEnum.START;
                     return
                 }
             }
@@ -166,7 +182,7 @@ class Editor {
         this.selected = null;
     }
     moveSelectedItem(dx, dy) {
-        if (this.selectedType == this.selectedEnum.STATE) {
+        if (this.selectedType == Editor.selectedEnum.STATE) {
             this.automaton.getStateByNumber(this.selected).position.x += dx;
             this.automaton.getStateByNumber(this.selected).position.y += dy;
         }
@@ -182,5 +198,16 @@ class Editor {
         var dist = Math.sqrt(a * a + b * b);
         return dist < size
     }
+}
+Editor.selectedEnum = {
+    STATE: 1,
+    START: 2
+}
+Editor.stateEnum = {
+    IDLE: 1,
+    ADD_STATE: 2,
+    ADD_EDGE: 3,
+    REMOVE: 4
+
 }
 exports.Editor = Editor;

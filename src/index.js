@@ -46,6 +46,17 @@ parseButton.addEventListener('click', onParseClicked);
 addStateButton.addEventListener('click', () => { editor.addStateClicked(); });
 addEdgeButton.addEventListener('click', () => { editor.addEdgeClicked(); });
 removeButton.addEventListener('click', () => { editor.removeClicked(); });
+document.addEventListener("keypress", function onPress(event) {
+    if (event.key === "e") {
+        editor.addEdgeClicked();
+    }
+    else if (event.key === "s") {
+        editor.addStateClicked();
+    }
+    else if (event.key === "r") {
+        editor.removeClicked();
+    }
+});
 addStateButton.style["background-color"] = "#dddddd"
 addEdgeButton.style["background-color"] = "#dddddd"
 removeButton.style["background-color"] = "#dddddd"

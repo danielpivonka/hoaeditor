@@ -192,19 +192,14 @@ class HOA {
             }
         }
         for (const state of this.states.values()) {
-            console.log("State count: " + this.stateCount);
             let count = new Array(Math.max(...this.states.keys()) + 1).fill(0);
-            console.log("Edges from: " + state.number);
             for (const edge of state.edges) {
                 let edgeDirection = edge.stateConj[0];
                 let offset = ++count[edgeDirection];
                 if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
-                    console.log("Reverse");
-                    console.log("State conj: " + JSON.stringify(edgeDirection));
                     edge.offset = offset * 30
                 }
                 else if (count[edgeDirection] > 1 || this.getEdgeCount(state.number, edgeDirection) > 1) { //multiple edges to state without reverse edge
-                    console.log("Multi");
                     if (offset % 2) {
                         edge.offset = ((offset + 1) / 2) * (-40);
                     }
@@ -214,7 +209,6 @@ class HOA {
                     }
                 }
                 else {
-                    console.log("Zero");
                     edge.offset = 0;
                 }
             }

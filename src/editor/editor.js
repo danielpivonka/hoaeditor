@@ -52,18 +52,7 @@ class Editor {
         this.automaton.SetImplicitOffsets();
         this.draw();
     }
-    replacer(key, value) {
-        if (value instanceof Map) {
-            return {
-                dataType: 'Map',
-                value: Array.from(value.entries()), // or with spread: value: [...value]
-            };
-        } else {
-            return value;
-        }
-    }
     draw() {
-        console.log(JSON.stringify(this.automaton, this.replacer));
         this.renderer.draw(this.automaton);
     }
     getAutomaton() {
@@ -114,7 +103,6 @@ class Editor {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selectedType == Editor.selectedEnum.STATE && this.selected != null) {
                 this.makredState2 = this.selected;
-                console.log("Connecting " + this.makredState1 + " and " + this.makredState2)
                 this.automaton.getStateByNumber(this.makredState1).addEdge([this.makredState2]);
                 this.changeState(Editor.stateEnum.IDLE);
                 this.makredState1 = null;
@@ -156,7 +144,6 @@ class Editor {
             this.renderer.drawCircle(x, y, this.circleSize);
         }
         else if (this.editorState == Editor.stateEnum.ADD_EDGE && this.makredState1 != null) {
-            console.log("drawing edge")
             this.draw();
             this.renderer.drawEdgeFromStateToPosition(this.automaton.getStateByNumber(this.makredState1), new Victor(x, y));
         }

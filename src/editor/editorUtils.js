@@ -117,6 +117,7 @@ class EditorUtils {
      * @returns {Victor} Nearest point to given point on a given circle.
      */
     static getNearestPointOnCircle(center, point, size, offset = 0) {
+
         let direction = point.clone().subtract(center).normalize();
         //No idea why this must be cloned so many times, but it does not work otherwise
         direction = direction.clone().multiplyScalar(size).clone().rotate(offset);
@@ -124,6 +125,9 @@ class EditorUtils {
     }
 
     static getFreeAngleInterval(angles, offset = 0) {
+        if (angles == null) {
+            return [0, 359];
+        }
         angles.sort((a, b) => { return a - b });
         let intervals = [];
         for (let i = 0; i < angles.length; i++) {

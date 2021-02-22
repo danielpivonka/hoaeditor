@@ -31,7 +31,7 @@ class EditorRenderer {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton.getStarts(), automaton.startOffsets);
         let stateLoopbacks = new Map();
-        for (const state of automaton.states) {
+        for (const state of automaton.states.values()) {
             this.drawState(state, this.circleSize);
             let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
@@ -52,7 +52,7 @@ class EditorRenderer {
         for (let [state, loopbacks] of stateLoopbacks) {
             this.drawLoop(state, loopbacks, automaton.ap);
         }
-        for (const state of automaton.states) {
+        for (const state of automaton.states.values()) {
             if (state.name) {
                 this.drawStateLabels(state);
             }
@@ -166,9 +166,7 @@ class EditorRenderer {
     }
     drawState(state, circleSize) {
         this.ctx.fillStyle = 'black';
-        this.ctx.beginPath();
-        this.ctx.arc(state.position.x, state.position.y, circleSize, 0, Math.PI * 2);
-        this.ctx.stroke();
+        this.drawCircle(state.position.x, state.position.y, circleSize)
         if (state.label) {
             this.ctx.beginPath();
             this.ctx.moveTo(state.position.x - circleSize, state.position.y);
@@ -182,6 +180,11 @@ class EditorRenderer {
             this.ctx.font = "36px Arial";
             this.ctx.fillText(state.number, state.position.x, state.position.y);
         }
+    }
+    drawCircle(x, y, size) {
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, size, 0, Math.PI * 2);
+        this.ctx.stroke();
     }
     drawLoop(state, loopbacks, aps) {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
@@ -251,6 +254,16 @@ class EditorRenderer {
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
         let label = this.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, anchor, angle);
+    }
+    drawEdgeFromStateToPosition(originState, position) {
+        console.log("to: " + JSON.stringify(position))
+        let fromPoint = EditorUtils.getNearestPointOnCircle(Victor.fromObject(originState.position), position, this.circleSize);
+        this.ctx.beginPath();
+        console.log("from " + JSON.stringify(fromPoint) + " to " + position.toString());
+        this.ctx.moveTo(fromPoint.x, fromPoint.y);
+        this.ctx.lineTo(position.x, position.y);
+        this.ctx.stroke();
+        this.drawArrowhead(position.clone().subtract(fromPoint), position)
     }
     /**
      * Draws an arrowhead onto bound canvas.

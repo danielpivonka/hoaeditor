@@ -24,15 +24,16 @@ class EditorRenderer {
      * Renders automaton onto bound canvas.
      * 
      * @param {HOA} automaton - Automaton object.
+     * @param {Object} selected - the selected object.
      */
-    draw(automaton) {
+    draw(automaton, selected) {
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton.getStarts(), automaton.startOffsets);
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
-            this.drawState(state, this.circleSize);
+            this.drawState(state, this.circleSize, selected);
             let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
@@ -164,9 +165,8 @@ class EditorRenderer {
         this.ctx.fillText(label, pos.x, pos.y);
 
     }
-    drawState(state, circleSize) {
+    drawState(state, circleSize, selected) {
         this.ctx.fillStyle = 'black';
-        this.drawCircle(state.position.x, state.position.y, circleSize)
         if (state.label) {
             this.ctx.beginPath();
             this.ctx.moveTo(state.position.x - circleSize, state.position.y);
@@ -180,11 +180,17 @@ class EditorRenderer {
             this.ctx.font = "36px Arial";
             this.ctx.fillText(state.number, state.position.x, state.position.y);
         }
+        this.drawCircle(state.position.x, state.position.y, circleSize, selected == state)
+
     }
-    drawCircle(x, y, size) {
+    drawCircle(x, y, size, isSelected) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, size, 0, Math.PI * 2);
         this.ctx.stroke();
+        if (isSelected) {
+            this.ctx.fillStyle = "#12121240";
+            this.ctx.fill();
+        }
     }
     drawLoop(state, loopbacks, aps) {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);

@@ -69,8 +69,8 @@ class EditorRenderer {
         let anchor = new Victor(1, 0);
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         anchor.add(state.position);
-        let offset = 5 * state.edges.length + 3 * state.name.length - 25;
-        this.drawLabelEdge(state.name, anchor, angle, offset);
+        let offset = 5 * state.edges.length + 3 * state.name.length;
+        this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
     drawStarts(startGroups, offsets) {
         for (let i = 0; i < startGroups.length; i++) {
@@ -188,8 +188,9 @@ class EditorRenderer {
      * @param {Victor} anchor - Where the label should be anchored.
      * @param {number} angle - Perpendicular angle to the edge in direction of anchor.
      * @param {number} extraPadding - Extra horizontal padding for the text.
+     * @param {number} background - should this label have background.
      */
-    drawLabelEdge(label, anchor, angle, extraPadding = 0) {
+    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = "20px Arial";
         let textMeasurements = this.ctx.measureText(label);
         let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
@@ -197,6 +198,12 @@ class EditorRenderer {
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
         let pos = anchor.clone().add(anchorOffset);
+        if (background) {
+            let bgwidth = width * 2 - extraPadding;
+            let bgheight = height * 2 - extraPadding - 20;
+            this.ctx.fillStyle = '#FFFF99';
+            this.ctx.fillRect(pos.x - bgwidth / 2, pos.y - bgheight / 2, bgwidth, bgheight);
+        }
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(label, pos.x, pos.y);
 

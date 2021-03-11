@@ -82,6 +82,39 @@ class EditorRenderer {
             }
         }
     }
+    drawPartialMultiEdge(originState, destinationStates, additionalPos) {
+        let originVector = Victor.fromObject(originState.position);
+        let midpoint = new Victor(0, 0);
+        let divider = 0;
+        for (const destination of destinationStates) {
+            if (destination.number == originState.number) {
+                continue;
+            }
+            let destinationVector = Victor.fromObject(destination.position);
+            let directionVector = destinationVector.subtract(originVector);
+            midpoint.add(directionVector);
+            divider++;
+        }
+        let destinationVector = Victor.fromObject(additionalPos);
+        let directionVector = destinationVector.subtract(originVector);
+        midpoint.add(directionVector);
+        divider++;
+        let angle = midpoint.angleDeg();
+        midpoint.divideScalar(divider * 2);
+        midpoint.add(originVector);
+        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
+        for (const destination of destinationStates) {
+            this.drawMultiEdgeElement(originState, destination, midpoint, angle);
+        }
+        this.ctx.beginPath();
+        this.ctx.moveTo(fromPoint.x, fromPoint.y);
+        this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, additionalPos.x, additionalPos.y);
+        this.ctx.stroke();
+        this.drawArrowhead(additionalPos.clone().subtract(midpoint), additionalPos);
+    }
+
+
+
     drawMultiEdge(originState, edgeIndex, destinationStates, aps) {
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
@@ -100,50 +133,53 @@ class EditorRenderer {
         midpoint.add(originVector);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
-            let destinationVector = Victor.fromObject(destination.position);
-            if (destination.number == originState.number) {
-                let left = new Victor(1, 0)
-                    .rotateDeg(angle)
-                    .multiplyScalar(this.circleSize)
-                    .add(Victor.fromObject(originState.position));
-                let right = new Victor(1, 0)
-                    .rotateDeg(angle - 20)
-                    .multiplyScalar(this.circleSize)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                let upperLeft = new Victor(1, 0)
-                    .rotateDeg(angle)
-                    .multiplyScalar(this.circleSize * 4)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                let upperRight = new Victor(1, 0)
-                    .rotateDeg(angle - 30)
-                    .multiplyScalar(this.circleSize * 4)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                this.ctx.beginPath();
-                this.ctx.moveTo(left.x, left.y);
-                this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
-                this.ctx.stroke();
-                this.drawArrowhead(right.clone().subtract(upperRight), right)
-            }
-            else {
-                let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
-                this.ctx.beginPath();
-                this.ctx.moveTo(fromPoint.x, fromPoint.y);
-                this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
-                this.ctx.stroke();
-                this.addBlockedAngle(originState.number, originVector, fromPoint);
-                this.addBlockedAngle(destination.number, destinationVector, toPoint);
-                this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
-            }
+            this.drawMultiEdgeElement(originState, destination, midpoint, angle);
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         let label = this.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, midpoint, labelAngle);
-
-
+    }
+    drawMultiEdgeElement(originState, destination, midpoint, angle) {
+        let originVector = Victor.fromObject(originState.position);
+        let destinationVector = Victor.fromObject(destination.position);
+        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
+        if (destination.number == originState.number) {
+            let left = new Victor(1, 0)
+                .rotateDeg(angle)
+                .multiplyScalar(this.circleSize)
+                .add(Victor.fromObject(originState.position));
+            let right = new Victor(1, 0)
+                .rotateDeg(angle - 20)
+                .multiplyScalar(this.circleSize)
+                .add(Victor.fromObject(originState.position
+                ));
+            let upperLeft = new Victor(1, 0)
+                .rotateDeg(angle)
+                .multiplyScalar(this.circleSize * 4)
+                .add(Victor.fromObject(originState.position
+                ));
+            let upperRight = new Victor(1, 0)
+                .rotateDeg(angle - 30)
+                .multiplyScalar(this.circleSize * 4)
+                .add(Victor.fromObject(originState.position
+                ));
+            this.ctx.beginPath();
+            this.ctx.moveTo(left.x, left.y);
+            this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
+            this.ctx.stroke();
+            this.drawArrowhead(right.clone().subtract(upperRight), right)
+        }
+        else {
+            let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
+            this.ctx.beginPath();
+            this.ctx.moveTo(fromPoint.x, fromPoint.y);
+            this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
+            this.ctx.stroke();
+            this.addBlockedAngle(originState.number, originVector, fromPoint);
+            this.addBlockedAngle(destination.number, destinationVector, toPoint);
+            this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
+        }
     }
     /**
      * Draws label at the position of the anchor.

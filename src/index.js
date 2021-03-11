@@ -26,6 +26,14 @@ document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Delete") {
         editor.removeClicked();
     }
+    if (event.key === "Shift") {
+        editor.setShift(true);
+    }
+});
+document.addEventListener("keyup", function onPress(event) {
+    if (event.key === "Shift") {
+        editor.setShift(false);
+    }
 });
 
 

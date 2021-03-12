@@ -4240,6 +4240,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 23,
+      "x": 485.78795775453216,
+      "y": 141.1145731548501,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4256,8 +4287,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "GFa",
-      "x": 509.78795775453216,
-      "y": 164.8547842862745,
+      "x": 497.28795775453216,
+      "y": 151.1145731548501,
     },
     "transform": Array [
       1,
@@ -4299,6 +4330,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 35,
+      "x": 280.08072127002663,
+      "y": 460.9938504079951,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4315,8 +4377,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "a & G(b <-> Xa)",
-      "x": 291.5406072048941,
-      "y": 458.4938504079951,
+      "x": 297.58072127002663,
+      "y": 470.9938504079951,
     },
     "transform": Array [
       1,
@@ -4358,6 +4420,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 36,
+      "x": 543.2406653864815,
+      "y": 317.1547585800237,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4374,8 +4467,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "!a & G(b <-> Xa)",
-      "x": 555.9316456901583,
-      "y": 339.6547585800237,
+      "x": 561.2406653864815,
+      "y": 327.1547585800237,
     },
     "transform": Array [
       1,
@@ -7606,6 +7699,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 22,
+      "x": 214.9077742681692,
+      "y": 218.9731428918917,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7622,8 +7746,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "Fa",
-      "x": 238.4077742681692,
-      "y": 220.58711435559292,
+      "x": 225.9077742681692,
+      "y": 228.9731428918917,
     },
     "transform": Array [
       1,
@@ -7665,6 +7789,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 24,
+      "x": 491.73524056829797,
+      "y": 139.7411076015025,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7681,8 +7836,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "true",
-      "x": 513.0227443307467,
-      "y": 162.67171159569648,
+      "x": 503.73524056829797,
+      "y": 149.7411076015025,
     },
     "transform": Array [
       1,
@@ -7724,6 +7879,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 27,
+      "x": 208.988997137003,
+      "y": 437.60466403295453,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7740,8 +7926,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "G(b&Xc)",
-      "x": 234.988997137003,
-      "y": 435.2311592112057,
+      "x": 222.488997137003,
+      "y": 447.60466403295453,
     },
     "transform": Array [
       1,
@@ -7783,6 +7969,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 21,
+      "x": 562.3333333333334,
+      "y": 390,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7799,7 +8016,7 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "c",
-      "x": 560.3333333333334,
+      "x": 572.8333333333334,
       "y": 400,
     },
     "transform": Array [
@@ -12538,6 +12755,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 25,
+      "x": 203.36171746764933,
+      "y": 230.4899318187462,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -12554,8 +12802,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "a U b",
-      "x": 228.36171746764933,
-      "y": 230.7826508862914,
+      "x": 215.86171746764933,
+      "y": 240.4899318187462,
     },
     "transform": Array [
       1,
@@ -12597,6 +12845,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 30,
+      "x": 292.9763116473483,
+      "y": 323.1345073215151,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -12613,8 +12892,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "sink state",
-      "x": 299.42693301555744,
-      "y": 345.6345073215151,
+      "x": 307.9763116473483,
+      "y": 333.1345073215151,
     },
     "transform": Array [
       1,

@@ -24,15 +24,16 @@ class EditorRenderer {
      * Renders automaton onto bound canvas.
      * 
      * @param {HOA} automaton - Automaton object.
+     * @param {Object} selected - the selected object.
      */
-    draw(automaton) {
+    draw(automaton, selected) {
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton.getStarts(), automaton.startOffsets);
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
-            this.drawState(state, this.circleSize);
+            this.drawState(state, this.circleSize, selected);
             let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
@@ -68,8 +69,8 @@ class EditorRenderer {
         let anchor = new Victor(1, 0);
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         anchor.add(state.position);
-        let offset = 5 * state.edges.length + 3 * state.name.length - 25;
-        this.drawLabelEdge(state.name, anchor, angle, offset);
+        let offset = 5 * state.edges.length + 3 * state.name.length;
+        this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
     drawStarts(startGroups, offsets) {
         for (let i = 0; i < startGroups.length; i++) {
@@ -81,6 +82,39 @@ class EditorRenderer {
             }
         }
     }
+    drawPartialMultiEdge(originState, destinationStates, additionalPos) {
+        let originVector = Victor.fromObject(originState.position);
+        let midpoint = new Victor(0, 0);
+        let divider = 0;
+        for (const destination of destinationStates) {
+            if (destination.number == originState.number) {
+                continue;
+            }
+            let destinationVector = Victor.fromObject(destination.position);
+            let directionVector = destinationVector.subtract(originVector);
+            midpoint.add(directionVector);
+            divider++;
+        }
+        let destinationVector = Victor.fromObject(additionalPos);
+        let directionVector = destinationVector.subtract(originVector);
+        midpoint.add(directionVector);
+        divider++;
+        let angle = midpoint.angleDeg();
+        midpoint.divideScalar(divider * 2);
+        midpoint.add(originVector);
+        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
+        for (const destination of destinationStates) {
+            this.drawMultiEdgeElement(originState, destination, midpoint, angle);
+        }
+        this.ctx.beginPath();
+        this.ctx.moveTo(fromPoint.x, fromPoint.y);
+        this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, additionalPos.x, additionalPos.y);
+        this.ctx.stroke();
+        this.drawArrowhead(additionalPos.clone().subtract(midpoint), additionalPos);
+    }
+
+
+
     drawMultiEdge(originState, edgeIndex, destinationStates, aps) {
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
@@ -99,50 +133,53 @@ class EditorRenderer {
         midpoint.add(originVector);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
-            let destinationVector = Victor.fromObject(destination.position);
-            if (destination.number == originState.number) {
-                let left = new Victor(1, 0)
-                    .rotateDeg(angle)
-                    .multiplyScalar(this.circleSize)
-                    .add(Victor.fromObject(originState.position));
-                let right = new Victor(1, 0)
-                    .rotateDeg(angle - 20)
-                    .multiplyScalar(this.circleSize)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                let upperLeft = new Victor(1, 0)
-                    .rotateDeg(angle)
-                    .multiplyScalar(this.circleSize * 4)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                let upperRight = new Victor(1, 0)
-                    .rotateDeg(angle - 30)
-                    .multiplyScalar(this.circleSize * 4)
-                    .add(Victor.fromObject(originState.position
-                    ));
-                this.ctx.beginPath();
-                this.ctx.moveTo(left.x, left.y);
-                this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
-                this.ctx.stroke();
-                this.drawArrowhead(right.clone().subtract(upperRight), right)
-            }
-            else {
-                let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
-                this.ctx.beginPath();
-                this.ctx.moveTo(fromPoint.x, fromPoint.y);
-                this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
-                this.ctx.stroke();
-                this.addBlockedAngle(originState.number, originVector, fromPoint);
-                this.addBlockedAngle(destination.number, destinationVector, toPoint);
-                this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
-            }
+            this.drawMultiEdgeElement(originState, destination, midpoint, angle);
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         let label = this.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, midpoint, labelAngle);
-
-
+    }
+    drawMultiEdgeElement(originState, destination, midpoint, angle) {
+        let originVector = Victor.fromObject(originState.position);
+        let destinationVector = Victor.fromObject(destination.position);
+        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
+        if (destination.number == originState.number) {
+            let left = new Victor(1, 0)
+                .rotateDeg(angle)
+                .multiplyScalar(this.circleSize)
+                .add(Victor.fromObject(originState.position));
+            let right = new Victor(1, 0)
+                .rotateDeg(angle - 20)
+                .multiplyScalar(this.circleSize)
+                .add(Victor.fromObject(originState.position
+                ));
+            let upperLeft = new Victor(1, 0)
+                .rotateDeg(angle)
+                .multiplyScalar(this.circleSize * 4)
+                .add(Victor.fromObject(originState.position
+                ));
+            let upperRight = new Victor(1, 0)
+                .rotateDeg(angle - 30)
+                .multiplyScalar(this.circleSize * 4)
+                .add(Victor.fromObject(originState.position
+                ));
+            this.ctx.beginPath();
+            this.ctx.moveTo(left.x, left.y);
+            this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
+            this.ctx.stroke();
+            this.drawArrowhead(right.clone().subtract(upperRight), right)
+        }
+        else {
+            let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
+            this.ctx.beginPath();
+            this.ctx.moveTo(fromPoint.x, fromPoint.y);
+            this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
+            this.ctx.stroke();
+            this.addBlockedAngle(originState.number, originVector, fromPoint);
+            this.addBlockedAngle(destination.number, destinationVector, toPoint);
+            this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
+        }
     }
     /**
      * Draws label at the position of the anchor.
@@ -151,8 +188,9 @@ class EditorRenderer {
      * @param {Victor} anchor - Where the label should be anchored.
      * @param {number} angle - Perpendicular angle to the edge in direction of anchor.
      * @param {number} extraPadding - Extra horizontal padding for the text.
+     * @param {number} background - should this label have background.
      */
-    drawLabelEdge(label, anchor, angle, extraPadding = 0) {
+    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = "20px Arial";
         let textMeasurements = this.ctx.measureText(label);
         let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
@@ -160,13 +198,18 @@ class EditorRenderer {
         let anchorOffset = new Victor(width, height).rotateToDeg(angle);
         anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
         let pos = anchor.clone().add(anchorOffset);
+        if (background) {
+            let bgwidth = width * 2 - extraPadding;
+            let bgheight = height * 2 - extraPadding - 20;
+            this.ctx.fillStyle = '#FFFF99';
+            this.ctx.fillRect(pos.x - bgwidth / 2, pos.y - bgheight / 2, bgwidth, bgheight);
+        }
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(label, pos.x, pos.y);
 
     }
-    drawState(state, circleSize) {
+    drawState(state, circleSize, selected) {
         this.ctx.fillStyle = 'black';
-        this.drawCircle(state.position.x, state.position.y, circleSize)
         if (state.label) {
             this.ctx.beginPath();
             this.ctx.moveTo(state.position.x - circleSize, state.position.y);
@@ -180,11 +223,17 @@ class EditorRenderer {
             this.ctx.font = "36px Arial";
             this.ctx.fillText(state.number, state.position.x, state.position.y);
         }
+        this.drawCircle(state.position.x, state.position.y, circleSize, selected == state)
+
     }
-    drawCircle(x, y, size) {
+    drawCircle(x, y, size, isSelected) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, size, 0, Math.PI * 2);
         this.ctx.stroke();
+        if (isSelected) {
+            this.ctx.fillStyle = "#12121240";
+            this.ctx.fill();
+        }
     }
     drawLoop(state, loopbacks, aps) {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);

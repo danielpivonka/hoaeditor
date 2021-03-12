@@ -382,6 +382,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -457,37 +488,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "0",
-      "x": 266.6666666666667,
-      "y": 200,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -1326,6 +1326,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -1404,6 +1435,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
       "value": "36px Arial",
     },
     "transform": Array [
@@ -1419,9 +1464,9 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "1",
-      "x": 533.3333333333334,
-      "y": 200,
+      "text": "2",
+      "x": 266.6666666666667,
+      "y": 400,
     },
     "transform": Array [
       1,
@@ -1432,20 +1477,6 @@ Array [
       0,
     ],
     "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -1523,37 +1554,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "2",
-      "x": 266.6666666666667,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -2005,6 +2005,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "3",
+      "x": 533.3333333333334,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -2080,37 +2111,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "3",
-      "x": 533.3333333333334,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -4240,6 +4240,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 23,
+      "x": 485.78795775453216,
+      "y": 141.1145731548501,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4256,8 +4287,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "GFa",
-      "x": 509.78795775453216,
-      "y": 164.8547842862745,
+      "x": 497.28795775453216,
+      "y": 151.1145731548501,
     },
     "transform": Array [
       1,
@@ -4299,6 +4330,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 35,
+      "x": 280.08072127002663,
+      "y": 460.9938504079951,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4315,8 +4377,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "a & G(b <-> Xa)",
-      "x": 291.5406072048941,
-      "y": 458.4938504079951,
+      "x": 297.58072127002663,
+      "y": 470.9938504079951,
     },
     "transform": Array [
       1,
@@ -4358,6 +4420,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 36,
+      "x": 543.2406653864815,
+      "y": 317.1547585800237,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -4374,8 +4467,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "!a & G(b <-> Xa)",
-      "x": 555.9316456901583,
-      "y": 339.6547585800237,
+      "x": 561.2406653864815,
+      "y": 327.1547585800237,
     },
     "transform": Array [
       1,
@@ -5294,6 +5387,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -5369,37 +5493,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "0",
-      "x": 266.6666666666667,
-      "y": 200,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -5690,6 +5783,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -5768,6 +5892,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
       "value": "36px Arial",
     },
     "transform": Array [
@@ -5783,9 +5921,9 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "1",
-      "x": 533.3333333333334,
-      "y": 200,
+      "text": "2",
+      "x": 266.6666666666667,
+      "y": 400,
     },
     "transform": Array [
       1,
@@ -5796,20 +5934,6 @@ Array [
       0,
     ],
     "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -5887,37 +6011,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "2",
-      "x": 266.6666666666667,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -6444,6 +6537,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "3",
+      "x": 533.3333333333334,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -6519,37 +6643,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "3",
-      "x": 533.3333333333334,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -7606,6 +7699,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 22,
+      "x": 214.9077742681692,
+      "y": 218.9731428918917,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7622,8 +7746,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "Fa",
-      "x": 238.4077742681692,
-      "y": 220.58711435559292,
+      "x": 225.9077742681692,
+      "y": 228.9731428918917,
     },
     "transform": Array [
       1,
@@ -7665,6 +7789,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 24,
+      "x": 491.73524056829797,
+      "y": 139.7411076015025,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7681,8 +7836,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "true",
-      "x": 513.0227443307467,
-      "y": 162.67171159569648,
+      "x": 503.73524056829797,
+      "y": 149.7411076015025,
     },
     "transform": Array [
       1,
@@ -7724,6 +7879,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 27,
+      "x": 208.988997137003,
+      "y": 437.60466403295453,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7740,8 +7926,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "G(b&Xc)",
-      "x": 234.988997137003,
-      "y": 435.2311592112057,
+      "x": 222.488997137003,
+      "y": 447.60466403295453,
     },
     "transform": Array [
       1,
@@ -7783,6 +7969,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 21,
+      "x": 562.3333333333334,
+      "y": 390,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -7799,7 +8016,7 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "c",
-      "x": 560.3333333333334,
+      "x": 572.8333333333334,
       "y": 400,
     },
     "transform": Array [
@@ -8197,6 +8414,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -8272,37 +8520,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "0",
-      "x": 266.6666666666667,
-      "y": 200,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -9302,6 +9519,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -9377,37 +9625,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "1",
-      "x": 533.3333333333334,
-      "y": 200,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -9585,6 +9802,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "2",
+      "x": 266.6666666666667,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -9660,37 +9908,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "2",
-      "x": 266.6666666666667,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -12538,6 +12755,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 25,
+      "x": 203.36171746764933,
+      "y": 230.4899318187462,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -12554,8 +12802,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "a U b",
-      "x": 228.36171746764933,
-      "y": 230.7826508862914,
+      "x": 215.86171746764933,
+      "y": 240.4899318187462,
     },
     "transform": Array [
       1,
@@ -12597,6 +12845,37 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#ffff99",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "height": 20,
+      "width": 30,
+      "x": 292.9763116473483,
+      "y": 323.1345073215151,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillRect",
+  },
+  Object {
+    "props": Object {
       "value": "#000000",
     },
     "transform": Array [
@@ -12613,8 +12892,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "sink state",
-      "x": 299.42693301555744,
-      "y": 345.6345073215151,
+      "x": 307.9763116473483,
+      "y": 333.1345073215151,
     },
     "transform": Array [
       1,
@@ -13344,83 +13623,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 266.6666666666667,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 266.6666666666667,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 241.66666666666669,
       "y": 300,
     },
@@ -13553,6 +13755,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -14017,6 +14296,153 @@ Array [
   },
   Object {
     "props": Object {
+      "x": 508.33333333333337,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 558.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 508.33333333333337,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 558.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 287.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "!0",
+      "x": 533.3333333333334,
+      "y": 312.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
       "anticlockwise": false,
       "endAngle": 6.283185307179586,
       "radius": 25,
@@ -14079,6 +14505,1624 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 508.94308943089436,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 400,
+      "cpy": 270,
+      "x": 291.0569105691057,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 508.94308943089436,
+            "y": 294.5121951219512,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 299.7154471544715,
+      "y": 287.4390243902439,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 291.0569105691057,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 301.9105691056911,
+      "y": 297.1951219512195,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 299.7154471544715,
+            "y": 287.4390243902439,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 291.0569105691057,
+            "y": 294.5121951219512,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 301.9105691056911,
+            "y": 297.1951219512195,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 400,
+      "y": 262.2560975609756,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "height": 600,
+      "width": 800,
+      "x": 0,
+      "y": 0,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 266.6666666666667,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 266.6666666666667,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 266.6666666666667,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 266.6666666666667,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 271.6666666666667,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 266.6666666666667,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 261.6666666666667,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 271.6666666666667,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 266.6666666666667,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 261.6666666666667,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 538.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 528.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 538.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 528.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 241.66666666666669,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 291.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 241.66666666666669,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 291.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 287.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 312.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 291.0569105691057,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 400,
+      "cpy": 330,
+      "x": 508.94308943089436,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 291.0569105691057,
+            "y": 305.4878048780488,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 500.28455284552854,
+      "y": 312.5609756097561,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 508.94308943089436,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 498.089430894309,
+      "y": 302.8048780487805,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 500.28455284552854,
+            "y": 312.5609756097561,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 508.94308943089436,
+            "y": 305.4878048780488,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 498.089430894309,
+            "y": 302.8048780487805,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 400,
+      "y": 337.7439024390244,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 8.333333333333334,
+      "startAngle": 0,
+      "x": 252.20394544871954,
+      "y": 282.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "closePath",
+  },
+  Object {
+    "props": Object {
+      "value": "#0000ff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 8.333333333333334,
+            "startAngle": 0,
+            "x": 252.20394544871954,
+            "y": 282.764000029823,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "closePath",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "16px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "value": "#ffffff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 252.20394544871954,
+      "y": 282.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -14226,6 +16270,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -15219,83 +17340,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 266.6666666666667,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 266.6666666666667,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 241.66666666666669,
       "y": 300,
     },
@@ -15428,6 +17472,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -15892,83 +18013,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 533.3333333333334,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 533.3333333333334,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 508.33333333333337,
       "y": 300,
     },
@@ -16101,6 +18145,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -17651,83 +19772,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 266.6666666666667,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 266.6666666666667,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 241.66666666666669,
       "y": 300,
     },
@@ -17860,6 +19904,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -18324,6 +20445,153 @@ Array [
   },
   Object {
     "props": Object {
+      "x": 508.33333333333337,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 558.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 508.33333333333337,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 558.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 287.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "!0",
+      "x": 533.3333333333334,
+      "y": 312.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
       "anticlockwise": false,
       "endAngle": 6.283185307179586,
       "radius": 25,
@@ -18386,6 +20654,2214 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 508.94308943089436,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 400,
+      "cpy": 270,
+      "x": 291.0569105691057,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 508.94308943089436,
+            "y": 294.5121951219512,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 299.7154471544715,
+      "y": 287.4390243902439,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 291.0569105691057,
+      "y": 294.5121951219512,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 301.9105691056911,
+      "y": 297.1951219512195,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 299.7154471544715,
+            "y": 287.4390243902439,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 291.0569105691057,
+            "y": 294.5121951219512,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 301.9105691056911,
+            "y": 297.1951219512195,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 400,
+      "y": 262.2560975609756,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 243.16372106399908,
+      "y": 291.4787590106812,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx1": 169.6070417336697,
+      "cpx2": 207.7874367453162,
+      "cpy1": 275.9286641860917,
+      "cpy2": 219.17156265355152,
+      "x": 250.57313920565218,
+      "y": 280.86891603014686,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "bezierCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 243.16372106399908,
+            "y": 291.4787590106812,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "cpx1": 169.6070417336697,
+            "cpx2": 207.7874367453162,
+            "cpy1": 275.9286641860917,
+            "cpy2": 219.17156265355152,
+            "x": 250.57313920565218,
+            "y": 280.86891603014686,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "bezierCurveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 240.76583406767563,
+      "y": 275.50079103806456,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 250.57313920565218,
+      "y": 280.86891603014686,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 248.9832561165321,
+      "y": 269.80219692451624,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 240.76583406767563,
+            "y": 275.50079103806456,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 250.57313920565218,
+            "y": 280.86891603014686,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 248.9832561165321,
+            "y": 269.80219692451624,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 193.24003696332613,
+      "y": 244.72520664639836,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 548.496989796051,
+      "y": 280.1237950634262,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx1": 585.3451701669428,
+      "cpx2": 628.0768281068226,
+      "cpy1": 214.5905811447356,
+      "cpy2": 268.00515356958545,
+      "x": 556.4035475125938,
+      "y": 290.36852982546026,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "bezierCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 548.496989796051,
+            "y": 280.1237950634262,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "cpx1": 585.3451701669428,
+            "cpx2": 628.0768281068226,
+            "cpy1": 214.5905811447356,
+            "cpy2": 268.00515356958545,
+            "x": 556.4035475125938,
+            "y": 290.36852982546026,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "bezierCurveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 564.4603752126213,
+      "y": 282.6169153218831,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 556.4035475125938,
+      "y": 290.36852982546026,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 567.4389357354721,
+      "y": 292.163023283336,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 564.4603752126213,
+            "y": 282.6169153218831,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 556.4035475125938,
+            "y": 290.36852982546026,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 567.4389357354721,
+            "y": 292.163023283336,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 603.1458165162427,
+      "y": 238.31633521358967,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "height": 600,
+      "width": 800,
+      "x": 0,
+      "y": 0,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 276.6666666666667,
+      "y": 360,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 276.6666666666667,
+            "y": 360,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 276.6666666666667,
+      "y": 360,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 270.77664134930063,
+      "y": 324.65984809580357,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 276.6666666666667,
+            "y": 360,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 270.77664134930063,
+            "y": 324.65984809580357,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 277.3526008415149,
+      "y": 333.70179239759824,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 270.77664134930063,
+      "y": 324.65984809580357,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 267.48866160319346,
+      "y": 335.3457822706518,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 277.3526008415149,
+            "y": 333.70179239759824,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 270.77664134930063,
+            "y": 324.65984809580357,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 267.48866160319346,
+            "y": 335.3457822706518,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 538.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 528.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 538.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 528.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 241.66666666666669,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 291.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 241.66666666666669,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 291.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 287.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 312.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 291.0569105691057,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 400,
+      "cpy": 330,
+      "x": 508.94308943089436,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 291.0569105691057,
+            "y": 305.4878048780488,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 500.28455284552854,
+      "y": 312.5609756097561,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 508.94308943089436,
+      "y": 305.4878048780488,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 498.089430894309,
+      "y": 302.8048780487805,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 500.28455284552854,
+            "y": 312.5609756097561,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 508.94308943089436,
+            "y": 305.4878048780488,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 498.089430894309,
+            "y": 302.8048780487805,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 400,
+      "y": 337.7439024390244,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 8.333333333333334,
+      "startAngle": 0,
+      "x": 252.20394544871954,
+      "y": 282.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "closePath",
+  },
+  Object {
+    "props": Object {
+      "value": "#0000ff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 8.333333333333334,
+            "startAngle": 0,
+            "x": 252.20394544871954,
+            "y": 282.764000029823,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "closePath",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "16px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "value": "#ffffff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 252.20394544871954,
+      "y": 282.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -18533,6 +23009,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -20116,83 +24669,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 266.6666666666667,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 266.6666666666667,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 241.66666666666669,
       "y": 300,
     },
@@ -20325,6 +24801,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -20789,83 +25342,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 533.3333333333334,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 533.3333333333334,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 508.33333333333337,
       "y": 300,
     },
@@ -20998,6 +25474,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -22548,83 +27101,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 396.6666666666667,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 396.6666666666667,
-            "y": 400,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 371.6666666666667,
       "y": 400,
     },
@@ -22757,6 +27233,144 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 396.6666666666667,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 396.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "rgba(18, 18, 18, 0.25)",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 396.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
   },
   Object {
     "props": Object {},
@@ -23221,6 +27835,153 @@ Array [
   },
   Object {
     "props": Object {
+      "x": 508.33333333333337,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 558.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 508.33333333333337,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 558.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 287.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "!0",
+      "x": 533.3333333333334,
+      "y": 312.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
       "anticlockwise": false,
       "endAngle": 6.283185307179586,
       "radius": 25,
@@ -23283,6 +28044,2275 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 509.3857238805837,
+      "y": 307.1771861825213,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 447.2847001684735,
+      "cpy": 325.7890902302471,
+      "x": 410.75382706635673,
+      "y": 379.34686677829717,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 509.3857238805837,
+            "y": 307.1771861825213,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 412.2580645818922,
+      "y": 368.26818140967805,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 410.75382706635673,
+      "y": 379.34686677829717,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 420.51931787057333,
+      "y": 373.903045569554,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 412.2580645818922,
+            "y": 368.26818140967805,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 410.75382706635673,
+            "y": 379.34686677829717,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 420.51931787057333,
+            "y": 373.903045569554,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 443.67723782097187,
+      "y": 316.47981167456777,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 371.7044062844529,
+      "y": 398.6268442875771,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx1": 296.79047320889714,
+      "cpx2": 316.95949537462576,
+      "cpy1": 404.97453318274114,
+      "cpy2": 339.61153384443975,
+      "x": 375.7352928959991,
+      "y": 386.3296820785832,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "bezierCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 371.7044062844529,
+            "y": 398.6268442875771,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "cpx1": 296.79047320889714,
+            "cpx2": 316.95949537462576,
+            "cpy1": 404.97453318274114,
+            "cpy2": 339.61153384443975,
+            "x": 375.7352928959991,
+            "y": 386.3296820785832,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "bezierCurveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 364.7958138382509,
+      "y": 384.02147975965863,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 375.7352928959991,
+      "y": 386.3296820785832,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 371.01816731648984,
+      "y": 376.1931774410299,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 364.7958138382509,
+            "y": 384.02147975965863,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 375.7352928959991,
+            "y": 386.3296820785832,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 371.01816731648984,
+            "y": 376.1931774410299,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 313.5862006163776,
+      "y": 370.74626366894233,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 542.9641426852738,
+      "y": 276.9295099482786,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx1": 561.9994449280703,
+      "cpx2": 616.8739618268861,
+      "cpy1": 204.19679522042026,
+      "cpy2": 245.0367086966018,
+      "x": 553.2091039169793,
+      "y": 284.83577421342335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "bezierCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 542.9641426852738,
+            "y": 276.9295099482786,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "cpx1": 561.9994449280703,
+            "cpx2": 616.8739618268861,
+            "cpy1": 204.19679522042026,
+            "cpy2": 245.0367086966018,
+            "x": 553.2091039169793,
+            "y": 284.83577421342335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "bezierCurveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 559.038173207522,
+      "y": 275.29523171280783,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 553.2091039169793,
+      "y": 284.83577421342335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 564.3389794917973,
+      "y": 283.7747041454882,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 559.038173207522,
+            "y": 275.29523171280783,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 553.2091039169793,
+            "y": 284.83577421342335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 564.3389794917973,
+            "y": 283.7747041454882,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 589.0991833583903,
+      "y": 220.7452239922398,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "height": 600,
+      "width": 800,
+      "x": 0,
+      "y": 0,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 396.6666666666667,
+      "y": 450,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 396.6666666666667,
+            "y": 450,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 396.6666666666667,
+      "y": 450,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 396.6666666666667,
+      "y": 425,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 396.6666666666667,
+            "y": 450,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 396.6666666666667,
+            "y": 425,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 401.6666666666667,
+      "y": 435,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 396.6666666666667,
+      "y": 425,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 391.6666666666667,
+      "y": 435,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 401.6666666666667,
+            "y": 435,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 396.6666666666667,
+            "y": 425,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 391.6666666666667,
+            "y": 435,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 5,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 5,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 350,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 350,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 538.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 533.3333333333334,
+      "y": 325,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 528.3333333333334,
+      "y": 335,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 538.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 533.3333333333334,
+            "y": 325,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 528.3333333333334,
+            "y": 335,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 371.6666666666667,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 421.6666666666667,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 371.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 421.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "18px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 396.6666666666667,
+      "y": 387.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 396.6666666666667,
+      "y": 412.5,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 396.6666666666667,
+      "y": 400,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 396.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "rgba(18, 18, 18, 0.25)",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 396.6666666666667,
+            "y": 400,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 420.61427611941633,
+      "y": 392.8228138174787,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "cpx": 482.7152998315265,
+      "cpy": 374.2109097697529,
+      "x": 519.2461729336434,
+      "y": 320.65313322170283,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "quadraticCurveTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 420.61427611941633,
+            "y": 392.8228138174787,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "x": 517.7419354181079,
+      "y": 331.73181859032195,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "moveTo",
+  },
+  Object {
+    "props": Object {
+      "x": 519.2461729336434,
+      "y": 320.65313322170283,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "x": 509.48068212942684,
+      "y": 326.096954430446,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineTo",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "x": 517.7419354181079,
+            "y": 331.73181859032195,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "moveTo",
+        },
+        Object {
+          "props": Object {
+            "x": 519.2461729336434,
+            "y": 320.65313322170283,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+        Object {
+          "props": Object {
+            "x": 509.48068212942684,
+            "y": 326.096954430446,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "lineTo",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "",
+      "x": 486.32276217902813,
+      "y": 383.52018832543223,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 8.333333333333334,
+      "startAngle": 0,
+      "x": 382.20394544871954,
+      "y": 382.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "closePath",
+  },
+  Object {
+    "props": Object {
+      "value": "#0000ff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "fillRule": "nonzero",
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 8.333333333333334,
+            "startAngle": 0,
+            "x": 382.20394544871954,
+            "y": 382.764000029823,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "closePath",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "16px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "value": "#ffffff",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 382.20394544871954,
+      "y": 382.764000029823,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -23430,6 +30460,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -25013,83 +32120,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 266.6666666666667,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 266.6666666666667,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 241.66666666666669,
       "y": 300,
     },
@@ -25222,6 +32252,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 266.6666666666667,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 266.6666666666667,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -25686,83 +32793,6 @@ Array [
   },
   Object {
     "props": Object {
-      "anticlockwise": false,
-      "endAngle": 6.283185307179586,
-      "radius": 25,
-      "startAngle": 0,
-      "x": 533.3333333333334,
-      "y": 300,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "arc",
-  },
-  Object {
-    "props": Object {
-      "path": Array [
-        Object {
-          "props": Object {},
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "beginPath",
-        },
-        Object {
-          "props": Object {
-            "anticlockwise": false,
-            "endAngle": 6.283185307179586,
-            "radius": 25,
-            "startAngle": 0,
-            "x": 533.3333333333334,
-            "y": 300,
-          },
-          "transform": Array [
-            1,
-            0,
-            0,
-            1,
-            0,
-            0,
-          ],
-          "type": "arc",
-        },
-      ],
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "stroke",
-  },
-  Object {
-    "props": Object {},
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "beginPath",
-  },
-  Object {
-    "props": Object {
       "x": 508.33333333333337,
       "y": 300,
     },
@@ -25895,6 +32925,83 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {},
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "beginPath",
+  },
+  Object {
+    "props": Object {
+      "anticlockwise": false,
+      "endAngle": 6.283185307179586,
+      "radius": 25,
+      "startAngle": 0,
+      "x": 533.3333333333334,
+      "y": 300,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "arc",
+  },
+  Object {
+    "props": Object {
+      "path": Array [
+        Object {
+          "props": Object {},
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "beginPath",
+        },
+        Object {
+          "props": Object {
+            "anticlockwise": false,
+            "endAngle": 6.283185307179586,
+            "radius": 25,
+            "startAngle": 0,
+            "x": 533.3333333333334,
+            "y": 300,
+          },
+          "transform": Array [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+          ],
+          "type": "arc",
+        },
+      ],
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "stroke",
   },
   Object {
     "props": Object {},
@@ -27145,6 +34252,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "0",
+      "x": 266.6666666666667,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -27220,37 +34358,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "0",
-      "x": 266.6666666666667,
-      "y": 200,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},
@@ -27815,6 +34922,37 @@ Array [
     "type": "fillStyle",
   },
   Object {
+    "props": Object {
+      "value": "36px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "1",
+      "x": 533.3333333333334,
+      "y": 200,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -27893,6 +35031,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
       "value": "36px Arial",
     },
     "transform": Array [
@@ -27908,9 +35060,9 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "1",
-      "x": 533.3333333333334,
-      "y": 200,
+      "text": "2",
+      "x": 266.6666666666667,
+      "y": 400,
     },
     "transform": Array [
       1,
@@ -27921,20 +35073,6 @@ Array [
       0,
     ],
     "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -28012,37 +35150,6 @@ Array [
       0,
     ],
     "type": "stroke",
-  },
-  Object {
-    "props": Object {
-      "value": "36px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "2",
-      "x": 266.6666666666667,
-      "y": 400,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
   },
   Object {
     "props": Object {},

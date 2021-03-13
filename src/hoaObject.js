@@ -3,7 +3,8 @@ class HOA {
     constructor() {
         /**@type {number[][]}*/
         this.start = []
-        this.aliases = []
+        /**@type {Map<string,string>}*/
+        this.aliases = new Map();
         this.ap = []
         this.properties = []
         /**@type {Position[]}*/
@@ -49,9 +50,7 @@ class HOA {
      * @param {string} lexpr - Label, atomic proposition, already existing alias, or a group of thereof.
      */
     addAlias(aname, lexpr) {
-        this.aliases.push({
-            name: aname, expr: lexpr
-        });
+        this.aliases.set(aname, lexpr)
     }
     /**
      * Adds an atomic proposition.
@@ -259,8 +258,8 @@ class HOA {
         if (this.name) {
             string += "name: " + "\"" + this.name + "\"" + "\n";
         }
-        for (const alias of this.aliases) {
-            string += "Alias: " + alias.name + " " + alias.expr + "\n";
+        for (const [key, value] of this.aliases.entries()) {
+            string += "Alias: " + key + " " + value + "\n";
         }
         if (this.properties.length > 0) {
             string += "properties:";

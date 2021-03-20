@@ -1023,7 +1023,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "1",
+      "text": "b",
       "x": 256.1666666666667,
       "y": 300,
     },
@@ -1297,7 +1297,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!1",
+      "text": "!b",
       "x": 389,
       "y": 318.26033953682133,
     },
@@ -1976,7 +1976,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&!1",
+      "text": "a&!b",
       "x": 400,
       "y": 437.7439024390244,
     },
@@ -2533,7 +2533,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&1",
+      "text": "!a&b",
       "x": 400,
       "y": 362.2560975609756,
     },
@@ -2989,7 +2989,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0",
+      "text": "a",
       "x": 582.1811102257914,
       "y": 114.2280235318157,
     },
@@ -3284,7 +3284,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0",
+      "text": "!a",
       "x": 582.4986199442383,
       "y": 286.08233452264454,
     },
@@ -3740,7 +3740,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&1",
+      "text": "a&b",
       "x": 195.35418348375742,
       "y": 462.12711344603235,
     },
@@ -4196,7 +4196,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&!1",
+      "text": "!a&!b",
       "x": 620.6259153802065,
       "y": 421.076468203603,
     },
@@ -5754,7 +5754,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0",
+      "text": "a",
       "x": 400,
       "y": 220,
     },
@@ -6508,7 +6508,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "1",
+      "text": "b",
       "x": 400,
       "y": 420,
     },
@@ -6904,7 +6904,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "2",
+      "text": "c",
       "x": 543.8333333333334,
       "y": 300,
     },
@@ -8781,7 +8781,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&!1",
+      "text": "!a&!b",
       "x": 254.16666666666669,
       "y": 300,
     },
@@ -9055,7 +9055,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&1",
+      "text": "!a&b",
       "x": 400.00000000000006,
       "y": 196.40815143042067,
     },
@@ -9329,7 +9329,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&1",
+      "text": "a&b",
       "x": 400.00000000000006,
       "y": 243.59184856957933,
     },
@@ -10351,7 +10351,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&!1",
+      "text": "a&!b",
       "x": 193.34366998217564,
       "y": 140.31979343159986,
     },
@@ -10646,7 +10646,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&!1",
+      "text": "!a&!b",
       "x": 519.5405395110625,
       "y": 104.21330021199279,
     },
@@ -10941,7 +10941,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&!1",
+      "text": "a&!b",
       "x": 609.8054926726809,
       "y": 146.21124269811995,
     },
@@ -11236,7 +11236,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&1",
+      "text": "!a&b",
       "x": 609.6917757093141,
       "y": 253.9661609547672,
     },
@@ -11531,7 +11531,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&1",
+      "text": "a&b",
       "x": 519.403276706148,
       "y": 295.75744419592,
     },
@@ -11826,7 +11826,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&!1",
+      "text": "!a&!b",
       "x": 351.9674725750584,
       "y": 369.1682159376622,
     },
@@ -12121,7 +12121,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&!1",
+      "text": "a&!b",
       "x": 323.55467831325774,
       "y": 480.83165490331686,
     },
@@ -12416,7 +12416,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "!0&1",
+      "text": "!a&b",
       "x": 209.60817764326944,
       "y": 480.7077958390044,
     },
@@ -12711,7 +12711,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&1",
+      "text": "a&b",
       "x": 182.43097732190202,
       "y": 369.1267688354137,
     },
@@ -35593,7 +35593,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0",
+      "text": "a",
       "x": 582.1811102257914,
       "y": 114.2280235318157,
     },
@@ -36344,7 +36344,7 @@ Array [
   Object {
     "props": Object {
       "maxWidth": null,
-      "text": "0&1",
+      "text": "a&b",
       "x": 266.56130585348757,
       "y": 496.5130635033629,
     },

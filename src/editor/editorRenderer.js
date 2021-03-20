@@ -3,6 +3,7 @@ const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
+const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 class EditorRenderer {
 
@@ -15,9 +16,9 @@ class EditorRenderer {
         this.ctx.textBaseline = 'middle';
         this.circleSize = 25;
         /**@type {number}*/
-
         this.drawnEdges = [];
         this.blockedAngles = [];
+        this.labelTranslator = null;
     }
 
     /**
@@ -29,6 +30,7 @@ class EditorRenderer {
     draw(automaton, selected) {
         this.blockedAngles = [];
         this.drawnEdges = [];
+        this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton.getStarts(), automaton.startOffsets);
         let stateLoopbacks = new Map();
@@ -205,7 +207,7 @@ class EditorRenderer {
             this.ctx.fillRect(pos.x - bgwidth / 2, pos.y - bgheight / 2, bgwidth, bgheight);
         }
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText(label, pos.x, pos.y);
+        this.ctx.fillText(this.labelTranslator.translate(label), pos.x, pos.y);
 
     }
     drawState(state, circleSize, selected) {

@@ -26,6 +26,13 @@ class Editor {
         this.onStateChangedListeners = [];
 
     }
+    resized() {
+        console.log("resizing outer");
+        if (this.renderer) {
+            this.renderer.resize();
+            console.log("resizing");
+        }
+    }
     addOnStateonStateChangedListener(fn) {
         this.onStateChangedListeners.push(fn);
     }

@@ -12,6 +12,8 @@ class EditorRenderer {
         this.canvas = canvas;
         /**@type {CanvasRenderingContext2D}*/
         this.ctx = canvas.getContext("2d");
+        this.canvas.width = this.canvas.parentNode.clientWidth;
+        this.canvas.height = this.canvas.parentNode.clientHeight;
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.circleSize = 25;
@@ -21,6 +23,13 @@ class EditorRenderer {
         this.labelTranslator = null;
     }
 
+    resize() {
+        console.log("resizing");
+        this.canvas.width = this.canvas.parentNode.clientWidth;
+        this.canvas.height = this.canvas.parentNode.clientHeight;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+    }
     /**
      * Renders automaton onto bound canvas.
      * 
@@ -28,6 +37,7 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      */
     draw(automaton, selected) {
+
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);

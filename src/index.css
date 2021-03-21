@@ -1,0 +1,22 @@
+#canvas{
+    border: 1px solid black;
+}
+#canvasContainer{
+    width: 75%;
+    height: 100%;
+    line-height:0;
+
+   }
+#sidebarContainer{
+ width: 25%;
+ height: 100%;
+}
+#editorContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+
+
+}

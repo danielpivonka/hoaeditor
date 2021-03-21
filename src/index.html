@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <meta name="viewport" content="width=device-width">
+</head>
+
 <body>
     <input type="text" id="HOAInput">
     <input type="button" id="HOAParse" value="Parse">
@@ -10,8 +14,18 @@
     <p id="jsonText"></p>
     <h3>HOA</h3>
     <p id="hoaText"></p>
-    <canvas id="canvas" width=800 height=600 style="border: 1px solid black;"></canvas>
+    <div id="editorContainer">
+        <div id="canvasContainer">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div id="sidebarContainer">
+            <p>next to canvas</p>
+        </div>
+
+    </div>
+
     <script src="./index.js"></script>
+
 </body>
 
 </html>

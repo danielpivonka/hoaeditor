@@ -1,5 +1,6 @@
 //@ts-nocheck
 require('./index.html')
+require('./index.css')
 const parse = require('./parser/parser').parse;
 const Editor = require('./editor/editor').Editor;
 const field = document.getElementById('HOAInput');
@@ -21,6 +22,7 @@ function onParseClicked(e) {
 
 
 let editor = new Editor(canvas);
+window.addEventListener('resize', () => editor.resized());
 parseButton.addEventListener('click', onParseClicked);
 document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Delete") {

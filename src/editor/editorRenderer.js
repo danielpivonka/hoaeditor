@@ -12,8 +12,10 @@ class EditorRenderer {
         this.canvas = canvas;
         /**@type {CanvasRenderingContext2D}*/
         this.ctx = canvas.getContext("2d");
-        this.canvas.width = this.canvas.parentNode.clientWidth;
-        this.canvas.height = this.canvas.parentNode.clientHeight;
+        if (this.canvas.parentNode) {
+            this.canvas.width = this.canvas.parentNode.clientWidth;
+            this.canvas.height = this.canvas.parentNode.clientHeight;
+        }
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
         this.circleSize = 25;
@@ -24,7 +26,6 @@ class EditorRenderer {
     }
 
     resize() {
-        console.log("resizing");
         this.canvas.width = this.canvas.parentNode.clientWidth;
         this.canvas.height = this.canvas.parentNode.clientHeight;
         this.ctx.textAlign = 'center';

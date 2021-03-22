@@ -10,6 +10,21 @@
 #sidebarContainer{
  width: 25%;
  height: 100%;
+ padding-left: 2em;
+}
+.rowsDiv{
+    display:flex;
+    flex-direction: column;
+}
+.inputField{
+    max-width: 75%;
+    margin: 5px;
+
+}
+.collapsibleButton{
+    text-align: left;
+    width: 95%;
+    font-size: 15px;
 }
 #editorContainer{
     display:flex;
@@ -17,6 +32,8 @@
     justify-content: center;
     align-items: center;
     height: 50vh;
-
-
 }
+.sidebarTable  { display: table;      }
+.sidebarRow     { display: table-row;  }
+label { display: table-cell; }
+input { display: table-cell; }

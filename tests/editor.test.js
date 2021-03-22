@@ -1,6 +1,6 @@
 // @ts-nocheck
 let parse = require('../src/parser/parser').parse;
-const Editor = require('../src/editor/editor').Editor;
+const EditorCanvas = require('../src/editor/editorCanvas').EditorCanvas;
 let canvas;
 let ctx;
 let editor;
@@ -9,7 +9,7 @@ beforeEach(() => {
   canvas.width = 800;
   canvas.height = 600;
   ctx = canvas.getContext("2d");
-  editor = new Editor(canvas);
+  editor = new EditorCanvas(canvas);
 });
 test('implicit state labels', () => {
   let hoaIn = 'HOA: v1\

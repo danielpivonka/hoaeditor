@@ -1,6 +1,6 @@
 class LabelTranslator {
     constructor(aliases, aps) {
-        /**@type {Map<string,string>}*/
+        /**@type{Object[]}*/
         this.aliases = aliases;
         this.aps = aps;
         this.aliasRegex = /!?\s*@[0-9a-zA-Z_-]+/g;
@@ -17,7 +17,7 @@ class LabelTranslator {
 
     aliasReplacer(substring) {
         let innerValue = this.cutInnerValue(substring);
-        let translated = this.aliases.get(innerValue);
+        let translated = this.getByAname(innerValue);
         if (substring.substring(0, 1) == "!") {
             if (translated.includes("|") | translated.includes("&")) {
                 return "!(" + translated + ")";
@@ -36,6 +36,9 @@ class LabelTranslator {
     apReplacer(digitString) {
         let digit = parseInt(digitString);
         return this.aps[digit];
+    }
+    getByAname(aname) {
+        return this.aliases.find(e => e.aname == aname).lexpr;
     }
 }
 exports.LabelTranslator = LabelTranslator;

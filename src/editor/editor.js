@@ -13,9 +13,14 @@ class Editor {
         this.automatonSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
         this.drawSidebar();
     }
-    drawSidebar() {
+    drawSidebar(selected) {
         this.sidebarContainer.innerHTML = "";
-        this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
+        if (!selected) {
+            this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
+        }
+    }
+    resized() {
+        this.editorCanvas.resized();
     }
 }
 exports.Editor = Editor;

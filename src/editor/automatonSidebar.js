@@ -62,12 +62,12 @@ class AutomatonSidebar {
         inner.append(addButton);
         return wrap;
     }
-    createAP(index) {
+    createAP(array, index) {
         let id = "ap" + index;
         let label = SidebarUtils.createLabel(id, index + ":");
         let field = SidebarUtils.createField(id);
-        field.value = this.automaton.ap[index];
-        field.oninput = (e) => { this.automaton.ap[index] = e.target.value; };
+        field.value = array[index];
+        field.oninput = (e) => { array[index] = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }
     createAcceptanceCount() {
@@ -103,10 +103,10 @@ class AutomatonSidebar {
         return SidebarUtils.createDivWithChildren(label, field);
     }
 
-    createAlias(index) {
+    createAlias(array, index) {
         let keyLabel = SidebarUtils.createLabel(index + "k", "@");
         let keyField = SidebarUtils.createField(index + "k");
-        let aliasObject = this.automaton.aliases[index]
+        let aliasObject = array[index]
         keyField.value = aliasObject.aname.substring(1);
         keyField.oninput = (e) => {
             if (e.target.value) {
@@ -123,7 +123,7 @@ class AutomatonSidebar {
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";
         removeButton.addEventListener("click", () => {
-            this.automaton.aliases[index] = null;
+            array[index] = null;
             this.requestRedraw();
         });
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);

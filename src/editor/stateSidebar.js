@@ -2,6 +2,10 @@ const State = require('../hoaObject').State;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 
 class StateSidebar {
+    constructor() {
+        this.collapsedState = [];
+        this.sidebarRedrawRequestListener = null;
+    }
     generateSidebar(state) {
         let sidebar = document.createElement("div");
         sidebar.append(this.createAccSetsList(state));
@@ -31,34 +35,38 @@ class StateSidebar {
     }
     createAccSetsList(state) {
         state.accSets = state.accSets.filter((e) => e != null);
-        let wrap = SidebarUtils.createList(this.createAlias.bind(this), this.automaton.aliases, "Aliases", this.collapsedState);
+        let wrap = SidebarUtils.createList(this.createAccSet.bind(this), state.accSets, "Aliases", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
         let addButton = document.createElement("button")
         addButton.setAttribute("type", "button");
         addButton.innerHTML = "Add";
         addButton.addEventListener("click", () => {
-            this.automaton.aliases.push({ aname: "", lexpr: "" })
+            state.accSets.push(0);
             this.requestRedraw();
         });
         inner.append(addButton);
         return wrap;
 
     }
-    createAccSets(state, index) {
+    createAccSet(accSets, index) {
         let valueField = SidebarUtils.createField(index + "sas");
-        valueField.value = state.accSets[index];
+        valueField.value = accSets[index];
         valueField.oninput = (e) => {
-            state.accSets[index] = e.target.value;
+            accSets[index] = e.target.value;
         };
         let removeButton = document.createElement("button")
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";
         removeButton.addEventListener("click", () => {
-            state.accSets[index] = null;
+            accSets[index] = null;
             this.requestRedraw();
         });
         return SidebarUtils.createDivWithChildren(valueField, removeButton);
     }
-
-
+    requestRedraw() {
+        if (this.sidebarRedrawRequestListener != null) {
+            this.sidebarRedrawRequestListener();
+        }
+    }
 }
+exports.StateSidebar = StateSidebar;

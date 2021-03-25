@@ -43,7 +43,7 @@ class EditorRenderer {
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawStarts(automaton.getStarts(), automaton.startOffsets);
+        this.drawStarts(automaton);
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
             this.drawState(state, this.circleSize, selected);
@@ -85,13 +85,13 @@ class EditorRenderer {
         let offset = 5 * state.edges.length + 3 * state.name.length;
         this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
-    drawStarts(startGroups, offsets) {
-        for (let i = 0; i < startGroups.length; i++) {
-            if (startGroups[i].length > 1) {
-                this.drawMultiStart(startGroups[i], offsets[i]);
+    drawStarts(automaton) {
+        for (const start of automaton.start) {
+            if (start.stateConj.length > 1) {
+                this.drawMultiStart(start, automaton);
             }
             else {
-                this.drawMonoStart(startGroups[i][0], offsets[i]);
+                this.drawMonoStart(start, automaton);
             }
         }
     }
@@ -343,17 +343,23 @@ class EditorRenderer {
         this.ctx.lineTo(arrowEnd.x, arrowEnd.y);
         this.ctx.stroke();
     }
-    drawMultiStart(starts, offset) {
-        let statePositions = EditorUtils.statesToPositions(starts);
+    /**
+     * Draws multistart.
+     * 
+     * @param {Start} start - Start to be drawn.
+     * @param {HOA} automaton - The automaton.
+     */
+    drawMultiStart(start, automaton) {
+        let statePositions = Victor.fromObject(EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj)).position);
         let anchor = EditorUtils.calculateMidpointBetweenVectors(statePositions);
-        let offsetVector = Victor.fromObject(offset);
+        let offsetVector = Victor.fromObject(start.position);
         let originVector = anchor.clone().add(offsetVector);
         let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
         this.ctx.fillStyle = "#000000";
         this.ctx.beginPath();
         this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
         this.ctx.fill();
-        for (const destinationState of starts) {
+        for (const destinationState of automaton.numbersToStates(start.stateConj)) {
             let destinationVector = EditorUtils.getNearestPointOnCircle(destinationState.position, midpoint, this.circleSize);
             this.ctx.beginPath();
             this.ctx.moveTo(originVector.x, originVector.y);
@@ -363,9 +369,15 @@ class EditorRenderer {
             this.drawArrowhead(destinationVector.clone().subtract(midpoint), destinationVector);
         }
     }
-    drawMonoStart(start, offset) {
-        let statePositions = Victor.fromObject(start.position);
-        let offsetVector = Victor.fromObject(offset);
+    /**
+     * Draws monostart.
+     * 
+     * @param {Start} start - Start to be drawn.
+     * @param {HOA} automaton - The automaton.
+     */
+    drawMonoStart(start, automaton) {
+        let statePositions = Victor.fromObject(automaton.getStateByNumber(start.stateConj[0]).position);
+        let offsetVector = Victor.fromObject(start.position);
         let originVector = statePositions.clone().add(offsetVector);
         this.ctx.fillStyle = "#000000";
         this.ctx.beginPath();
@@ -376,7 +388,7 @@ class EditorRenderer {
         this.ctx.moveTo(originVector.x, originVector.y);
         this.ctx.lineTo(destinationVector.x, destinationVector.y);
         this.ctx.stroke();
-        this.addBlockedAngle(start.number, statePositions, destinationVector);
+        this.addBlockedAngle(start.stateConj[0], statePositions, destinationVector);
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
 

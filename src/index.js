@@ -32,6 +32,9 @@ document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Shift") {
         editor.setShift(true);
     }
+    if (event.key === "Escape") {
+        editor.escapeClicked();
+    }
 });
 document.addEventListener("keyup", function onPress(event) {
     if (event.key === "Shift") {

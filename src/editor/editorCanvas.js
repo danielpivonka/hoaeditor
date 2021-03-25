@@ -4,6 +4,7 @@ const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
+const Start = require('../hoaObject').Start;
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
@@ -70,8 +71,6 @@ class EditorCanvas {
     }
 
     draw() {
-        console.log("sel in controller: " + JSON.stringify(this.selected))
-        console.log(this.selected instanceof State);
         if (this.selected instanceof State) {
             this.renderer.draw(this.automaton, this.selected);
 
@@ -125,7 +124,7 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                this.first.addEdge([this.selected.number]);
+                this.first.addEdge([this.selected.number], this.automaton);
                 this.automaton.SetImplicitOffsets();
             }
             this.changeState(EditorCanvas.stateEnum.IDLE);
@@ -142,6 +141,7 @@ class EditorCanvas {
             }
             this.setSelected(this.first);
             this.draw();
+            this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI) {
             this.first = this.selected;
@@ -151,13 +151,15 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
             else {
-                this.automaton.getStateByNumber(this.first).addEdge(this.destinations);
+                this.first.addEdge(this.destinations);
                 this.first = null;
                 this.destinations = [];
                 this.changeState(EditorCanvas.stateEnum.IDLE);
             }
             this.setSelected(this.first);
             this.draw();
+            console.log("Should be drawing multi");
+            this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
             this.first = this.selected;
@@ -167,7 +169,7 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
 
-            this.selected.addEdge(this.destinations);
+            this.first.addEdge(this.destinations);
             this.first = null;
             this.destinations = [];
             this.changeState(EditorCanvas.stateEnum.IDLE);
@@ -195,12 +197,13 @@ class EditorCanvas {
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.SELECTED) {
             this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
+            this.draw();
+
         }
         else if (this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
             this.changeState(EditorCanvas.stateEnum.IDLE)
-
+            this.draw();
         }
-        this.draw();
     }
     mouseMove(e) {
         let boundingBox = this.canvas.getBoundingClientRect()
@@ -220,13 +223,24 @@ class EditorCanvas {
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE && this.selected != null) {
             this.draw();
-            this.renderer.drawEdgeFromStateToPosition(this.selected, new Victor(x, y));
+            let destination = new Victor(x, y);
+            if (this.selected instanceof State) {
+                let fromPoint = EditorUtils.getNearestPointOnCircle(Victor.fromObject(this.selected.position), destination, this.circleSize);
+                this.renderer.drawEdgeBetweenPositions(fromPoint, destination, this.circleSize);
+
+            }
+            else if (this.selected instanceof Start) {
+                let fromPoint = EditorUtils.getNearestPointOnCircle(Victor.fromObject(this.selected.position), destination, this.circleSize / 5);
+                this.renderer.drawEdgeBetweenPositions(fromPoint, destination);
+
+            }
         }
-        else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI || this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN || this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
+        else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI || this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN || this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST && this.selected != null) {
             this.draw();
             this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
     }
+
     checkCollisionsAtPosition(position) {
         for (const state of this.automaton.states.values()) {
             if (this.checkCircleCollision(state.position, this.circleSize, position)) {
@@ -234,16 +248,15 @@ class EditorCanvas {
                 return
             }
             for (const start of this.automaton.start) {
-                let pos = EditorUtils.calculateMidpointBetweenVectors(EditorUtils.statesToPositions(this.automaton.numbersToStates(start.stateConj)));
                 let offset = start.position;
-                let center = new Victor(pos.x + offset.x, pos.y + offset.y);
+                let center = new Victor(offset.x, offset.y);
                 if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
                     this.setSelected(start);
                     return
                 }
             }
         }
-        this.selected = null;
+        this.setSelected(null);
     }
     setSelected(object) {
         this.selected = object;
@@ -257,8 +270,8 @@ class EditorCanvas {
             this.selected.position.y += dy;
         }
         else {
-            this.selected.x += dx;
-            this.selected.y += dy;
+            this.selected.position.x += dx;
+            this.selected.position.y += dy;
 
         }
     }

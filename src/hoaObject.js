@@ -1,5 +1,5 @@
-const { AutomatonSidebar } = require("./editor/automatonSidebar");
-
+const EditorUtils = require("./editor/editorUtils").EditorUtils;
+const Victor = require('victor');
 class HOA {
     constructor() {
         /**@type {Start[]}*/
@@ -169,17 +169,26 @@ class HOA {
                 positionsSet++;
             }
         }
+        for (const start of this.start) {
+            let states = this.numbersToStates(start.stateConj);
+            console.log("states: " + JSON.stringify(states));
+
+            let positions = EditorUtils.statesToVectors(states);
+            console.log("positions: " + JSON.stringify(positions));
+
+            let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
+            console.log("Start anchor: " + anchor.toString());
+            if (start.stateConj.length > 1) {
+                start.position = new Position(anchor.x, anchor.y);
+            }
+            else {
+                start.position = new Position(anchor.x, anchor.y + 50);
+            }
+        }
     }
     SetImplicitOffsets() {
         this.stateCount = this.states.size;
-        for (var i = 0; i < this.start.length; i++) {
-            if (this.start[i].stateConj > 1) {
-                this.start[i].position = new Position(0, 0);
-            }
-            else {
-                this.start[i].position = new Position(0, 50);
-            }
-        }
+
         for (const state of this.states.values()) {
             let count = new Array(Math.max(...this.states.keys()) + 1).fill(0);
             for (const edge of state.edges) {
@@ -194,7 +203,6 @@ class HOA {
                     }
                     else {
                         edge.offset = (offset / 2) * 40;
-
                     }
                 }
                 else {
@@ -376,8 +384,12 @@ class Edge {
 }
 class Start {
     constructor(stateConj) {
+        /**@type{number[]}*/
         this.stateConj = stateConj;
         this.position = null;
+    }
+    addEdge(stateConj) {
+        this.stateConj = this.stateConj.concat(stateConj)
     }
 
 }
@@ -397,3 +409,4 @@ exports.HOA = HOA;
 exports.State = State;
 exports.Edge = Edge;
 exports.Position = Position;
+exports.Start = Start;

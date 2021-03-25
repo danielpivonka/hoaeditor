@@ -107,6 +107,11 @@ class EditorUtils {
             return state.position;
         });
     }
+    static statesToVectors(states) {
+        return states.map((state) => {
+            return Victor.fromObject(state.position);
+        });
+    }
     /**
      * Finds the nearest point to given point on a given circle with an optional rotation around the circle.
      * 

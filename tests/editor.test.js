@@ -203,11 +203,11 @@ test('move start', () => {
   editor.mouseMove(moveEvt);
   editor.mouseUp(moveEvt);
   let automaton = editor.getAutomaton();
-  let position = automaton.startOffsets[0];
-  expect(position.x).toBeLessThan(10 + editor.circleSize / 4);
-  expect(position.y).toBeLessThan(60 + editor.circleSize / 4);
-  expect(position.x).toBeGreaterThan(10 - editor.circleSize / 4);
-  expect(position.y).toBeGreaterThan(60 - editor.circleSize / 4);
+  let position = automaton.start[0].position;
+  expect(position.x).toBeLessThan(279 + editor.circleSize / 5);
+  expect(position.y).toBeLessThan(363 + editor.circleSize / 5);
+  expect(position.x).toBeGreaterThan(279 - editor.circleSize / 5);
+  expect(position.y).toBeGreaterThan(363 - editor.circleSize / 5);
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })

@@ -111,6 +111,7 @@ class EditorCanvas {
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
+        document.activeElement.blur()
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE) {
@@ -124,11 +125,13 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                this.first.addEdge([this.selected.number], this.automaton);
-                this.automaton.SetImplicitOffsets();
+                this.addEdgePrompt(this.first, [this.selected.number]);
+            } else {
+                this.first = null;
+                this.destinations = [];
+                this.changeState(EditorCanvas.stateEnum.IDLE);
+                this.draw();
             }
-            this.changeState(EditorCanvas.stateEnum.IDLE);
-            this.draw();
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
             this.first = this.selected;
@@ -151,10 +154,7 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
             else {
-                this.first.addEdge(this.destinations);
-                this.first = null;
-                this.destinations = [];
-                this.changeState(EditorCanvas.stateEnum.IDLE);
+                this.addEdgePrompt(this.first, this.destinations);
             }
             this.setSelected(this.first);
             this.draw();
@@ -168,14 +168,39 @@ class EditorCanvas {
                 this.destinations.push(this.selected.number);
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
-
-            this.first.addEdge(this.destinations);
-            this.first = null;
-            this.destinations = [];
+            this.addEdgePrompt(this.first, this.destinations);
             this.changeState(EditorCanvas.stateEnum.IDLE);
             this.setSelected(this.first);
             this.draw();
         }
+    }
+    addEdgePrompt(from, to) {
+        this.first = null;
+        this.destinations = [];
+        let edge = from.addEdge(to);
+        this.automaton.SetImplicitOffsets();
+        this.createEdgePromp(from, edge, to);
+
+    }
+    createEdgePromp(state, edge, destinations) {
+        console.log("adding prompt");
+        let input = document.createElement("input");
+        let boundingBox = this.canvas.getBoundingClientRect();
+        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge)
+        input.setAttribute("type", "text");
+        input.setAttribute("id", "edgePrompt");
+        let x = boundingBox.left + position.x;
+        let y = boundingBox.top + position.y;
+        input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);;")
+        document.getElementsByTagName("body")[0].appendChild(input);
+        input.focus();
+        input.addEventListener("focusout", () => this.saveEdgePrompt(edge, input.value));
+        input.addEventListener("keydown", (e) => { if (e.key == "Enter") { this.saveEdgePrompt(edge, input.value) } })
+    }
+    saveEdgePrompt(edge, input) {
+        edge.setLabel(input);
+        document.getElementById("edgePrompt").remove()
+        this.draw();
     }
     doubleClick(e) {
         let boundingBox = this.canvas.getBoundingClientRect();

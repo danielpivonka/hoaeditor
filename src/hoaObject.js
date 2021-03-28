@@ -171,13 +171,10 @@ class HOA {
         }
         for (const start of this.start) {
             let states = this.numbersToStates(start.stateConj);
-            console.log("states: " + JSON.stringify(states));
 
             let positions = EditorUtils.statesToVectors(states);
-            console.log("positions: " + JSON.stringify(positions));
 
             let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
-            console.log("Start anchor: " + anchor.toString());
             if (start.stateConj.length > 1) {
                 start.position = new Position(anchor.x, anchor.y);
             }
@@ -213,7 +210,6 @@ class HOA {
     }
     removeState(stateToRemove) {
         for (const state of this.states.values()) {
-            console.log("prefilter: " + JSON.stringify(state.edges));
             state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(stateToRemove.number); });
         }
         this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });

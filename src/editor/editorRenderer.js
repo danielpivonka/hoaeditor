@@ -63,6 +63,7 @@ class EditorRenderer {
             this.drawAccSetsOnState(state);
             stateLoopbacks.set(state, loopbacks);
         }
+        //let blockedAnglesToReturn = this.blockedAngles;
         for (let [state, loopbacks] of stateLoopbacks) {
             this.drawLoop(state, loopbacks, automaton.ap);
         }
@@ -70,8 +71,8 @@ class EditorRenderer {
             if (state.name) {
                 this.drawStateLabels(state);
             }
-
         }
+        // return blockedAnglesToReturn;
     }
 
     drawStateLabels(state) {
@@ -254,29 +255,8 @@ class EditorRenderer {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
         let i = 0;
         for (let [index, loopback] of loopbacks) {
-            let t = (i + 1) / (loopbacks.size + 1);
-            let distance = (interval[1] - interval[0]);
-            distance = distance > 0 ? distance : distance + 360;
-            let angle = interval[0] + distance * t
-            let left = new Victor(1, 0)
-                .rotateDeg(angle - 14)
-                .multiplyScalar(this.circleSize)
-                .add(Victor.fromObject(state.position));
-            let right = new Victor(1, 0)
-                .rotateDeg(angle + 16)
-                .multiplyScalar(this.circleSize)
-                .add(Victor.fromObject(state.position
-                ));
-            let upperLeft = new Victor(1, 0)
-                .rotateDeg(angle - 20)
-                .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(state.position
-                ));
-            let upperRight = new Victor(1, 0)
-                .rotateDeg(angle + 20)
-                .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(state.position
-                ));
+            let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
             this.addBlockedAngle(state.number, state.position, left);
             this.addBlockedAngle(state.number, state.position, right);
             this.ctx.beginPath();

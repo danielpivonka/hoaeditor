@@ -1,10 +1,10 @@
-
+const EditorUtils = require("./editor/editorUtils").EditorUtils;
+const Victor = require('victor');
 class HOA {
     constructor() {
-        /**@type {number[][]}*/
+        /**@type {Start[]}*/
         this.start = []
-        /**@type {Map<string,string>}*/
-        this.aliases = new Map();
+        this.aliases = [];
         this.ap = []
         this.properties = []
         /**@type {Position[]}*/
@@ -41,7 +41,7 @@ class HOA {
      * @param {number[]} start - Array of numbers representing stateConj.
      */
     addStart(start) {
-        this.start.push(start);
+        this.start.push(new Start(start));
     }
     /**
      * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof.
@@ -50,7 +50,9 @@ class HOA {
      * @param {string} lexpr - Label, atomic proposition, already existing alias, or a group of thereof.
      */
     addAlias(aname, lexpr) {
-        this.aliases.set(aname, lexpr)
+        this.aliases.push({
+            aname: aname, lexpr: lexpr
+        });
     }
     /**
      * Adds an atomic proposition.
@@ -153,17 +155,6 @@ class HOA {
     numbersToStates(numbers) {
         return numbers.map((number) => { return this.getStateByNumber(number); });
     }
-    getStarts() {
-        let stateGroups = []
-        for (const stateSet of this.start) {
-            let group = [];
-            for (const state of stateSet) {
-                group.push(this.getStateByNumber(state));
-            }
-            stateGroups.push(group);
-        }
-        return stateGroups;
-    }
     setImplicitPositions(width, height) {
         let rows = Math.round(Math.sqrt(this.states.size));
         let columns = Math.ceil(this.states.size / rows);
@@ -178,18 +169,26 @@ class HOA {
                 positionsSet++;
             }
         }
+        for (const start of this.start) {
+            let states = this.numbersToStates(start.stateConj);
+            console.log("states: " + JSON.stringify(states));
+
+            let positions = EditorUtils.statesToVectors(states);
+            console.log("positions: " + JSON.stringify(positions));
+
+            let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
+            console.log("Start anchor: " + anchor.toString());
+            if (start.stateConj.length > 1) {
+                start.position = new Position(anchor.x, anchor.y);
+            }
+            else {
+                start.position = new Position(anchor.x, anchor.y + 50);
+            }
+        }
     }
     SetImplicitOffsets() {
         this.stateCount = this.states.size;
-        this.startOffsets = new Array(this.start.length);
-        for (var i = 0; i < this.start.length; i++) {
-            if (this.start[i].length > 1) {
-                this.startOffsets[i] = new Position(0, 0);
-            }
-            else {
-                this.startOffsets[i] = new Position(0, 50);
-            }
-        }
+
         for (const state of this.states.values()) {
             let count = new Array(Math.max(...this.states.keys()) + 1).fill(0);
             for (const edge of state.edges) {
@@ -204,7 +203,6 @@ class HOA {
                     }
                     else {
                         edge.offset = (offset / 2) * 40;
-
                     }
                 }
                 else {
@@ -213,13 +211,13 @@ class HOA {
             }
         }
     }
-    removeState(number) {
+    removeState(stateToRemove) {
         for (const state of this.states.values()) {
-            state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(number) });
+            console.log("prefilter: " + JSON.stringify(state.edges));
+            state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(stateToRemove.number); });
         }
-        this.start = this.start.filter((stateConj) => { return !stateConj.includes(number) });
-
-        this.states.delete(number);
+        this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });
+        this.states.delete(stateToRemove.number);
     }
 
 
@@ -236,7 +234,7 @@ class HOA {
         }
         for (const start of this.start) {
 
-            string += "Start: " + start.toString().replace(",", "&") + "\n";
+            string += "Start: " + start.stateConj.toString().replace(",", "&") + "\n";
         }
         if (this.accname) {
             string += "acc-name: " + this.accname + "\n";
@@ -258,8 +256,8 @@ class HOA {
         if (this.name) {
             string += "name: " + "\"" + this.name + "\"" + "\n";
         }
-        for (const [key, value] of this.aliases.entries()) {
-            string += "Alias: " + key + " " + value + "\n";
+        for (const alias of this.aliases) {
+            string += "Alias: " + alias.aname + " " + alias.lexpr + "\n";
         }
         if (this.properties.length > 0) {
             string += "properties:";
@@ -290,6 +288,7 @@ class State {
      * @param {number} number - Number of the state.
      */
     constructor(number) {
+        /**@type {number}*/
         this.number = number;
         /**@type {number[]}*/
         this.accSets = [];
@@ -297,6 +296,10 @@ class State {
         this.edges = [];
         /**@type {Position}*/
         this.position;
+        /**@type {string}*/
+        this.label;
+        /**@type {string}*/
+        this.name;
     }
     setLabel(label) {
         this.label = label;
@@ -379,6 +382,17 @@ class Edge {
         return str;
     }
 }
+class Start {
+    constructor(stateConj) {
+        /**@type{number[]}*/
+        this.stateConj = stateConj;
+        this.position = null;
+    }
+    addEdge(stateConj) {
+        this.stateConj = this.stateConj.concat(stateConj)
+    }
+
+}
 class Position {
     /**
      * Constructs new position.
@@ -395,3 +409,4 @@ exports.HOA = HOA;
 exports.State = State;
 exports.Edge = Edge;
 exports.Position = Position;
+exports.Start = Start;

@@ -1,0 +1,39 @@
+#canvas{
+    border: 1px solid black;
+}
+#canvasContainer{
+    width: 75%;
+    height: 100%;
+    line-height:0;
+
+   }
+#sidebarContainer{
+ width: 25%;
+ height: 100%;
+ padding-left: 2em;
+}
+.rowsDiv{
+    display:flex;
+    flex-direction: column;
+}
+.inputField{
+    max-width: 75%;
+    margin: 5px;
+
+}
+.collapsibleButton{
+    text-align: left;
+    width: 95%;
+    font-size: 15px;
+}
+#editorContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+.sidebarTable  { display: table;      }
+.sidebarRow     { display: table-row;  }
+label { display: table-cell; }
+input { display: table-cell; }

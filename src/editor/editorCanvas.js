@@ -5,7 +5,10 @@ const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
 const Start = require('../hoaObject').Start;
+const Edge = require('../hoaObject').Edge;
+
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
+const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 
 class EditorCanvas {
@@ -27,6 +30,7 @@ class EditorCanvas {
         this.destinations = [];
         this.onStateChangedListeners = [];
         this.onComponentSelectedListeners = [];
+        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
 
     }
     resized() {
@@ -71,7 +75,7 @@ class EditorCanvas {
     }
 
     draw() {
-        if (this.selected instanceof State) {
+        if (this.selected instanceof State || this.selected instanceof Edge) {
             this.renderer.draw(this.automaton, this.selected);
 
         } else {
@@ -272,16 +276,16 @@ class EditorCanvas {
                 this.setSelected(state);
                 return
             }
-            for (const start of this.automaton.start) {
-                let offset = start.position;
-                let center = new Victor(offset.x, offset.y);
-                if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
-                    this.setSelected(start);
-                    return
-                }
+        }
+        for (const start of this.automaton.start) {
+            let offset = start.position;
+            let center = new Victor(offset.x, offset.y);
+            if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
+                this.setSelected(start);
+                return
             }
         }
-        this.setSelected(null);
+        this.setSelected(this.checkEdgeLabelCollision(position));
     }
     setSelected(object) {
         this.selected = object;
@@ -306,42 +310,74 @@ class EditorCanvas {
         var dist = Math.sqrt(a * a + b * b);
         return dist < size
     }
-    checkEdgeLabelCollision() {
+    checkEdgeLabelCollision(position) {
+        console.log("check label entered with" + JSON.stringify(position))
         let stateLoopbacks = new Map();
         for (const state of this.automaton.states.values()) {
             let loopbacks = new Map();
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
+                console.log("checking any edge");
                 if (edge.stateConj.length > 1) {
-                    this.checkMultiEdgeCollision(state, edge);
+                    console.log("checking multiedge");
+                    if (this.checkMultiEdgeCollision(state, edgeIndex, position)) {
+                        console.log("got multi");
+                        return edge
+                    }
                 }
                 else if (edge.stateConj[0] == state.number) {
                     loopbacks.set(edgeIndex, edge);
                 }
                 else {
-                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap);
+                    console.log("checking single");
+                    if (this.checkSingleEdgeCollision(state, edgeIndex, position)) {
+                        console.log("got single");
+                        console.log("returning: " + JSON.stringify(edge));
+                        return edge
+                    }
                 }
             }
-            this.drawAccSetsOnState(state);
-            stateLoopbacks.set(state, loopbacks);
+            // this.drawAccSetsOnState(state);
+            // stateLoopbacks.set(state, loopbacks);
         }
         //let blockedAnglesToReturn = this.blockedAngles;
-        for (let [state, loopbacks] of stateLoopbacks) {
-            this.drawLoop(state, loopbacks, automaton.ap);
-        }
-
+        //for (let [state, loopbacks] of stateLoopbacks) {
+        //  this.drawLoop(state, loopbacks, automaton.ap);
+        //}
+        return null;
     }
-    checkMultiEdgeCollision(state, edge, position) {
+    checkSingleEdgeCollision(state, edgeIndex, position) {
+        let edge = state.edges[edgeIndex];
+        let destination = this.automaton.getStateByNumber(edge.stateConj[0]);
+        let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge);
+        console.log("anchor: " + JSON.stringify(anchor));
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        let perpendicular = EditorUtils.calculatePerpendicular(state.position, Victor.fromObject(destination.position));
+        let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
+        label = this.labelTranslator.translate(label);
+        return this.checkLabelCollision(anchor, labelAngle, label, position);
+    }
+    checkMultiEdgeCollision(state, edgeIndex, position) {
+        let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
         let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations);
-        this.checkLabelCollision(anchor, 0, edge.label, position);
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
+        let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
+        label = this.labelTranslator.translate(label);
+        return this.checkLabelCollision(anchor, labelAngle, label, position);
     }
 
+
     checkLabelCollision(baseAnchor, angle, label, position, extraPadding = 0) {
-        this.ctx.font = "20px Arial";
-        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding);
+        let ctx = this.canvas.getContext("2d");
+        ctx.font = "20px Arial";
+        let [width, height] = EditorUtils.calculateLabelSize(ctx, label, extraPadding);
         let pos = EditorUtils.calculateLabelAnchor(baseAnchor, angle, width, height)
         let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
+        console.log("adjusted anchor: " + JSON.stringify(pos));
+        console.log("min: " + JSON.stringify(min));
+        console.log("max: " + JSON.stringify(max));
         return EditorUtils.isPointWithinBounds(min, max, position);
     }
 }

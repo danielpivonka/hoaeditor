@@ -13,6 +13,9 @@ class HOA {
         this.edgeOffsets = []
         /**@type {Position[]}*/
         this.startOffsets = []
+        this.acceptance = {
+            count: 0, str: ""
+        };
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();

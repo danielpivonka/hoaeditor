@@ -38,7 +38,7 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      */
     draw(automaton, selected) {
-
+        console.log(JSON.stringify(selected));
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
@@ -51,13 +51,13 @@ class EditorRenderer {
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
-                    this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap);
+                    this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap, selected);
                 }
                 else if (edge.stateConj[0] == state.number) {
                     loopbacks.set(edgeIndex, edge);
                 }
                 else {
-                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap);
+                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap, selected);
                 }
             }
             this.drawAccSetsOnState(state);
@@ -131,7 +131,8 @@ class EditorRenderer {
 
 
 
-    drawMultiEdge(originState, edgeIndex, destinationStates, aps) {
+    drawMultiEdge(originState, edgeIndex, destinationStates, aps, selected) {
+        this.ctx.strokeStyle = selected == originState.edges[edgeIndex] ? "#8888FF" : "#000000"
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
         let divider = 0;
@@ -153,7 +154,7 @@ class EditorRenderer {
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        let label = this.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, midpoint, labelAngle);
     }
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
@@ -221,6 +222,7 @@ class EditorRenderer {
 
     }
     drawState(state, circleSize, selected) {
+        this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
         if (state.label) {
             this.ctx.beginPath();
@@ -247,7 +249,8 @@ class EditorRenderer {
             this.ctx.fill();
         }
     }
-    drawLoop(state, loopbacks, aps) {
+    drawLoop(state, loopbacks, aps, selected) {
+        this.ctx.strokeStyle = selected ? "#8888FF" : "#000000"
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
         let i = 0;
         for (let [index, loopback] of loopbacks) {
@@ -262,7 +265,7 @@ class EditorRenderer {
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = this.getLabel(state, index, aps);
+            let label = EditorUtils.getLabel(state, index, aps);
             this.drawLabelEdge(label, anchor, angle);
             i++;
         }
@@ -275,7 +278,9 @@ class EditorRenderer {
      * @param {State} destinationState - State to which the edge leads.
      * @param {any[]} aps - Array of atomic propositions. 
      */
-    drawEdge(originState, edgeIndex, destinationState, aps) {
+    drawEdge(originState, edgeIndex, destinationState, aps, selected) {
+        let edge = originState.edges[edgeIndex];
+        this.ctx.strokeStyle = edge == selected ? "#8888FF" : "#000000"
         let originVector = Victor.fromObject(originState.position);
         let destinationVector = Victor.fromObject(destinationState.position);
         let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, originState.edges[edgeIndex].offset);
@@ -288,11 +293,11 @@ class EditorRenderer {
         this.addBlockedAngle(originState.number, originVector, fromPoint);
         this.addBlockedAngle(destinationState.number, destinationVector, toPoint);
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
-        this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, originState.edges[edgeIndex].accSets)
+        this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
-        let label = this.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, anchor, angle);
     }
     drawEdgeBetweenPositions(fromPoint, position) {
@@ -414,37 +419,8 @@ class EditorRenderer {
         }
         this.blockedAngles[stateIndex].push(angle);
     }
-    calculateImplicitLabel(edgeIndex, propositionCount) {
-        let result = "";
-        for (let i = 0; i < propositionCount; i++) {
-            let mask = 1 << i;
-            if (!(mask & edgeIndex)) {
-                result += "!";
-            }
-            result += i
-            if (i + 1 < propositionCount) {
-                result += "&"
-            }
-        }
-        return result;
-    }
 
-    /**
-     * Gets label of given edge.
-     * 
-     * @param {State} state - State from which the edge originates.
-     * @param {number} edgeIndex - Index of the edge.
-     * @param {any[]} aps - Atomic propositions.
-     * @returns {Victor[]} Vectors with state positions.
-     */
-    getLabel(state, edgeIndex, aps) {
-        if (state.edges[edgeIndex].label) {
-            return state.edges[edgeIndex].label;
-        }
-        if (state.edges.length == Math.pow(2, aps.length) && !state.label) {
-            return this.calculateImplicitLabel(edgeIndex, aps.length);
-        }
-        return "";
-    }
+
+
 }
 exports.EditorRenderer = EditorRenderer

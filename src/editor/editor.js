@@ -2,6 +2,7 @@ const EditorCanvas = require('./editorCanvas').EditorCanvas;
 const AutomatonSidebar = require('./automatonSidebar').AutomatonSidebar;
 const StateSidebar = require('./stateSidebar').StateSidebar;
 const State = require('../hoaObject').State;
+const HOA = require('../hoaObject').HOA;
 
 class Editor {
     constructor(canvas, sidebarContainer) {
@@ -12,6 +13,7 @@ class Editor {
         this.stateSidebar = new StateSidebar();
         this.stateSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
         this.selected = null;
+        this.setAutomaton(new HOA());
     }
 
     setAutomaton(automaton) {

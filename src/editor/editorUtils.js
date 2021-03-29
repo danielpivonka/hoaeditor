@@ -227,7 +227,7 @@ class EditorUtils {
         let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
         return EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
     }
-    static calculateLabelBounds(anchor, width, height, extraPadding) {
+    static calculateLabelBounds(anchor, width, height, extraPadding = 0) {
         let bgwidth = width * 2 - extraPadding;
         let bgheight = height * 2 - extraPadding - 20;
         return [new Victor(anchor.x - bgwidth / 2, anchor.y - bgheight / 2), new Victor(anchor.x + bgwidth / 2, anchor.y + bgheight / 2)]
@@ -238,6 +238,39 @@ class EditorUtils {
         let ylow = min.y < point.y
         let yhigh = max.y > point.y
         return xlow && xhigh && ylow && yhigh;
+    }
+
+    /**
+     * Gets label of given edge.
+     * 
+     * @param {State} state - State from which the edge originates.
+     * @param {number} edgeIndex - Index of the edge.
+     * @param {any[]} aps - Atomic propositions.
+     * @returns {Victor[]} Vectors with state positions.
+     */
+    static getLabel(state, edgeIndex, aps) {
+        if (state.edges[edgeIndex].label) {
+            return state.edges[edgeIndex].label;
+        }
+        if (state.edges.length == Math.pow(2, aps.length) && !state.label) {
+            return this.calculateImplicitLabel(edgeIndex, aps.length);
+        }
+        return "";
+    }
+
+    static calculateImplicitLabel(edgeIndex, propositionCount) {
+        let result = "";
+        for (let i = 0; i < propositionCount; i++) {
+            let mask = 1 << i;
+            if (!(mask & edgeIndex)) {
+                result += "!";
+            }
+            result += i
+            if (i + 1 < propositionCount) {
+                result += "&"
+            }
+        }
+        return result;
     }
 }
 exports.EditorUtils = EditorUtils;

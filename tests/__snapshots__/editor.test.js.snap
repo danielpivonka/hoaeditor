@@ -59,6 +59,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -379,6 +393,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -488,6 +516,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -764,6 +806,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -1036,6 +1092,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -1323,6 +1393,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -1445,6 +1529,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -1554,6 +1652,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -2002,6 +2114,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -2111,6 +2237,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -2546,6 +2686,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -3004,6 +3158,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -3297,6 +3465,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -3753,6 +3935,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -4542,6 +4738,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -4621,6 +4831,20 @@ Array [
       0,
     ],
     "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
   },
   Object {
     "props": Object {},
@@ -5384,6 +5608,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -5493,6 +5731,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -5780,6 +6032,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -5902,6 +6168,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -6011,6 +6291,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -6534,6 +6828,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -6643,6 +6951,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -6917,6 +7239,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -7373,6 +7709,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -8091,6 +8441,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -8411,6 +8775,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -8520,6 +8898,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -8796,6 +9188,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -9068,6 +9474,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -9516,6 +9936,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -9799,6 +10233,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -10069,6 +10517,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -10366,6 +10828,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -10659,6 +11135,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -10956,6 +11446,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -11249,6 +11753,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -11546,6 +12064,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -11839,6 +12371,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -12136,6 +12682,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -12429,6 +12989,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -12967,6 +13541,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -13607,6 +14195,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -13832,6 +14434,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -14280,6 +14896,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -14505,6 +15135,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -14782,6 +15426,62 @@ Array [
   },
   Object {
     "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -14796,6 +15496,20 @@ Array [
       0,
     ],
     "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {
@@ -15449,6 +16163,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -15674,6 +16402,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -16122,6 +16864,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -16347,6 +17103,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -16684,6 +17454,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -17324,6 +18108,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -17549,6 +18347,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -17997,6 +18809,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -18222,6 +19048,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -18496,6 +19336,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -18793,6 +19647,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -19103,6 +19971,20 @@ Array [
       0,
     ],
     "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {
@@ -19756,6 +20638,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -19981,6 +20877,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -20429,6 +21339,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -20654,6 +21578,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -20928,6 +21866,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -21223,6 +22175,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -21535,6 +22501,20 @@ Array [
       0,
     ],
     "type": "clearRect",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {
@@ -22188,6 +23168,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -22413,6 +23407,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -22861,6 +23869,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -23086,6 +24108,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -23360,6 +24396,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -23655,6 +24705,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -24013,6 +25077,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -24653,6 +25731,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -24878,6 +25970,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -25326,6 +26432,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -25551,6 +26671,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -25825,6 +26959,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -26120,6 +27268,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -26445,6 +27607,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -27085,6 +28261,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -27371,6 +28561,20 @@ Array [
       0,
     ],
     "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -27819,6 +29023,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -28044,6 +29262,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -28318,6 +29550,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -28613,6 +29859,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -28938,6 +30198,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -29578,6 +30852,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -29864,6 +31152,20 @@ Array [
       0,
     ],
     "type": "fill",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -30312,6 +31614,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -30537,6 +31853,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -30811,6 +32141,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -31106,6 +32450,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -31464,6 +32822,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -32104,6 +33476,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -32329,6 +33715,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -32777,6 +34177,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -33002,6 +34416,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -33276,6 +34704,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -33571,6 +35013,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -33929,6 +35385,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -34249,6 +35719,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -34358,6 +35842,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -34632,6 +36130,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -34919,6 +36431,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -35041,6 +36567,20 @@ Array [
       0,
       0,
     ],
+    "type": "strokeStyle",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
     "type": "fillStyle",
   },
   Object {
@@ -35150,6 +36690,20 @@ Array [
       0,
     ],
     "type": "stroke",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},
@@ -35608,6 +37162,20 @@ Array [
     "type": "fillText",
   },
   Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -35901,6 +37469,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "strokeStyle",
   },
   Object {
     "props": Object {},

@@ -13,6 +13,9 @@ class HOA {
         this.edgeOffsets = []
         /**@type {Position[]}*/
         this.startOffsets = []
+        this.acceptance = {
+            count: 0, str: ""
+        };
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
@@ -38,10 +41,13 @@ class HOA {
     /**
      * Adds starting state or state conjunction.
      * 
-     * @param {number[]} start - Array of numbers representing stateConj.
+     * @param {number[]} startConj - Array of numbers representing stateConj.
+     * @returns {Start} New start object.
      */
-    addStart(start) {
-        this.start.push(new Start(start));
+    addStart(startConj) {
+        let start = new Start(startConj)
+        this.start.push(start);
+        return start;
     }
     /**
      * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof.
@@ -171,13 +177,10 @@ class HOA {
         }
         for (const start of this.start) {
             let states = this.numbersToStates(start.stateConj);
-            console.log("states: " + JSON.stringify(states));
 
             let positions = EditorUtils.statesToVectors(states);
-            console.log("positions: " + JSON.stringify(positions));
 
             let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
-            console.log("Start anchor: " + anchor.toString());
             if (start.stateConj.length > 1) {
                 start.position = new Position(anchor.x, anchor.y);
             }
@@ -213,13 +216,14 @@ class HOA {
     }
     removeState(stateToRemove) {
         for (const state of this.states.values()) {
-            console.log("prefilter: " + JSON.stringify(state.edges));
             state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(stateToRemove.number); });
         }
         this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });
         this.states.delete(stateToRemove.number);
     }
-
+    removeStart(startToRemove) {
+        this.start = this.start.filter((start) => { return start != startToRemove });
+    }
 
     /**
      * Returns automaton in hoa format.

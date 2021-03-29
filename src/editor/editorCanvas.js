@@ -5,7 +5,10 @@ const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
 const Start = require('../hoaObject').Start;
+const Edge = require('../hoaObject').Edge;
+
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
+const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 
 class EditorCanvas {
@@ -27,10 +30,10 @@ class EditorCanvas {
         this.destinations = [];
         this.onStateChangedListeners = [];
         this.onComponentSelectedListeners = [];
+        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
 
     }
     resized() {
-        console.log("resizing outer");
         if (this.renderer) {
             this.renderer.resize();
             this.draw();
@@ -55,6 +58,7 @@ class EditorCanvas {
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
+        console.log(state.toString());
     }
     /**
      * Binds automaton to editor.
@@ -71,11 +75,11 @@ class EditorCanvas {
     }
 
     draw() {
-        if (this.selected instanceof State) {
-            this.renderer.draw(this.automaton, this.selected);
+        if (this.selected instanceof State || this.selected instanceof Edge) {
+            this.blockedAngles = this.renderer.draw(this.automaton, this.selected);
 
         } else {
-            this.renderer.draw(this.automaton);
+            this.blockedAngles = this.renderer.draw(this.automaton);
         }
     }
     getAutomaton() {
@@ -89,6 +93,10 @@ class EditorCanvas {
             else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
+            else if (this.editorState == EditorCanvas.stateEnum.IDLE) {
+                this.changeState(EditorCanvas.stateEnum.ADD_START);
+
+            }
         }
         else {
             if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
@@ -96,6 +104,9 @@ class EditorCanvas {
             }
             else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI) {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST);
+            }
+            else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
+                this.changeState(EditorCanvas.stateEnum.IDLE);
             }
         }
     }
@@ -106,11 +117,17 @@ class EditorCanvas {
             this.draw();
             this.setSelected(null);
         }
+        else if (this.selected instanceof Start) {
+            this.automaton.removeStart(this.selected);
+            this.draw();
+            this.setSelected(null);
+        }
     }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = e.clientX - boundingBox.left;
         let y = e.clientY - boundingBox.top;
+        document.activeElement.blur()
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE) {
@@ -124,11 +141,13 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                this.first.addEdge([this.selected.number], this.automaton);
-                this.automaton.SetImplicitOffsets();
+                this.addEdgePrompt(this.first, [this.selected.number]);
+            } else {
+                this.first = null;
+                this.destinations = [];
+                this.changeState(EditorCanvas.stateEnum.IDLE);
+                this.draw();
             }
-            this.changeState(EditorCanvas.stateEnum.IDLE);
-            this.draw();
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
             this.first = this.selected;
@@ -151,14 +170,10 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
             else {
-                this.first.addEdge(this.destinations);
-                this.first = null;
-                this.destinations = [];
-                this.changeState(EditorCanvas.stateEnum.IDLE);
+                this.addEdgePrompt(this.first, this.destinations);
             }
             this.setSelected(this.first);
             this.draw();
-            console.log("Should be drawing multi");
             this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
@@ -168,14 +183,39 @@ class EditorCanvas {
                 this.destinations.push(this.selected.number);
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
-
-            this.first.addEdge(this.destinations);
-            this.first = null;
-            this.destinations = [];
+            this.addEdgePrompt(this.first, this.destinations);
             this.changeState(EditorCanvas.stateEnum.IDLE);
             this.setSelected(this.first);
             this.draw();
         }
+    }
+    addEdgePrompt(from, to) {
+        this.first = null;
+        this.destinations = [];
+        let edge = from.addEdge(to);
+        this.automaton.SetImplicitOffsets();
+        if (from instanceof State) {
+            this.createEdgePromp(from, edge, to);
+        }
+    }
+    createEdgePromp(state, edge, destinations) {
+        let input = document.createElement("input");
+        let boundingBox = this.canvas.getBoundingClientRect();
+        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge)
+        input.setAttribute("type", "text");
+        input.setAttribute("id", "edgePrompt");
+        let x = boundingBox.left + position.x;
+        let y = boundingBox.top + position.y;
+        input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);;")
+        document.getElementsByTagName("body")[0].appendChild(input);
+        input.focus();
+        input.addEventListener("focusout", () => this.saveEdgePrompt(edge, input.value));
+        input.addEventListener("keydown", (e) => { if (e.key == "Enter") { this.saveEdgePrompt(edge, input.value) } })
+    }
+    saveEdgePrompt(edge, input) {
+        edge.setLabel(input);
+        document.getElementById("edgePrompt").remove()
+        this.draw();
     }
     doubleClick(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
@@ -183,8 +223,14 @@ class EditorCanvas {
         let y = e.clientY - boundingBox.top;
         e.preventDefault();
         e.stopPropagation();
-        this.changeState(EditorCanvas.stateEnum.IDLE);
-        this.addStateAtPosition(x, y);
+        if (this.editorState == EditorCanvas.stateEnum.IDLE) {
+            this.addStateAtPosition(x, y);
+        }
+        else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
+            console.log("adding start");
+            let start = this.automaton.addStart([]);
+            start.position = new Position(x, y);
+        }
         this.draw();
     }
     addStateAtPosition(x, y) {
@@ -200,7 +246,7 @@ class EditorCanvas {
             this.draw();
 
         }
-        else if (this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST) {
+        else if (this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST & this.editorState != EditorCanvas.stateEnum.ADD_START) {
             this.changeState(EditorCanvas.stateEnum.IDLE)
             this.draw();
         }
@@ -247,16 +293,16 @@ class EditorCanvas {
                 this.setSelected(state);
                 return
             }
-            for (const start of this.automaton.start) {
-                let offset = start.position;
-                let center = new Victor(offset.x, offset.y);
-                if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
-                    this.setSelected(start);
-                    return
-                }
+        }
+        for (const start of this.automaton.start) {
+            let offset = start.position;
+            let center = new Victor(offset.x, offset.y);
+            if (this.checkCircleCollision(center, this.circleSize / 5, position)) {
+                this.setSelected(start);
+                return
             }
         }
-        this.setSelected(null);
+        this.setSelected(this.checkEdgeLabelCollision(position));
     }
     setSelected(object) {
         this.selected = object;
@@ -269,7 +315,7 @@ class EditorCanvas {
             this.selected.position.x += dx;
             this.selected.position.y += dy;
         }
-        else {
+        else if (this.selected instanceof Start) {
             this.selected.position.x += dx;
             this.selected.position.y += dy;
 
@@ -281,6 +327,82 @@ class EditorCanvas {
         var dist = Math.sqrt(a * a + b * b);
         return dist < size
     }
+    checkEdgeLabelCollision(position) {
+        let stateLoopbacks = new Map();
+        for (const state of this.automaton.states.values()) {
+            let loopbacks = new Map();
+            for (const edgeIndex of state.edges.keys()) {
+                let edge = state.edges[edgeIndex];
+                if (edge.stateConj.length > 1) {
+                    if (this.checkMultiEdgeCollision(state, edgeIndex, position)) {
+                        return edge
+                    }
+                }
+                else if (edge.stateConj[0] == state.number) {
+                    loopbacks.set(edgeIndex, edge);
+                }
+                else {
+                    if (this.checkSingleEdgeCollision(state, edgeIndex, position)) {
+                        return edge
+                    }
+                }
+            }
+            stateLoopbacks.set(state, loopbacks);
+        }
+        for (let [state, loopbacks] of stateLoopbacks) {
+            let collision = this.checkLoopbackEdgeCollision(state, loopbacks, position);
+            if (collision != null) {
+                return collision;
+            }
+        }
+        return null;
+    }
+    checkLoopbackEdgeCollision(state, loopbacks, position) {
+        let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
+        let i = 0;
+        for (let [index, loopback] of loopbacks) {
+            let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
+            let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
+            let label = EditorUtils.getLabel(state, index, this.automaton.ap);
+            label = this.labelTranslator.translate(label);
+            if (this.checkLabelCollision(anchor, angle, label, position)) {
+                return loopback;
+            }
+            i++;
+        }
+        return null;
+    }
+    checkSingleEdgeCollision(state, edgeIndex, position) {
+        let edge = state.edges[edgeIndex];
+        let destination = this.automaton.getStateByNumber(edge.stateConj[0]);
+        let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge);
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        let perpendicular = EditorUtils.calculatePerpendicular(state.position, Victor.fromObject(destination.position));
+        let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
+        label = this.labelTranslator.translate(label);
+        return this.checkLabelCollision(anchor, labelAngle, label, position);
+    }
+    checkMultiEdgeCollision(state, edgeIndex, position) {
+        let edge = state.edges[edgeIndex];
+        let destinations = this.automaton.numbersToStates(edge.stateConj);
+        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations);
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
+        let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
+        label = this.labelTranslator.translate(label);
+        return this.checkLabelCollision(anchor, labelAngle, label, position);
+    }
+
+
+    checkLabelCollision(baseAnchor, angle, label, position, extraPadding = 0) {
+        let ctx = this.canvas.getContext("2d");
+        ctx.font = "20px Arial";
+        let [width, height] = EditorUtils.calculateLabelSize(ctx, label, extraPadding);
+        let pos = EditorUtils.calculateLabelAnchor(baseAnchor, angle, width, height)
+        let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
+        return EditorUtils.isPointWithinBounds(min, max, position);
+    }
 }
 EditorCanvas.stateEnum = {
     IDLE: 1,
@@ -289,6 +411,7 @@ EditorCanvas.stateEnum = {
     MOVE: 4,
     ADD_EDGE_MULTI_BEGIN: 5,
     ADD_EDGE_MULTI: 6,
-    ADD_EDGE_MULTI_LAST: 7
+    ADD_EDGE_MULTI_LAST: 7,
+    ADD_START: 8
 }
 exports.EditorCanvas = EditorCanvas;

@@ -38,7 +38,7 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      */
     draw(automaton, selected) {
-
+        console.log(JSON.stringify(automaton));
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
@@ -51,27 +51,28 @@ class EditorRenderer {
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
-                    this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap);
+                    this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap, selected);
                 }
                 else if (edge.stateConj[0] == state.number) {
                     loopbacks.set(edgeIndex, edge);
                 }
                 else {
-                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap);
+                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap, selected);
                 }
             }
             this.drawAccSetsOnState(state);
             stateLoopbacks.set(state, loopbacks);
         }
+        let blockedAnglesToReturn = JSON.parse(JSON.stringify(this.blockedAngles));
         for (let [state, loopbacks] of stateLoopbacks) {
-            this.drawLoop(state, loopbacks, automaton.ap);
+            this.drawLoop(state, loopbacks, automaton.ap, selected);
         }
         for (const state of automaton.states.values()) {
             if (state.name) {
                 this.drawStateLabels(state);
             }
-
         }
+        return blockedAnglesToReturn;
     }
 
     drawStateLabels(state) {
@@ -86,11 +87,13 @@ class EditorRenderer {
         this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
     drawStarts(automaton) {
+        this.ctx.strokeStyle = "#000000"
         for (const start of automaton.start) {
+            this.drawStartingPoint(start);
             if (start.stateConj.length > 1) {
                 this.drawMultiStart(start, automaton);
             }
-            else {
+            else if (start.stateConj.length == 1) {
                 this.drawMonoStart(start, automaton);
             }
         }
@@ -130,7 +133,8 @@ class EditorRenderer {
 
 
 
-    drawMultiEdge(originState, edgeIndex, destinationStates, aps) {
+    drawMultiEdge(originState, edgeIndex, destinationStates, aps, selected) {
+        this.ctx.strokeStyle = selected == originState.edges[edgeIndex] ? "#8888FF" : "#000000"
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
         let divider = 0;
@@ -152,7 +156,7 @@ class EditorRenderer {
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        let label = this.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, midpoint, labelAngle);
     }
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
@@ -207,12 +211,8 @@ class EditorRenderer {
      */
     drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = "20px Arial";
-        let textMeasurements = this.ctx.measureText(label);
-        let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
-        let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
-        let anchorOffset = new Victor(width, height).rotateToDeg(angle);
-        anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
-        let pos = anchor.clone().add(anchorOffset);
+        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding);
+        let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
         if (background) {
             let bgwidth = width * 2 - extraPadding;
             let bgheight = height * 2 - extraPadding - 20;
@@ -224,6 +224,7 @@ class EditorRenderer {
 
     }
     drawState(state, circleSize, selected) {
+        this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
         if (state.label) {
             this.ctx.beginPath();
@@ -250,33 +251,13 @@ class EditorRenderer {
             this.ctx.fill();
         }
     }
-    drawLoop(state, loopbacks, aps) {
+    drawLoop(state, loopbacks, aps, selected) {
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
         let i = 0;
         for (let [index, loopback] of loopbacks) {
-            let t = (i + 1) / (loopbacks.size + 1);
-            let distance = (interval[1] - interval[0]);
-            distance = distance > 0 ? distance : distance + 360;
-            let angle = interval[0] + distance * t
-            let left = new Victor(1, 0)
-                .rotateDeg(angle - 14)
-                .multiplyScalar(this.circleSize)
-                .add(Victor.fromObject(state.position));
-            let right = new Victor(1, 0)
-                .rotateDeg(angle + 16)
-                .multiplyScalar(this.circleSize)
-                .add(Victor.fromObject(state.position
-                ));
-            let upperLeft = new Victor(1, 0)
-                .rotateDeg(angle - 20)
-                .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(state.position
-                ));
-            let upperRight = new Victor(1, 0)
-                .rotateDeg(angle + 20)
-                .multiplyScalar(this.circleSize * 4)
-                .add(Victor.fromObject(state.position
-                ));
+            this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
+            let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
             this.addBlockedAngle(state.number, state.position, left);
             this.addBlockedAngle(state.number, state.position, right);
             this.ctx.beginPath();
@@ -286,7 +267,7 @@ class EditorRenderer {
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = this.getLabel(state, index, aps);
+            let label = EditorUtils.getLabel(state, index, aps);
             this.drawLabelEdge(label, anchor, angle);
             i++;
         }
@@ -299,7 +280,9 @@ class EditorRenderer {
      * @param {State} destinationState - State to which the edge leads.
      * @param {any[]} aps - Array of atomic propositions. 
      */
-    drawEdge(originState, edgeIndex, destinationState, aps) {
+    drawEdge(originState, edgeIndex, destinationState, aps, selected) {
+        let edge = originState.edges[edgeIndex];
+        this.ctx.strokeStyle = edge == selected ? "#8888FF" : "#000000"
         let originVector = Victor.fromObject(originState.position);
         let destinationVector = Victor.fromObject(destinationState.position);
         let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, originState.edges[edgeIndex].offset);
@@ -312,11 +295,11 @@ class EditorRenderer {
         this.addBlockedAngle(originState.number, originVector, fromPoint);
         this.addBlockedAngle(destinationState.number, destinationVector, toPoint);
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
-        this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, originState.edges[edgeIndex].accSets)
+        this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
-        let label = this.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
         this.drawLabelEdge(label, anchor, angle);
     }
     drawEdgeBetweenPositions(fromPoint, position) {
@@ -355,9 +338,6 @@ class EditorRenderer {
         let originVector = Victor.fromObject(start.position);
         let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
         this.ctx.fillStyle = "#000000";
-        this.ctx.beginPath();
-        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
-        this.ctx.fill();
         for (const destinationState of automaton.numbersToStates(start.stateConj)) {
             this.drawMultiEdgeElement(start, destinationState, midpoint, 0, 0);
         }
@@ -369,12 +349,8 @@ class EditorRenderer {
      * @param {HOA} automaton - The automaton.
      */
     drawMonoStart(start, automaton) {
-        let statePosition = Victor.fromObject(automaton.getStateByNumber(start.stateConj[0]).position);
         let originVector = Victor.fromObject(start.position);
-        this.ctx.fillStyle = "#000000";
-        this.ctx.beginPath();
-        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
-        this.ctx.fill();
+        let statePosition = Victor.fromObject(automaton.getStateByNumber(start.stateConj[0]).position);
         let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, this.circleSize);
         this.ctx.beginPath();
         this.ctx.moveTo(originVector.x, originVector.y);
@@ -382,6 +358,13 @@ class EditorRenderer {
         this.ctx.stroke();
         this.addBlockedAngle(start.stateConj[0], statePosition, destinationVector);
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
+    }
+    drawStartingPoint(start) {
+        let originVector = Victor.fromObject(start.position);
+        this.ctx.fillStyle = "#000000";
+        this.ctx.beginPath();
+        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
+        this.ctx.fill();
     }
 
 
@@ -438,37 +421,8 @@ class EditorRenderer {
         }
         this.blockedAngles[stateIndex].push(angle);
     }
-    calculateImplicitLabel(edgeIndex, propositionCount) {
-        let result = "";
-        for (let i = 0; i < propositionCount; i++) {
-            let mask = 1 << i;
-            if (!(mask & edgeIndex)) {
-                result += "!";
-            }
-            result += i
-            if (i + 1 < propositionCount) {
-                result += "&"
-            }
-        }
-        return result;
-    }
 
-    /**
-     * Gets label of given edge.
-     * 
-     * @param {State} state - State from which the edge originates.
-     * @param {number} edgeIndex - Index of the edge.
-     * @param {any[]} aps - Atomic propositions.
-     * @returns {Victor[]} Vectors with state positions.
-     */
-    getLabel(state, edgeIndex, aps) {
-        if (state.edges[edgeIndex].label) {
-            return state.edges[edgeIndex].label;
-        }
-        if (state.edges.length == Math.pow(2, aps.length) && !state.label) {
-            return this.calculateImplicitLabel(edgeIndex, aps.length);
-        }
-        return "";
-    }
+
+
 }
 exports.EditorRenderer = EditorRenderer

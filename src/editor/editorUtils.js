@@ -193,6 +193,18 @@ class EditorUtils {
         let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
         return EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
     }
+    static calculateLabelAnchor(anchor, angle, width, height) {
+        let anchorOffset = new Victor(width, height).rotateToDeg(angle);
+        anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
+        return anchor.clone().add(anchorOffset);
+    }
+    static calculateLabelSize(ctx, label, extraPadding) {
+        let textMeasurements = ctx.measureText(label);
+        let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
+        let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
+        return [width, height]
+    }
+
     static calculateMultiLabelPosition(originState, destinationStates) {
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
@@ -214,6 +226,18 @@ class EditorUtils {
         let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks, i, interval);
         let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
         return EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
+    }
+    static calculateLabelBounds(anchor, width, height, extraPadding) {
+        let bgwidth = width * 2 - extraPadding;
+        let bgheight = height * 2 - extraPadding - 20;
+        return [new Victor(anchor.x - bgwidth / 2, anchor.y - bgheight / 2), new Victor(anchor.x + bgwidth / 2, anchor.y + bgheight / 2)]
+    }
+    static isPointWithinBounds(min, max, point) {
+        let xlow = min.x < point.x;
+        let xhigh = max.x > point.x;
+        let ylow = min.y < point.y
+        let yhigh = max.y > point.y
+        return xlow && xhigh && ylow && yhigh;
     }
 }
 exports.EditorUtils = EditorUtils;

@@ -306,6 +306,44 @@ class EditorCanvas {
         var dist = Math.sqrt(a * a + b * b);
         return dist < size
     }
+    checkEdgeLabelCollision() {
+        let stateLoopbacks = new Map();
+        for (const state of this.automaton.states.values()) {
+            let loopbacks = new Map();
+            for (const edgeIndex of state.edges.keys()) {
+                let edge = state.edges[edgeIndex];
+                if (edge.stateConj.length > 1) {
+                    this.checkMultiEdgeCollision(state, edge);
+                }
+                else if (edge.stateConj[0] == state.number) {
+                    loopbacks.set(edgeIndex, edge);
+                }
+                else {
+                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap);
+                }
+            }
+            this.drawAccSetsOnState(state);
+            stateLoopbacks.set(state, loopbacks);
+        }
+        //let blockedAnglesToReturn = this.blockedAngles;
+        for (let [state, loopbacks] of stateLoopbacks) {
+            this.drawLoop(state, loopbacks, automaton.ap);
+        }
+
+    }
+    checkMultiEdgeCollision(state, edge, position) {
+        let destinations = this.automaton.numbersToStates(edge.stateConj);
+        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations);
+        this.checkLabelCollision(anchor, 0, edge.label, position);
+    }
+
+    checkLabelCollision(baseAnchor, angle, label, position, extraPadding = 0) {
+        this.ctx.font = "20px Arial";
+        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding);
+        let pos = EditorUtils.calculateLabelAnchor(baseAnchor, angle, width, height)
+        let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
+        return EditorUtils.isPointWithinBounds(min, max, position);
+    }
 }
 EditorCanvas.stateEnum = {
     IDLE: 1,

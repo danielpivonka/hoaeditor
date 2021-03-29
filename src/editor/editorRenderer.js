@@ -208,12 +208,8 @@ class EditorRenderer {
      */
     drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = "20px Arial";
-        let textMeasurements = this.ctx.measureText(label);
-        let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
-        let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
-        let anchorOffset = new Victor(width, height).rotateToDeg(angle);
-        anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
-        let pos = anchor.clone().add(anchorOffset);
+        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding);
+        let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
         if (background) {
             let bgwidth = width * 2 - extraPadding;
             let bgheight = height * 2 - extraPadding - 20;

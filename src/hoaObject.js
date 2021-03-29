@@ -41,10 +41,13 @@ class HOA {
     /**
      * Adds starting state or state conjunction.
      * 
-     * @param {number[]} start - Array of numbers representing stateConj.
+     * @param {number[]} startConj - Array of numbers representing stateConj.
+     * @returns {Start} New start object.
      */
-    addStart(start) {
-        this.start.push(new Start(start));
+    addStart(startConj) {
+        let start = new Start(startConj)
+        this.start.push(start);
+        return start;
     }
     /**
      * Adds an alias to a label, atomic proposition, already existing alias, or a group of thereof.
@@ -218,7 +221,9 @@ class HOA {
         this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });
         this.states.delete(stateToRemove.number);
     }
-
+    removeStart(startToRemove) {
+        this.start = this.start.filter((start) => { return start != startToRemove });
+    }
 
     /**
      * Returns automaton in hoa format.

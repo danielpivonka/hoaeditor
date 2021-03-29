@@ -38,7 +38,7 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      */
     draw(automaton, selected) {
-        console.log(JSON.stringify(selected));
+        console.log(JSON.stringify(automaton));
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
@@ -63,16 +63,16 @@ class EditorRenderer {
             this.drawAccSetsOnState(state);
             stateLoopbacks.set(state, loopbacks);
         }
-        //let blockedAnglesToReturn = this.blockedAngles;
+        let blockedAnglesToReturn = JSON.parse(JSON.stringify(this.blockedAngles));
         for (let [state, loopbacks] of stateLoopbacks) {
-            this.drawLoop(state, loopbacks, automaton.ap);
+            this.drawLoop(state, loopbacks, automaton.ap, selected);
         }
         for (const state of automaton.states.values()) {
             if (state.name) {
                 this.drawStateLabels(state);
             }
         }
-        // return blockedAnglesToReturn;
+        return blockedAnglesToReturn;
     }
 
     drawStateLabels(state) {
@@ -87,11 +87,13 @@ class EditorRenderer {
         this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
     drawStarts(automaton) {
+        this.ctx.strokeStyle = "#000000"
         for (const start of automaton.start) {
+            this.drawStartingPoint(start);
             if (start.stateConj.length > 1) {
                 this.drawMultiStart(start, automaton);
             }
-            else {
+            else if (start.stateConj.length == 1) {
                 this.drawMonoStart(start, automaton);
             }
         }
@@ -250,10 +252,10 @@ class EditorRenderer {
         }
     }
     drawLoop(state, loopbacks, aps, selected) {
-        this.ctx.strokeStyle = selected ? "#8888FF" : "#000000"
         let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
         let i = 0;
         for (let [index, loopback] of loopbacks) {
+            this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
             let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
             this.addBlockedAngle(state.number, state.position, left);
@@ -336,9 +338,6 @@ class EditorRenderer {
         let originVector = Victor.fromObject(start.position);
         let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(originVector)));
         this.ctx.fillStyle = "#000000";
-        this.ctx.beginPath();
-        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
-        this.ctx.fill();
         for (const destinationState of automaton.numbersToStates(start.stateConj)) {
             this.drawMultiEdgeElement(start, destinationState, midpoint, 0, 0);
         }
@@ -350,12 +349,8 @@ class EditorRenderer {
      * @param {HOA} automaton - The automaton.
      */
     drawMonoStart(start, automaton) {
-        let statePosition = Victor.fromObject(automaton.getStateByNumber(start.stateConj[0]).position);
         let originVector = Victor.fromObject(start.position);
-        this.ctx.fillStyle = "#000000";
-        this.ctx.beginPath();
-        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
-        this.ctx.fill();
+        let statePosition = Victor.fromObject(automaton.getStateByNumber(start.stateConj[0]).position);
         let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, this.circleSize);
         this.ctx.beginPath();
         this.ctx.moveTo(originVector.x, originVector.y);
@@ -363,6 +358,13 @@ class EditorRenderer {
         this.ctx.stroke();
         this.addBlockedAngle(start.stateConj[0], statePosition, destinationVector);
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
+    }
+    drawStartingPoint(start) {
+        let originVector = Victor.fromObject(start.position);
+        this.ctx.fillStyle = "#000000";
+        this.ctx.beginPath();
+        this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
+        this.ctx.fill();
     }
 
 

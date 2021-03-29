@@ -12,7 +12,7 @@ class LabelTranslator {
             string = string.replace(this.aliasRegex, this.aliasReplacer.bind(this));
         }
         string = string.replace(this.apRegex, this.apReplacer.bind(this));
-        return string || "test";
+        return string || "";
     }
 
     aliasReplacer(substring) {

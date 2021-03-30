@@ -38,7 +38,6 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      */
     draw(automaton, selected) {
-        console.log(JSON.stringify(automaton));
         this.blockedAngles = [];
         this.drawnEdges = [];
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);

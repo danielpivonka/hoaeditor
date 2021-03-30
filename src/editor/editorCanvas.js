@@ -58,7 +58,6 @@ class EditorCanvas {
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
-        console.log(state.toString());
     }
     /**
      * Binds automaton to editor.
@@ -119,6 +118,12 @@ class EditorCanvas {
         }
         else if (this.selected instanceof Start) {
             this.automaton.removeStart(this.selected);
+            this.draw();
+            this.setSelected(null);
+        } else if (this.selected instanceof Edge) {
+            for (const state of this.automaton.states.values()) {
+                state.edges = state.edges.filter(edge => edge != this.selected);
+            }
             this.draw();
             this.setSelected(null);
         }
@@ -227,7 +232,6 @@ class EditorCanvas {
             this.addStateAtPosition(x, y);
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
-            console.log("adding start");
             let start = this.automaton.addStart([]);
             start.position = new Position(x, y);
         }
@@ -241,7 +245,7 @@ class EditorCanvas {
     mouseUp(e) {
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == EditorCanvas.stateEnum.SELECTED) {
+        if (this.editorState == EditorCanvas.stateEnum.SELECTED && !(this.selected instanceof Edge)) {
             this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
             this.draw();
 

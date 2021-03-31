@@ -143,26 +143,23 @@ class EditorUtils {
         intervals.sort((a, b) => { return EditorUtils.angleDistance(a[0], a[1]) - EditorUtils.angleDistance(b[0], b[1]) });
         return intervals[offset];
     }
-    static calculateLoopbackPoints(state, angle, circleSize) {
+    static calculateLoopbackPoints(state, angle, circleSize, offset = new Victor(0, 0)) {
         let left = new Victor(1, 0)
             .rotateDeg(angle - 14)
             .multiplyScalar(circleSize)
-            .add(Victor.fromObject(state.position));
+            .add(state.position).add(offset);
         let right = new Victor(1, 0)
             .rotateDeg(angle + 16)
             .multiplyScalar(circleSize)
-            .add(Victor.fromObject(state.position
-            ));
+            .add(state.position).add(offset);
         let upperLeft = new Victor(1, 0)
             .rotateDeg(angle - 20)
             .multiplyScalar(circleSize * 4)
-            .add(Victor.fromObject(state.position
-            ));
+            .add(state.position).add(offset);
         let upperRight = new Victor(1, 0)
             .rotateDeg(angle + 20)
             .multiplyScalar(circleSize * 4)
-            .add(Victor.fromObject(state.position
-            ));
+            .add(state.position).add(offset);
         return [left, right, upperLeft, upperRight]
     }
     static calculateImplicitLoopbackAngle(loopbackCount, loopbackIndex, interval) {

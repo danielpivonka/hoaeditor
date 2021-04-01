@@ -214,8 +214,8 @@ class EditorCanvas {
         let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge);
         input.setAttribute("type", "text");
         input.setAttribute("id", "edgePrompt");
-        let x = boundingBox.left + position.x - this.offset.x;
-        let y = boundingBox.top + position.y - this.offset.y;
+        let x = boundingBox.left + position.x + this.offset.x;
+        let y = boundingBox.top + position.y + this.offset.y;
         input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);;")
         document.getElementsByTagName("body")[0].appendChild(input);
         input.focus();

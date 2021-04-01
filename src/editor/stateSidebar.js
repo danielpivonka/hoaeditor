@@ -1,4 +1,3 @@
-const State = require('../hoaObject').State;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 
 class StateSidebar {

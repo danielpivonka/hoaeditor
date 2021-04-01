@@ -171,7 +171,7 @@ class HOA {
                 let currentColumn = positionsSet % columns;
                 let x = width * (1 + currentColumn) / (columns + 1);
                 let y = height * (1 + currentRow) / (rows + 1);
-                state.position = new Position(x, y);
+                state.position = new Victor(x, y);
                 positionsSet++;
             }
         }
@@ -182,10 +182,10 @@ class HOA {
 
             let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
             if (start.stateConj.length > 1) {
-                start.position = new Position(anchor.x, anchor.y);
+                start.position = new Victor(anchor.x, anchor.y);
             }
             else {
-                start.position = new Position(anchor.x, anchor.y + 50);
+                start.position = new Victor(anchor.x, anchor.y + 50);
             }
         }
     }
@@ -312,7 +312,7 @@ class State {
         this.name = name;
     }
     setPosition(x, y) {
-        this.position = new Position(x, y);
+        this.position = new Victor(x, y);
     }
     addAccSet(setNumber) {
         this.accSets.push(setNumber);
@@ -397,20 +397,7 @@ class Start {
     }
 
 }
-class Position {
-    /**
-     * Constructs new position.
-     * 
-     * @param {number} x - X coord.
-     * @param {number} y - Y coord.
-     */
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
 exports.HOA = HOA;
 exports.State = State;
 exports.Edge = Edge;
-exports.Position = Position;
 exports.Start = Start;

@@ -137,7 +137,8 @@ class EditorRenderer {
 
 
     drawMultiEdge(originState, edgeIndex, destinationStates, aps, selected) {
-        this.ctx.strokeStyle = selected == originState.edges[edgeIndex] ? "#8888FF" : "#000000"
+        let edge = originState.edges[edgeIndex];
+        this.ctx.strokeStyle = selected == edge ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset);
         let midpoint = new Victor(0, 0);
         let divider = 0;
@@ -153,6 +154,7 @@ class EditorRenderer {
         let angle = midpoint.angleDeg();
         midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
+        midpoint.add(edge.offset);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
             this.drawMultiEdgeElement(originState, destination, midpoint, angle, this.circleSize);

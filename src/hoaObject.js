@@ -198,18 +198,18 @@ class HOA {
                 let edgeDirection = edge.stateConj[0];
                 let offset = ++count[edgeDirection];
                 if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
-                    edge.offset = offset * 30
+                    edge.offset.x = offset * 30
                 }
                 else if (count[edgeDirection] > 1 || this.getEdgeCount(state.number, edgeDirection) > 1) { //multiple edges to state without reverse edge
                     if (offset % 2) {
-                        edge.offset = ((offset + 1) / 2) * (-40);
+                        edge.offset.x = ((offset + 1) / 2) * (-40);
                     }
                     else {
-                        edge.offset = (offset / 2) * 40;
+                        edge.offset.x = (offset / 2) * 40;
                     }
                 }
                 else {
-                    edge.offset = 0;
+                    edge.offset.x = 0;
                 }
             }
         }
@@ -324,7 +324,7 @@ class State {
      * @returns {Edge} The newly created edge.
      */
     addEdge(stateConj) {
-        let edge = new Edge(stateConj);
+        let edge = new Edge(stateConj, this.number);
         this.edges.push(edge);
         return edge;
     }
@@ -357,11 +357,13 @@ class Edge {
      * Constructs a new edge with given destinations.
      * 
      * @param {number[]} stateConj - Array of numbers representing stateConj.
+     * @param {int} parent - number of parent state.
      */
-    constructor(stateConj) {
+    constructor(stateConj, parent) {
         this.stateConj = stateConj;
         this.accSets = [];
-        this.offset = 0;
+        this.parent = parent;
+        this.offset = new Victor(0, 0);
     }
     setLabel(label) {
         this.label = label;

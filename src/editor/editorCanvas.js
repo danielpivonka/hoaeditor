@@ -338,6 +338,23 @@ class EditorCanvas {
             this.selected.position.y += dy;
 
         }
+        else if (this.selected instanceof Edge) {
+            if (this.selected.stateConj.length > 1) {
+                this.moveMultiEdge(this.selected, dx, dy)
+            } else {
+                this.moveMonoEdge(this.selected, dx, dy);
+            }
+        }
+    }
+
+    moveMonoEdge(edge, dx, dy) {
+        let perpendicular = EditorUtils.calculatePerpendicular(this.automaton.getStateByNumber(edge.stateConj[0]).position, this.automaton.getStateByNumber(edge.parent).position)
+        let movementVector = new Victor(dx, dy).rotateDeg(-perpendicular.angleDeg());
+        edge.offset.add(movementVector);
+    }
+    moveMultiEdge(edge, dx, dy) {
+
+        edge.offset.add(new Victor(dx, dy));
     }
     checkCircleCollision(center, size, point) {
         let a = center.x - point.x;
@@ -405,6 +422,7 @@ class EditorCanvas {
         let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
         let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations);
+        anchor.add(edge.offset);
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()

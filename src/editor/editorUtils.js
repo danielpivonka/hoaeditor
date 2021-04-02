@@ -6,16 +6,15 @@ class EditorUtils {
      * 
      * @param {Victor} p1 - First point.
      * @param {Victor} p2 - Second point.
-     * @param {number} offset - Offset in pixels, perpendicular to the line form p1 to p2.
+     * @param {Victor} offset - Offset in perpendicular direction.
      * @returns {Victor} Vector between the two points with given offset.
      */
     static calculateMiddleWithOffset(p1, p2, offset) {
         let dir = p1.clone().subtract(p2).multiplyScalar(0.5);
         let midpoint = dir.clone().add(p2);
         let perpendicular = new Victor(dir.y, -dir.x).normalize();
-        perpendicular.multiplyScalar(offset);
-        perpendicular.add(midpoint);
-        return perpendicular;
+        let angledOffset = offset.clone().rotateDeg(perpendicular.angleDeg()).add(midpoint);
+        return angledOffset;
     }
     /**
      * Clamps the given value between the min and max values.

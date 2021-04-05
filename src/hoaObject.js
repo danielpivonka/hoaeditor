@@ -140,7 +140,6 @@ class HOA {
      */
     addState(number) {
         if (this.states.get(number)) {
-            console.log("you done messed up");
             //TODO error message
         }
         else {
@@ -197,7 +196,10 @@ class HOA {
             for (const edge of state.edges) {
                 let edgeDirection = edge.stateConj[0];
                 let offset = ++count[edgeDirection];
-                if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
+                if (edge.stateConj.length > 1) {
+                    edge.offset.x = 0;
+                }
+                else if (this.getEdgeCount(edgeDirection, state.number)) { //single or multiple edges to state with reverse edge(s)
                     edge.offset.x = offset * 30
                 }
                 else if (count[edgeDirection] > 1 || this.getEdgeCount(state.number, edgeDirection) > 1) { //multiple edges to state without reverse edge
@@ -211,6 +213,104 @@ class HOA {
                 else {
                     edge.offset.x = 0;
                 }
+            }
+        }
+    }
+    calculateBlockedAngles(circleSize) {
+        let blockedAngles = [];
+        for (const state of this.states.values()) {
+            blockedAngles[state.number] = [];
+        }
+        for (const state of this.states.values()) {
+            for (const edge of state.edges) {
+                if (edge.stateConj.length > 1) {
+                    let originVector = state.position;
+                    let destinationStates = this.numbersToStates(edge.stateConj);
+                    let midpoint = EditorUtils.calculateMultiLabelPosition(state, destinationStates);
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, circleSize);
+                    for (const destinationState of destinationStates) {
+                        if (destinationState.number != state.number) {
+                            let destinationVector = destinationState.position;
+                            let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                            blockedAngles[state.number].push(EditorUtils.calculateBlockedAngle(fromPoint, originVector));
+                            blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
+                        }
+                    }
+                }
+                else if (edge.stateConj[0] != state.number) {
+                    let destinationState = this.getStateByNumber(edge.stateConj[0]);
+                    let originVector = state.position;
+                    let destinationVector = destinationState.position;
+                    let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, edge.offset);
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, circleSize);
+                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                    blockedAngles[state.number].push(EditorUtils.calculateBlockedAngle(fromPoint, originVector));
+                    blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
+                }
+            }
+        }
+
+        for (const start of this.start) {
+            if (start.stateConj.length > 1) {
+                let destinationStates = this.numbersToStates(start.stateConj);
+                let statePositions = EditorUtils.statesToPositions(destinationStates);
+                let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(start.position)));
+                for (const destinationState of destinationStates) {
+                    let destinationVector = destinationState.position;
+                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                    blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
+                }
+            }
+            else {
+                let stateNumber = start.stateConj[0];
+                let statePosition = this.getStateByNumber(stateNumber).position;
+                let originVector = start.position;
+                let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, circleSize);
+                let angle = EditorUtils.calculateBlockedAngle(destinationVector, statePosition);
+                console.log("adding mono start: " + angle);
+                console.log("stateNumber: " + stateNumber);
+                console.log("destinationVector: " + destinationVector.toString());
+                console.log("statePosition: " + statePosition.toString());
+
+                blockedAngles[stateNumber].push(angle);
+            }
+        }
+        return blockedAngles;
+    }
+    calculateLoopbackAngles() {
+        let blockedAngles = [];
+        for (const state of this.states.values()) {
+            blockedAngles[state.number] = [];
+            for (const edge of state.edges) {
+                if (edge.stateConj.length == 1 && edge.stateConj[0] == state.number) {
+                    let baseAngle = edge.offset.angleDeg();
+                    blockedAngles[state.number].push(EditorUtils.angle360(baseAngle + 16));
+                    blockedAngles[state.number].push(EditorUtils.angle360(baseAngle - 14));
+                }
+
+            }
+        }
+        return blockedAngles;
+    }
+    calculateLoopbackAnchors(blockedAngles, circleSize) {
+        let stateLoopbacks = new Map();
+        for (const state of this.states.values()) {
+            let loopbacks = [];
+            for (const edgeIndex of state.edges.keys()) {
+                let edge = state.edges[edgeIndex];
+                if (edge.stateConj.length == 1 && edge.stateConj[0] == state.number) {
+                    loopbacks.push(edge);
+                }
+            }
+            stateLoopbacks.set(state, loopbacks);
+        }
+        for (let [state, loopbacks] of stateLoopbacks) {
+            let interval = EditorUtils.getFreeAngleInterval(blockedAngles[state.number]);
+            let i = 0;
+            for (const loopback of loopbacks) {
+                let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.length, i, interval);
+                loopback.offset = new Victor(1, 0).rotateDeg(angle).multiplyScalar(circleSize * 4);
+                i++;
             }
         }
     }

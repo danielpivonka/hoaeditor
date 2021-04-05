@@ -21,7 +21,6 @@ class EditorRenderer {
         this.circleSize = 25;
         /**@type {number}*/
         this.drawnEdges = [];
-        this.blockedAngles = [];
         this.labelTranslator = null;
         this.offset = new Victor(0, 0);
     }
@@ -38,10 +37,9 @@ class EditorRenderer {
      * @param {HOA} automaton - Automaton object.
      * @param {Victor} offset - by how much should the canvas be offset.
      * @param {Object} selected - the selected object.
-     * @returns {number[][]} blockedAngles - angles blocked before loopbacks were drawn.
+     * @param {number[][]} angles - blocked angles.
      */
-    draw(automaton, offset, selected) {
-        this.blockedAngles = [];
+    draw(automaton, offset, angles, selected) {
         this.drawnEdges = [];
         this.offset = offset;
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
@@ -54,6 +52,7 @@ class EditorRenderer {
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
+                    console.log("before drawmultiedge: " + edge.offset.toString());
                     this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap, selected);
                 }
                 else if (edge.stateConj[0] == state.number) {
@@ -66,20 +65,18 @@ class EditorRenderer {
             this.drawAccSetsOnState(state);
             stateLoopbacks.set(state, loopbacks);
         }
-        let blockedAnglesToReturn = JSON.parse(JSON.stringify(this.blockedAngles));
         for (let [state, loopbacks] of stateLoopbacks) {
             this.drawLoop(state, loopbacks, automaton.ap, selected);
         }
         for (const state of automaton.states.values()) {
             if (state.name) {
-                this.drawStateLabels(state);
+                this.drawStateLabels(state, angles);
             }
         }
-        return blockedAnglesToReturn;
     }
 
-    drawStateLabels(state) {
-        let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
+    drawStateLabels(state, blockedAngles) {
+        let interval = EditorUtils.getFreeAngleInterval(blockedAngles[state.number]);
         let distance = (interval[1] - interval[0]);
         distance = distance > 0 ? distance : distance + 360;
         let angle = interval[0] + distance * 0.5;
@@ -151,10 +148,10 @@ class EditorRenderer {
             midpoint.add(directionVector);
             divider++;
         }
+        midpoint.add(edge.offset);
         let angle = midpoint.angleDeg();
         midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
-        midpoint.add(edge.offset);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
             this.drawMultiEdgeElement(originState, destination, midpoint, angle, this.circleSize);
@@ -197,8 +194,6 @@ class EditorRenderer {
             this.ctx.moveTo(fromPoint.x, fromPoint.y);
             this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
             this.ctx.stroke();
-            this.addBlockedAngle(originState.number, originVector, fromPoint);
-            this.addBlockedAngle(destination.number, destinationVector, toPoint);
             this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint);
         }
     }
@@ -255,14 +250,9 @@ class EditorRenderer {
         }
     }
     drawLoop(state, loopbacks, aps, selected) {
-        let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
-        let i = 0;
         for (let [index, loopback] of loopbacks) {
             this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
-            let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
-            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize, this.offset);
-            this.addBlockedAngle(state.number, state.position.clone().add(this.offset), left);
-            this.addBlockedAngle(state.number, state.position.clone().add(this.offset), right);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, loopback.offset, this.circleSize, this.offset);
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
@@ -271,8 +261,7 @@ class EditorRenderer {
             this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = EditorUtils.getLabel(state, index, aps);
-            this.drawLabelEdge(label, anchor, angle);
-            i++;
+            this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
         }
     }
     /**
@@ -295,8 +284,6 @@ class EditorRenderer {
         this.ctx.moveTo(fromPoint.x, fromPoint.y);
         this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
         this.ctx.stroke();
-        this.addBlockedAngle(originState.number, originVector, fromPoint);
-        this.addBlockedAngle(destinationState.number, destinationVector, toPoint);
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
         this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
@@ -362,7 +349,6 @@ class EditorRenderer {
         this.ctx.moveTo(originVector.x, originVector.y);
         this.ctx.lineTo(destinationVector.x, destinationVector.y);
         this.ctx.stroke();
-        this.addBlockedAngle(start.stateConj[0], statePosition, destinationVector);
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
     drawStartingPoint(start) {
@@ -416,19 +402,5 @@ class EditorRenderer {
         this.ctx.fillStyle = 'white';
         this.ctx.fillText(label, point.x, point.y);
     }
-    addBlockedAngle(stateIndex, stateCenter, pointOnState) {
-        if (!this.blockedAngles[stateIndex]) {
-            this.blockedAngles[stateIndex] = [];
-        }
-        let dirFromCenter = pointOnState.clone().subtract(stateCenter);
-        let angle = dirFromCenter.horizontalAngleDeg();
-        if (angle < 0) {
-            angle += 360;
-        }
-        this.blockedAngles[stateIndex].push(angle);
-    }
-
-
-
 }
 exports.EditorRenderer = EditorRenderer

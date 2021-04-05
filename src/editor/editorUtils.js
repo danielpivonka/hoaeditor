@@ -90,6 +90,18 @@ class EditorUtils {
         let y = b0 * p0.y + b1 * p1.y + b2 * p2.y + b3 * p3.y;
         return new Victor(x, y);
     }
+    static calculateBlockedAngle(pointOnState, stateCenter) {
+        let dirFromCenter = pointOnState.clone().subtract(stateCenter);
+        let angle = dirFromCenter.horizontalAngleDeg();
+
+        return this.angle360(angle);
+    }
+    static angle360(angle) {
+        if (angle < 0) {
+            angle += 360;
+        }
+        return angle
+    }
     /**
      * Calculates distance between two angles.
      * 
@@ -142,7 +154,8 @@ class EditorUtils {
         intervals.sort((a, b) => { return EditorUtils.angleDistance(a[0], a[1]) - EditorUtils.angleDistance(b[0], b[1]) });
         return intervals[offset];
     }
-    static calculateLoopbackPoints(state, angle, circleSize, offset = new Victor(0, 0)) {
+    static calculateLoopbackPoints(state, edgeOffset, circleSize, offset = new Victor(0, 0)) {
+        let angle = edgeOffset.angleDeg();
         let left = new Victor(1, 0)
             .rotateDeg(angle - 14)
             .multiplyScalar(circleSize)
@@ -153,11 +166,11 @@ class EditorUtils {
             .add(state.position).add(offset);
         let upperLeft = new Victor(1, 0)
             .rotateDeg(angle - 20)
-            .multiplyScalar(circleSize * 4)
+            .multiplyScalar(edgeOffset.length())
             .add(state.position).add(offset);
         let upperRight = new Victor(1, 0)
             .rotateDeg(angle + 20)
-            .multiplyScalar(circleSize * 4)
+            .multiplyScalar(edgeOffset.length())
             .add(state.position).add(offset);
         return [left, right, upperLeft, upperRight]
     }
@@ -168,18 +181,15 @@ class EditorUtils {
         return interval[0] + distance * t
     }
 
-    static calculateLabelPosition(originState, destinationStates, edge, i = 0) {
-
+    static calculateLabelPosition(originState, destinationStates, edge, circleSize) {
+        JSON.stringify(edge);
         if (edge.stateConj.count > 1) {
-            return this.calculateMultiLabelPosition(originState, destinationStates);
+            return this.calculateMultiLabelPosition(originState, destinationStates, edge.offset);
         }
         if (originState.number == destinationStates[0].number) {
-            this.calculateLoopbackLabelPosition(originState, [edge], i, i)
+            return this.calculateLoopbackLabelPosition(originState, edge.offset, circleSize)
         }
         return this.calculateSingleLabelPosition(originState, destinationStates[0], edge);
-
-
-
     }
     static calculateSingleLabelPosition(originState, destinationState, edge) {
         let originVector = Victor.fromObject(originState.position);
@@ -201,7 +211,7 @@ class EditorUtils {
         return [width, height]
     }
 
-    static calculateMultiLabelPosition(originState, destinationStates) {
+    static calculateMultiLabelPosition(originState, destinationStates, offset = new Victor(0, 0)) {
         let originVector = Victor.fromObject(originState.position);
         let midpoint = new Victor(0, 0);
         let divider = 0;
@@ -214,13 +224,13 @@ class EditorUtils {
             midpoint.add(directionVector);
             divider++;
         }
+        midpoint.add(offset);
         midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
         return midpoint;
     }
-    static calculateLoopbackLabelPosition(state, loopbacks, interval, i) {
-        let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks, i, interval);
-        let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
+    static calculateLoopbackLabelPosition(state, offset, circleSize) {
+        let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, offset, circleSize);
         return EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
     }
     static calculateLabelBounds(anchor, width, height, extraPadding = 0) {

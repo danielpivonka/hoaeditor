@@ -226,7 +226,7 @@ class HOA {
                 if (edge.stateConj.length > 1) {
                     let originVector = state.position;
                     let destinationStates = this.numbersToStates(edge.stateConj);
-                    let midpoint = EditorUtils.calculateMultiLabelPosition(state, destinationStates);
+                    let midpoint = EditorUtils.calculateMultiEdgeMidpoint(state, destinationStates)[0];
                     let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, circleSize);
                     for (const destinationState of destinationStates) {
                         if (destinationState.number != state.number) {

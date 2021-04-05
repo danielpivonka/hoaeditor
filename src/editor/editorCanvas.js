@@ -72,7 +72,6 @@ class EditorCanvas {
         this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
         this.automaton.SetImplicitOffsets();
         let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-        console.log(JSON.stringify(blockedAngles));
         this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
         this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
         this.draw();
@@ -82,9 +81,6 @@ class EditorCanvas {
         let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
         let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-        console.log(JSON.stringify(blockedAngles));
-        console.log(JSON.stringify(blockedLoopbackAngles));
-        console.log(JSON.stringify(mergedAngles));
         if (this.selected instanceof State || this.selected instanceof Edge) {
             this.renderer.draw(this.automaton, this.offset, mergedAngles, this.selected);
 
@@ -213,12 +209,7 @@ class EditorCanvas {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
-        console.log(JSON.stringify(from));
-        console.log(JSON.stringify(to));
-        console.log(JSON.stringify(from.number));
-        console.log(JSON.stringify(to[0]));
         if (from.number == to[0]) {
-            console.log("mult")
             edge.offset.x = this.circleSize * 4;
         }
         if (from instanceof State) {
@@ -337,7 +328,18 @@ class EditorCanvas {
                 return
             }
         }
-        this.setSelected(this.checkEdgeLabelCollision(position));
+        let labelResult = this.checkEdgeLabelCollision(position);
+        if (labelResult) {
+            this.setSelected(labelResult);
+            return
+        }
+        let edgeResult = this.checkEdgeCollision(position);
+        if (edgeResult) {
+            this.setSelected(edgeResult);
+            return
+        }
+        this.setSelected(null);
+
     }
     setSelected(object) {
         this.selected = object;
@@ -415,7 +417,6 @@ class EditorCanvas {
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = EditorUtils.getLabel(state, index, this.automaton.ap);
             label = this.labelTranslator.translate(label);
-            console.log(label);
             if (this.checkLabelCollision(anchor, loopback.offset.angleDeg(), label, position)) {
                 return loopback;
             }
@@ -435,7 +436,7 @@ class EditorCanvas {
     checkMultiEdgeCollision(state, edgeIndex, position) {
         let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
-        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations, edge.offset);
+        let anchor = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
@@ -451,6 +452,95 @@ class EditorCanvas {
         let pos = EditorUtils.calculateLabelAnchor(baseAnchor, angle, width, height)
         let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
         return EditorUtils.isPointWithinBounds(min, max, position);
+    }
+    checkEdgeCollision(position) {
+        for (const state of this.automaton.states.values()) {
+            for (const edge of state.edges) {
+                if (edge.stateConj.length > 1) {
+                    console.log("checking for multi edge collision")
+                    let destinationStates = this.automaton.numbersToStates(edge.stateConj);
+                    let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(state, destinationStates, edge.offset)
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(state.position, midpoint, this.circleSize);
+                    for (const destinationState of destinationStates) {
+                        if (destinationState == state) {
+                            let [left, right, upperLeft, upperRight] = EditorUtils.calculateMultiedgeLoopbackPoints(angle, state.position, this.circleSize)
+                            if (this.checkCubicCollision(left, upperLeft, upperRight, right, position, 5)) {
+                                return edge;
+                            }
+                        }
+                        else {
+                            let toPoint = EditorUtils.getNearestPointOnCircle(destinationState.position, midpoint, this.circleSize);
+
+                            if (this.checkQuadraticCollision(fromPoint, midpoint, toPoint, position, 5)) {
+                                return edge;
+                            }
+                        }
+                    }
+                }
+                else if (edge.stateConj[0] == state.number) {
+                    let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, edge.offset, this.circleSize);
+                    if (this.checkCubicCollision(left, upperLeft, upperRight, right, position, 5)) {
+                        return edge;
+                    }
+                }
+                else {
+                    let destinationVector = this.automaton.getStateByNumber(edge.stateConj[0]).position;
+                    let midpoint = EditorUtils.calculateMiddleWithOffset(state.position, destinationVector, edge.offset);
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(state.position, midpoint, this.circleSize);
+                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
+                    if (this.checkQuadraticCollision(fromPoint, midpoint, toPoint, position, 5)) {
+                        return edge;
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+    * Checks collision with quadratic curve.
+    *
+    * @param {Victor} p0 - First point.
+    * @param {Victor} p1 - Second point.
+    * @param {Victor} p2 - Third point.
+    * @param {Victor} position - The position at which to check for collision.
+    * @param {number} distance - Maximum distance for collision to be registered.
+    * @returns {boolean} Whether or not is the point near quadratic curve.    
+    */
+    checkQuadraticCollision(p0, p1, p2, position, distance) {
+        console.log("checking QuadraticCollision")
+        var dist = p0.clone().subtract(p1).length();
+        dist = dist + p1.clone().subtract(p2).length();
+        let steps = Math.ceil(dist)
+        let stepSize = 1 / steps;
+        let distanceLimitSquared = distance * distance;
+        for (var i = 0; i < steps; i++) {
+            let bezierPoint = EditorUtils.getPointOnQuadraticBezier(p0, p1, p2, i * stepSize);
+            //console.log("bezierpoint: " + bezierPoint.toString());
+            //console.log("position: " + position.toString());
+            let distanceSquared = bezierPoint.subtract(position).lengthSq();
+            if (distanceSquared < distanceLimitSquared) {
+                console.log("tru");
+                return true;
+            }
+        }
+        return false;
+    }
+    checkCubicCollision(p0, p1, p2, p3, position, distance) {
+        var dist = p0.clone().subtract(p1).length();
+        dist = dist + p1.clone().subtract(p2).length();
+        dist = dist + p2.clone().subtract(p3).length();
+        let steps = Math.ceil(dist)
+        let stepSize = 1 / steps;
+        let distanceLimitSquared = distance * distance;
+        for (var i = 0; i < steps; i++) {
+            let bezierPoint = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, i * stepSize);
+            let distanceSquared = bezierPoint.subtract(position).lengthSq();
+            if (distanceSquared < distanceLimitSquared) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 EditorCanvas.stateEnum = {

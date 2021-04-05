@@ -52,7 +52,6 @@ class EditorRenderer {
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
-                    console.log("before drawmultiedge: " + edge.offset.toString());
                     this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap, selected);
                 }
                 else if (edge.stateConj[0] == state.number) {
@@ -137,21 +136,7 @@ class EditorRenderer {
         let edge = originState.edges[edgeIndex];
         this.ctx.strokeStyle = selected == edge ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset);
-        let midpoint = new Victor(0, 0);
-        let divider = 0;
-        for (const destination of destinationStates) {
-            if (destination.number == originState.number) {
-                continue;
-            }
-            let destinationVector = destination.position.clone().add(this.offset);
-            let directionVector = destinationVector.subtract(originVector);
-            midpoint.add(directionVector);
-            divider++;
-        }
-        midpoint.add(edge.offset);
-        let angle = midpoint.angleDeg();
-        midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
-        midpoint.add(originVector);
+        let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset, this.offset)
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
             this.drawMultiEdgeElement(originState, destination, midpoint, angle, this.circleSize);
@@ -166,22 +151,7 @@ class EditorRenderer {
         let destinationVector = destination.position.clone().add(this.offset);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, originCircleSize);
         if (destination.number == originState.number) {
-            let left = new Victor(1, 0)
-                .rotateDeg(angle)
-                .multiplyScalar(this.circleSize)
-                .add(originVector);
-            let right = new Victor(1, 0)
-                .rotateDeg(angle - 20)
-                .multiplyScalar(this.circleSize)
-                .add(originVector);
-            let upperLeft = new Victor(1, 0)
-                .rotateDeg(angle)
-                .multiplyScalar(this.circleSize * 4)
-                .add(originVector);
-            let upperRight = new Victor(1, 0)
-                .rotateDeg(angle - 30)
-                .multiplyScalar(this.circleSize * 4)
-                .add(originVector);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateMultiedgeLoopbackPoints(angle, originVector, originCircleSize)
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);

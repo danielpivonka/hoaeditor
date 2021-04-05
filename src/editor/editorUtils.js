@@ -72,7 +72,7 @@ class EditorUtils {
         return new Victor(x, y);
     }
     /**
-     * Calculates point at given quadratic curve.
+     * Calculates point at given cubic curve.
      * 
      * @param {Victor} p0 - First point.
      * @param {Victor} p1 - Second point.
@@ -174,6 +174,25 @@ class EditorUtils {
             .add(state.position).add(offset);
         return [left, right, upperLeft, upperRight]
     }
+    static calculateMultiedgeLoopbackPoints(angle, originVector, circleSize) {
+        let left = new Victor(1, 0)
+            .rotateDeg(angle)
+            .multiplyScalar(circleSize)
+            .add(originVector);
+        let right = new Victor(1, 0)
+            .rotateDeg(angle - 20)
+            .multiplyScalar(circleSize)
+            .add(originVector);
+        let upperLeft = new Victor(1, 0)
+            .rotateDeg(angle)
+            .multiplyScalar(circleSize * 4)
+            .add(originVector);
+        let upperRight = new Victor(1, 0)
+            .rotateDeg(angle - 30)
+            .multiplyScalar(circleSize * 4)
+            .add(originVector);
+        return [left, right, upperLeft, upperRight]
+    }
     static calculateImplicitLoopbackAngle(loopbackCount, loopbackIndex, interval) {
         let t = (loopbackIndex + 1) / (loopbackCount + 1);
         let distance = (interval[1] - interval[0]);
@@ -184,7 +203,8 @@ class EditorUtils {
     static calculateLabelPosition(originState, destinationStates, edge, circleSize) {
         JSON.stringify(edge);
         if (edge.stateConj.count > 1) {
-            return this.calculateMultiLabelPosition(originState, destinationStates, edge.offset);
+            let midpoint = this.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset)[0];
+            return midpoint;
         }
         if (originState.number == destinationStates[0].number) {
             return this.calculateLoopbackLabelPosition(originState, edge.offset, circleSize)
@@ -211,23 +231,24 @@ class EditorUtils {
         return [width, height]
     }
 
-    static calculateMultiLabelPosition(originState, destinationStates, offset = new Victor(0, 0)) {
-        let originVector = Victor.fromObject(originState.position);
+    static calculateMultiEdgeMidpoint(originState, destinationStates, offset = new Victor(0, 0), globalOffset = new Victor(0, 0)) {
+        let originVector = Victor.fromObject(originState.position).add(globalOffset);
         let midpoint = new Victor(0, 0);
         let divider = 0;
         for (const destination of destinationStates) {
             if (destination.number == originState.number) {
                 continue;
             }
-            let destinationVector = Victor.fromObject(destination.position);
+            let destinationVector = Victor.fromObject(destination.position).add(globalOffset);
             let directionVector = destinationVector.subtract(originVector);
             midpoint.add(directionVector);
             divider++;
         }
         midpoint.add(offset);
+        let angle = midpoint.angleDeg();
         midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
-        return midpoint;
+        return [midpoint, angle];
     }
     static calculateLoopbackLabelPosition(state, offset, circleSize) {
         let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, offset, circleSize);

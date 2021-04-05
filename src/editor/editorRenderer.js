@@ -23,6 +23,7 @@ class EditorRenderer {
         this.drawnEdges = [];
         this.labelTranslator = null;
         this.offset = new Victor(0, 0);
+        this.accColors = ["#285943", "#07020D", "#03F7EB", "#ea2b1f", "#13315c", "#8d80ad", "#FFA400", "#009FFD", "#20BF55", "#F6CA83"]
     }
 
     resize() {
@@ -366,11 +367,32 @@ class EditorRenderer {
         this.ctx.beginPath();
         this.ctx.arc(point.x, point.y, this.circleSize / 3, 0, Math.PI * 2);
         this.ctx.closePath();
-        this.ctx.fillStyle = 'blue';
+        let color = this.accColors[label % 10];
+        console.log(color);
+        this.ctx.fillStyle = color;
         this.ctx.fill();
         this.ctx.font = "16px Arial";
-        this.ctx.fillStyle = 'white';
+        this.ctx.fillStyle = this.getContrastingColor(color);
         this.ctx.fillText(label, point.x, point.y);
+    }
+    /**
+     * Draws an edge from one state to another.
+     * 
+     * @param {String} color - hex representation of color.
+     * @returns {String} black or white
+     */
+    getContrastingColor(color) {
+        let r = this.convertColor(color.slice(1, 3));
+        let g = this.convertColor(color.slice(3, 5));
+        let b = this.convertColor(color.slice(5));
+        let luminence = (0.2126 * r + 0.7152 * g + 0.0722 * b);
+        return Math.sqrt(1.05 * 0.05) + 0.05 > luminence ? "#FFFFFF" : "#000000"
+    }
+    convertColor(colorHex) {
+        let color = parseInt(colorHex, 16);
+        color = color / 255
+        let converted = color <= 0.03928 ? (color / 12.92) : Math.pow(((color + 0.055) / 1.055), 2.4)
+        return converted;
     }
 }
 exports.EditorRenderer = EditorRenderer

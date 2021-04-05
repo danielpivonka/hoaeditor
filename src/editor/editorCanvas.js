@@ -351,6 +351,12 @@ class EditorCanvas {
         if (this.selected instanceof State) {
             this.selected.position.x += dx;
             this.selected.position.y += dy;
+            for (const start of this.automaton.start) {
+                if (start.stateConj.length == 1 && start.stateConj[0] == this.selected.number) {
+                    start.position.x += dx;
+                    start.position.y += dy;
+                }
+            }
         }
         else if (this.selected instanceof Start) {
             this.selected.position.x += dx;

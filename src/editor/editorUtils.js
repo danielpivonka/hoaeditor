@@ -244,7 +244,7 @@ class EditorUtils {
             midpoint.add(directionVector);
             divider++;
         }
-        midpoint.add(offset);
+        midpoint.add(offset.clone().multiplyScalar(divider * 2));
         let angle = midpoint.angleDeg();
         midpoint.divideScalar(divider * 2); //*2 puts the midpoint close to origin state
         midpoint.add(originVector);
@@ -298,6 +298,12 @@ class EditorUtils {
             }
         }
         return result;
+    }
+    static approxBezierLength(p0, p1, p2, p3 = p2) {
+        var dist = p0.clone().subtract(p1).length();
+        dist = dist + p1.clone().subtract(p2).length();
+        dist = dist + p2.clone().subtract(p3).length();
+        return dist
     }
 }
 exports.EditorUtils = EditorUtils;

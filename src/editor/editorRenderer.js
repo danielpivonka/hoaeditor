@@ -21,6 +21,7 @@ class EditorRenderer {
         this.circleSize = 25;
         /**@type {number}*/
         this.drawnEdges = [];
+        this.scale = 1;
         this.labelTranslator = null;
         this.offset = new Victor(0, 0);
         this.accColors = ["#285943", "#07020D", "#03F7EB", "#ea2b1f", "#13315c", "#8d80ad", "#FFA400", "#009FFD", "#20BF55", "#F6CA83"]
@@ -340,26 +341,34 @@ class EditorRenderer {
      * @param {number[]} sets - Array of numbers of acceptance sets.
      */
     drawAccSetsQuadratic(from, mid, end, sets) {
+        let s = this.circleSize;
         for (let i = 0; i < sets.length; i++) {
-            let t = (i + 1) / (sets.length + 1);
-            let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, t);
+            let absoluteOffset = (((1 - sets.length) / 2) + i) * s;
+            let bezierLength = EditorUtils.approxBezierLength(from, mid, end);
+            let relativeOffset = absoluteOffset / bezierLength + 0.5;
+            let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, relativeOffset);
             this.drawAccSet(point, sets[i]);
         }
     }
     drawAccSetsCubic(p0, p1, p2, p3, sets) {
+        let s = this.circleSize;
         for (let i = 0; i < sets.length; i++) {
-            let t = (i + 1) / (sets.length + 1);
-            let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, t);
+            let absoluteOffset = (((1 - sets.length) / 2) + i) * s;
+            let bezierLength = EditorUtils.approxBezierLength(p0, p1, p2, p3);
+            let relativeOffset = absoluteOffset / bezierLength + 0.5;
+            let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, relativeOffset);
             this.drawAccSet(point, sets[i]);
         }
     }
     drawAccSetsOnState(state) {
         let stateCenter = state.position.clone().add(this.offset);
         let sets = state.accSets;
+        let s = 45;
         for (let i = 0; i < sets.length; i++) {
-            let t = (i + 1) / (sets.length + 1);
-            let angle = 170 - 60 * t;
-            let position = new Victor(0, this.circleSize * 0.9).rotateDeg(angle).add(stateCenter);
+            let angleOffset = (((1 - sets.length) / 2) + i) * s;
+            let angle = 135 - angleOffset;
+            console.log(angle);
+            let position = new Victor(0, this.circleSize * 1).rotateDeg(angle).add(stateCenter);
             this.drawAccSet(position, sets[i]);
         }
     }

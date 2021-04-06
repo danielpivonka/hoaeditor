@@ -30,8 +30,8 @@ class EditorCanvas {
         this.destinations = [];
         this.onStateChangedListeners = [];
         this.onComponentSelectedListeners = [];
-        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
         this.offset = new Victor(0, 0)
+        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
 
     }
     resized() {
@@ -47,7 +47,10 @@ class EditorCanvas {
         this.onStateChangedListeners = this.onStateChangedListeners.filter(e => e !== fn)
     }
     escapeClicked() {
-        if (this.editorState != EditorCanvas.stateEnum.IDLE) {
+        if (this.selected != null && this.editorState != EditorCanvas.stateEnum.SELECTED_MODIFY) {
+            this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY)
+        }
+        else if (this.editorState != EditorCanvas.stateEnum.IDLE) {
             this.changeState(EditorCanvas.stateEnum.IDLE)
         } else if (this.selected != null) {
             this.setSelected(null);
@@ -59,6 +62,8 @@ class EditorCanvas {
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
+        console.log(this.editorState);
+
     }
     /**
      * Binds automaton to editor.
@@ -71,15 +76,21 @@ class EditorCanvas {
         this.automaton = automaton;
         this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
         this.automaton.SetImplicitOffsets();
+        let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
+        this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
+        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
         this.draw();
     }
 
     draw() {
+        let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
+        let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
+        let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
         if (this.selected instanceof State || this.selected instanceof Edge) {
-            this.blockedAngles = this.renderer.draw(this.automaton, this.offset, this.selected);
+            this.renderer.draw(this.automaton, this.offset, mergedAngles, this.selected);
 
         } else {
-            this.blockedAngles = this.renderer.draw(this.automaton, this.offset);
+            this.renderer.draw(this.automaton, this.offset, mergedAngles);
         }
     }
     getAutomaton() {
@@ -95,6 +106,9 @@ class EditorCanvas {
             }
             else if (this.editorState == EditorCanvas.stateEnum.IDLE) {
                 this.changeState(EditorCanvas.stateEnum.ADD_START);
+            }
+            else if (this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
+                this.changeState(EditorCanvas.stateEnum.SELECTED_SHIFT);
 
             }
         }
@@ -107,6 +121,9 @@ class EditorCanvas {
             }
             else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
                 this.changeState(EditorCanvas.stateEnum.IDLE);
+            }
+            else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT) {
+                this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
             }
         }
     }
@@ -136,11 +153,12 @@ class EditorCanvas {
         document.activeElement.blur()
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == EditorCanvas.stateEnum.IDLE) {
+        if (this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected != null) {
                 this.downLocation = new Victor(x, y);
                 this.changeState(EditorCanvas.stateEnum.SELECTED)
+                this.draw();
             }
             else {
                 this.downLocation = new Victor(x, y).add(this.offset);
@@ -198,12 +216,36 @@ class EditorCanvas {
             this.setSelected(this.first);
             this.draw();
         }
+        else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge) {
+            console.log("modifying");
+            this.first = this.selected;
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            let wasMono = this.first.stateConj.length == 1;
+            if (this.selected instanceof State && this.first instanceof Edge) {
+                if (this.first.stateConj.includes(this.selected.number) && this.first.stateConj.length > 1) {
+                    this.first.stateConj = this.first.stateConj.filter(n => n != this.selected.number);
+                }
+                else {
+                    this.first.stateConj.push(this.selected.number)
+                }
+
+            }
+            let isMono = this.first.stateConj.length == 1;
+            if (isMono != wasMono) {
+                this.first.offset = new Victor(0, 0);
+            }
+            this.selected = this.first;
+            this.draw();
+
+        }
     }
     addEdgePrompt(from, to) {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
-        this.automaton.SetImplicitOffsets();
+        if (from.number == to[0]) {
+            edge.offset.x = this.circleSize * 4;
+        }
         if (from instanceof State) {
             this.createEdgePromp(from, edge, to);
         }
@@ -211,7 +253,7 @@ class EditorCanvas {
     createEdgePromp(state, edge, destinations) {
         let input = document.createElement("input");
         let boundingBox = this.canvas.getBoundingClientRect();
-        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge);
+        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge, this.circleSize);
         input.setAttribute("type", "text");
         input.setAttribute("id", "edgePrompt");
         let x = boundingBox.left + position.x + this.offset.x;
@@ -254,8 +296,11 @@ class EditorCanvas {
             this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
             this.draw();
 
+        } else if (this.editorState == EditorCanvas.stateEnum.SELECTED || this.editorState == EditorCanvas.stateEnum.MOVE) {
+            this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
+
         }
-        else if (this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN & this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST & this.editorState != EditorCanvas.stateEnum.ADD_START) {
+        else if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT && this.editorState != EditorCanvas.stateEnum.SELECTED_MODIFY && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST && this.editorState != EditorCanvas.stateEnum.ADD_START) {
             this.changeState(EditorCanvas.stateEnum.IDLE)
             this.draw();
         }
@@ -320,7 +365,18 @@ class EditorCanvas {
                 return
             }
         }
-        this.setSelected(this.checkEdgeLabelCollision(position));
+        let labelResult = this.checkEdgeLabelCollision(position);
+        if (labelResult) {
+            this.setSelected(labelResult);
+            return
+        }
+        let edgeResult = this.checkEdgeCollision(position);
+        if (edgeResult) {
+            this.setSelected(edgeResult);
+            return
+        }
+        this.setSelected(null);
+
     }
     setSelected(object) {
         this.selected = object;
@@ -332,12 +388,35 @@ class EditorCanvas {
         if (this.selected instanceof State) {
             this.selected.position.x += dx;
             this.selected.position.y += dy;
+            for (const start of this.automaton.start) {
+                if (start.stateConj.length == 1 && start.stateConj[0] == this.selected.number) {
+                    start.position.x += dx;
+                    start.position.y += dy;
+                }
+            }
         }
         else if (this.selected instanceof Start) {
             this.selected.position.x += dx;
             this.selected.position.y += dy;
 
         }
+        else if (this.selected instanceof Edge) {
+            if (this.selected.stateConj.length > 1) {
+                this.moveMultiEdge(this.selected, dx, dy)
+            } else {
+                this.moveMonoEdge(this.selected, dx, dy);
+            }
+        }
+    }
+
+    moveMonoEdge(edge, dx, dy) {
+        let perpendicular = EditorUtils.calculatePerpendicular(this.automaton.getStateByNumber(edge.stateConj[0]).position, this.automaton.getStateByNumber(edge.parent).position)
+        let movementVector = new Victor(dx, dy).rotateDeg(-perpendicular.angleDeg());
+        edge.offset.add(movementVector);
+    }
+    moveMultiEdge(edge, dx, dy) {
+
+        edge.offset.add(new Victor(dx, dy));
     }
     checkCircleCollision(center, size, point) {
         let a = center.x - point.x;
@@ -376,18 +455,14 @@ class EditorCanvas {
         return null;
     }
     checkLoopbackEdgeCollision(state, loopbacks, position) {
-        let interval = EditorUtils.getFreeAngleInterval(this.blockedAngles[state.number]);
-        let i = 0;
         for (let [index, loopback] of loopbacks) {
-            let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.size, i, interval);
-            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, angle, this.circleSize);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, loopback.offset, this.circleSize);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = EditorUtils.getLabel(state, index, this.automaton.ap);
             label = this.labelTranslator.translate(label);
-            if (this.checkLabelCollision(anchor, angle, label, position)) {
+            if (this.checkLabelCollision(anchor, loopback.offset.angleDeg(), label, position)) {
                 return loopback;
             }
-            i++;
         }
         return null;
     }
@@ -404,7 +479,7 @@ class EditorCanvas {
     checkMultiEdgeCollision(state, edgeIndex, position) {
         let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
-        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations);
+        let anchor = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
@@ -421,6 +496,92 @@ class EditorCanvas {
         let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
         return EditorUtils.isPointWithinBounds(min, max, position);
     }
+    checkEdgeCollision(position) {
+        for (const state of this.automaton.states.values()) {
+            for (const edge of state.edges) {
+                if (edge.stateConj.length > 1) {
+                    console.log("checking for multi edge collision")
+                    let destinationStates = this.automaton.numbersToStates(edge.stateConj);
+                    let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(state, destinationStates, edge.offset)
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(state.position, midpoint, this.circleSize);
+                    for (const destinationState of destinationStates) {
+                        if (destinationState == state) {
+                            let [left, right, upperLeft, upperRight] = EditorUtils.calculateMultiedgeLoopbackPoints(angle, state.position, this.circleSize)
+                            if (this.checkCubicCollision(left, upperLeft, upperRight, right, position, 5)) {
+                                return edge;
+                            }
+                        }
+                        else {
+                            let toPoint = EditorUtils.getNearestPointOnCircle(destinationState.position, midpoint, this.circleSize);
+
+                            if (this.checkQuadraticCollision(fromPoint, midpoint, toPoint, position, 5)) {
+                                return edge;
+                            }
+                        }
+                    }
+                }
+                else if (edge.stateConj[0] == state.number) {
+                    let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, edge.offset, this.circleSize);
+                    if (this.checkCubicCollision(left, upperLeft, upperRight, right, position, 5)) {
+                        return edge;
+                    }
+                }
+                else {
+                    let destinationVector = this.automaton.getStateByNumber(edge.stateConj[0]).position;
+                    let midpoint = EditorUtils.calculateMiddleWithOffset(state.position, destinationVector, edge.offset);
+                    let fromPoint = EditorUtils.getNearestPointOnCircle(state.position, midpoint, this.circleSize);
+                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
+                    if (this.checkQuadraticCollision(fromPoint, midpoint, toPoint, position, 5)) {
+                        return edge;
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+    * Checks collision with quadratic curve.
+    *
+    * @param {Victor} p0 - First point.
+    * @param {Victor} p1 - Second point.
+    * @param {Victor} p2 - Third point.
+    * @param {Victor} position - The position at which to check for collision.
+    * @param {number} distance - Maximum distance for collision to be registered.
+    * @returns {boolean} Whether or not is the point near quadratic curve.    
+    */
+    checkQuadraticCollision(p0, p1, p2, position, distance) {
+        console.log("checking QuadraticCollision")
+        var dist = EditorUtils.approxBezierLength(p0, p1, p2);
+        let steps = Math.ceil(dist)
+        let stepSize = 1 / steps;
+        let distanceLimitSquared = distance * distance;
+        for (var i = 0; i < steps; i++) {
+            let bezierPoint = EditorUtils.getPointOnQuadraticBezier(p0, p1, p2, i * stepSize);
+            //console.log("bezierpoint: " + bezierPoint.toString());
+            //console.log("position: " + position.toString());
+            let distanceSquared = bezierPoint.subtract(position).lengthSq();
+            if (distanceSquared < distanceLimitSquared) {
+                console.log("tru");
+                return true;
+            }
+        }
+        return false;
+    }
+    checkCubicCollision(p0, p1, p2, p3, position, distance) {
+        var dist = EditorUtils.approxBezierLength(p0, p1, p2, p3);
+        let steps = Math.ceil(dist)
+        let stepSize = 1 / steps;
+        let distanceLimitSquared = distance * distance;
+        for (var i = 0; i < steps; i++) {
+            let bezierPoint = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, i * stepSize);
+            let distanceSquared = bezierPoint.subtract(position).lengthSq();
+            if (distanceSquared < distanceLimitSquared) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 EditorCanvas.stateEnum = {
     IDLE: 1,
@@ -431,6 +592,8 @@ EditorCanvas.stateEnum = {
     ADD_EDGE_MULTI: 6,
     ADD_EDGE_MULTI_LAST: 7,
     ADD_START: 8,
-    DRAG: 9
+    DRAG: 9,
+    SELECTED_MODIFY: 10,
+    SELECTED_SHIFT: 11
 }
 exports.EditorCanvas = EditorCanvas;

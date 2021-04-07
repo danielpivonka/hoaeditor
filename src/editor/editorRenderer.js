@@ -18,6 +18,7 @@ class EditorRenderer {
         }
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
+        this.baseCircleSize = 25;
         this.circleSize = 25;
         /**@type {number}*/
         this.drawnEdges = [];
@@ -44,6 +45,7 @@ class EditorRenderer {
     draw(automaton, offset, angles, selected) {
         this.drawnEdges = [];
         this.offset = offset;
+        this.circleSize = this.baseCircleSize * this.scale;
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton);
@@ -83,7 +85,7 @@ class EditorRenderer {
         let angle = interval[0] + distance * 0.5;
         let anchor = new Victor(1, 0);
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
-        anchor.add(state.position.clone().add(this.offset));
+        anchor.add(state.position.clone().add(this.offset)).multiplyScalar(this.scale);
         let offset = 5 * state.edges.length + 3 * state.name.length;
         this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
@@ -101,19 +103,19 @@ class EditorRenderer {
     }
     drawPartialMultiEdge(originState, destinationStates, additionalPos) {
 
-        let originVector = originState.position.clone().add(this.offset);
+        let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let midpoint = new Victor(0, 0);
         let divider = 0;
         for (const destination of destinationStates) {
             if (destination.number == originState.number) {
                 continue;
             }
-            let destinationVector = destination.position.clone().add(this.offset);
+            let destinationVector = destination.position.clone().add(this.offset).multiplyScalar(this.scale);
             let directionVector = destinationVector.subtract(originVector);
             midpoint.add(directionVector);
             divider++;
         }
-        additionalPos = additionalPos.clone().add(this.offset);
+        additionalPos = additionalPos.clone().add(this.offset).multiplyScalar(this.scale);
         let directionVector = additionalPos.clone().subtract(originVector);
         midpoint.add(directionVector);
         divider++;
@@ -137,8 +139,9 @@ class EditorRenderer {
     drawMultiEdge(originState, edgeIndex, destinationStates, aps, selected) {
         let edge = originState.edges[edgeIndex];
         this.ctx.strokeStyle = selected == edge ? "#8888FF" : "#000000"
-        let originVector = originState.position.clone().add(this.offset);
+        let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset, this.offset)
+        midpoint.multiplyScalar(this.scale);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
             this.drawMultiEdgeElement(originState, destination, midpoint, angle, this.circleSize);
@@ -149,8 +152,8 @@ class EditorRenderer {
         this.drawLabelEdge(label, midpoint, labelAngle);
     }
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
-        let originVector = originState.position.clone().add(this.offset);
-        let destinationVector = destination.position.clone().add(this.offset);
+        let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
+        let destinationVector = destination.position.clone().add(this.offset).multiplyScalar(this.scale);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, originCircleSize);
         if (destination.number == originState.number) {
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateMultiedgeLoopbackPoints(angle, originVector, originCircleSize)
@@ -178,35 +181,36 @@ class EditorRenderer {
      * @param {number} extraPadding - Extra horizontal padding for the text.
      * @param {number} background - should this label have background.
      */
-    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
-        this.ctx.font = "20px Arial";
-        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding);
+    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = true) {
+        this.ctx.font = EditorUtils.textStyle(20 * this.scale);
+        label = this.labelTranslator.translate(label);
+        let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding, this.scale);
         let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
         if (background) {
             let bgwidth = width * 2 - extraPadding;
-            let bgheight = height * 2 - extraPadding - 20;
+            let bgheight = height * 2 - extraPadding - 20 * this.scale;
             this.ctx.fillStyle = '#FFFF99';
             this.ctx.fillRect(pos.x - bgwidth / 2, pos.y - bgheight / 2, bgwidth, bgheight);
         }
         this.ctx.fillStyle = 'black';
-        this.ctx.fillText(this.labelTranslator.translate(label), pos.x, pos.y);
+        this.ctx.fillText(label, pos.x, pos.y);
 
     }
     drawState(state, circleSize, selected) {
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
-        let pos = state.position.clone().add(this.offset);
+        let pos = state.position.clone().add(this.offset).multiplyScalar(this.scale);
         if (state.label) {
             this.ctx.beginPath();
             this.ctx.moveTo(pos.x - circleSize, pos.y);
             this.ctx.lineTo(pos.x + circleSize, pos.y);
             this.ctx.stroke();
-            this.ctx.font = "18px Arial";
+            this.ctx.font = EditorUtils.textStyle(18 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y - circleSize / 2);
             this.ctx.fillText(state.label, pos.x, pos.y + circleSize / 2);
         }
         else {
-            this.ctx.font = "36px Arial";
+            this.ctx.font = EditorUtils.textStyle(36 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y);
         }
         this.drawCircle(pos.x, pos.y, circleSize, selected == state)
@@ -224,7 +228,7 @@ class EditorRenderer {
     drawLoop(state, loopbacks, aps, selected) {
         for (let [index, loopback] of loopbacks) {
             this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
-            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, loopback.offset, this.circleSize, this.offset);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position.clone().multiplyScalar(this.scale), loopback.offset.clone().multiplyScalar(this.scale), this.circleSize, this.offset.clone().multiplyScalar(this.scale));
             this.ctx.beginPath();
             this.ctx.moveTo(left.x, left.y);
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
@@ -247,9 +251,9 @@ class EditorRenderer {
     drawEdge(originState, edgeIndex, destinationState, aps, selected) {
         let edge = originState.edges[edgeIndex];
         this.ctx.strokeStyle = edge == selected ? "#8888FF" : "#000000"
-        let originVector = originState.position.clone().add(this.offset);
-        let destinationVector = destinationState.position.clone().add(this.offset);
-        let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, originState.edges[edgeIndex].offset);
+        let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
+        let destinationVector = destinationState.position.clone().add(this.offset).multiplyScalar(this.scale);
+        let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, originState.edges[edgeIndex].offset.clone().multiplyScalar(this.scale));
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
         this.ctx.beginPath();
@@ -265,8 +269,8 @@ class EditorRenderer {
         this.drawLabelEdge(label, anchor, angle);
     }
     drawEdgeBetweenPositions(fromPoint, position) {
-        fromPoint.add(this.offset);
-        position.add(this.offset);
+        fromPoint.add(this.offset).multiplyScalar(this.scale);
+        position.add(this.offset).multiplyScalar(this.scale);
         this.ctx.beginPath();
         this.ctx.moveTo(fromPoint.x, fromPoint.y);
         this.ctx.lineTo(position.x, position.y);
@@ -280,7 +284,7 @@ class EditorRenderer {
      * @param {Victor} point - Position of the peak of the arrowhead.
      */
     drawArrowhead(direction, point) {
-        let directionNormalized = direction.clone().normalize().multiplyScalar(10);
+        let directionNormalized = direction.clone().normalize().multiplyScalar(10 * this.scale);
         let perpendicular = new Victor(directionNormalized.y, -directionNormalized.x).multiplyScalar(0.5);
         let arrowFoot = point.clone().subtract(directionNormalized);
         let arrowStart = arrowFoot.clone().subtract(perpendicular);
@@ -299,8 +303,8 @@ class EditorRenderer {
      */
     drawMultiStart(start, automaton) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
-        let originVector = start.position.clone().add(this.offset);
-        let offsetPositions = statePositions.map(position => position.clone().add(this.offset));
+        let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
+        let offsetPositions = statePositions.map(position => position.clone().add(this.offset).multiplyScalar(this.scale));
         let midpoint = EditorUtils.calculateMidpointBetweenVectors(offsetPositions.concat(new Array(originVector)));
         this.ctx.fillStyle = "#000000";
         for (const destinationState of automaton.numbersToStates(start.stateConj)) {
@@ -314,8 +318,8 @@ class EditorRenderer {
      * @param {HOA} automaton - The automaton.
      */
     drawMonoStart(start, automaton) {
-        let originVector = start.position.clone().add(this.offset);
-        let statePosition = automaton.getStateByNumber(start.stateConj[0]).position.clone().add(this.offset);
+        let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
+        let statePosition = automaton.getStateByNumber(start.stateConj[0]).position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, this.circleSize);
         this.ctx.beginPath();
         this.ctx.moveTo(originVector.x, originVector.y);
@@ -324,7 +328,7 @@ class EditorRenderer {
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
     drawStartingPoint(start) {
-        let originVector = start.position.clone().add(this.offset);
+        let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         this.ctx.fillStyle = "#000000";
         this.ctx.beginPath();
         this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
@@ -361,7 +365,7 @@ class EditorRenderer {
         }
     }
     drawAccSetsOnState(state) {
-        let stateCenter = state.position.clone().add(this.offset);
+        let stateCenter = state.position.clone().add(this.offset).multiplyScalar(this.scale);
         let sets = state.accSets;
         let s = 45;
         for (let i = 0; i < sets.length; i++) {
@@ -380,7 +384,7 @@ class EditorRenderer {
         console.log(color);
         this.ctx.fillStyle = color;
         this.ctx.fill();
-        this.ctx.font = "16px Arial";
+        this.ctx.font = EditorUtils.textStyle(16 * this.scale);
         this.ctx.fillStyle = this.getContrastingColor(color);
         this.ctx.fillText(label, point.x, point.y);
     }
@@ -403,5 +407,6 @@ class EditorRenderer {
         let converted = color <= 0.03928 ? (color / 12.92) : Math.pow(((color + 0.055) / 1.055), 2.4)
         return converted;
     }
+
 }
 exports.EditorRenderer = EditorRenderer

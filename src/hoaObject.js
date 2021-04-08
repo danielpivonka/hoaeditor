@@ -267,10 +267,6 @@ class HOA {
                 let originVector = start.position;
                 let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, circleSize);
                 let angle = EditorUtils.calculateBlockedAngle(destinationVector, statePosition);
-                console.log("adding mono start: " + angle);
-                console.log("stateNumber: " + stateNumber);
-                console.log("destinationVector: " + destinationVector.toString());
-                console.log("statePosition: " + statePosition.toString());
 
                 blockedAngles[stateNumber].push(angle);
             }

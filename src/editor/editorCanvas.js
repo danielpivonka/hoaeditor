@@ -482,7 +482,8 @@ class EditorCanvas {
     checkMultiEdgeCollision(state, edgeIndex, position) {
         let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
-        let anchor = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
+        let midpoint = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
+        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations, midpoint);
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()

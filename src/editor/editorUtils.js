@@ -201,15 +201,23 @@ class EditorUtils {
     }
 
     static calculateLabelPosition(originState, destinationStates, edge, circleSize) {
-        JSON.stringify(edge);
         if (edge.stateConj.count > 1) {
             let midpoint = this.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset)[0];
-            return midpoint;
+            return this.calculateMultiLabelPosition(originState, destinationStates, midpoint);
         }
         if (originState.number == destinationStates[0].number) {
             return this.calculateLoopbackLabelPosition(originState.position, edge.offset, circleSize)
         }
         return this.calculateSingleLabelPosition(originState, destinationStates[0], edge, circleSize);
+    }
+    static calculateMultiLabelPosition(originState, destinationStates, midpoint, offset = new Victor(0, 0), scale = 1) {
+        let points = [];
+        for (const destination of destinationStates) {
+            if (destination.numer != originState.number) {
+                points.push(this.getPointOnQuadraticBezier(originState.position.clone().add(offset).multiplyScalar(scale), midpoint, destination.position.clone().add(offset).multiplyScalar(scale), 0.5));
+            }
+        }
+        return this.calculateMidpointBetweenVectors(points);
     }
     static calculateSingleLabelPosition(originState, destinationState, edge, circleSize) {
         let originVector = Victor.fromObject(originState.position);
@@ -231,8 +239,8 @@ class EditorUtils {
         return [width, height]
     }
 
-    static calculateMultiEdgeMidpoint(originState, destinationStates, offset = new Victor(0, 0), globalOffset = new Victor(0, 0)) {
-        let originVector = Victor.fromObject(originState.position).add(globalOffset);
+    static calculateMultiEdgeMidpoint(originState, destinationStates, offset = new Victor(0, 0), globalOffset = new Victor(0, 0), scale = 1) {
+        let originVector = originState.position.clone().add(globalOffset);
         let midpoint = new Victor(0, 0);
         let divider = 0;
         for (const destination of destinationStates) {

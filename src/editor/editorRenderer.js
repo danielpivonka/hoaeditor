@@ -46,6 +46,7 @@ class EditorRenderer {
         this.drawnEdges = [];
         this.offset = offset;
         this.circleSize = this.baseCircleSize * this.scale;
+        this.ctx.lineWidth = this.scale * 1.1;
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton);
@@ -140,7 +141,7 @@ class EditorRenderer {
         let edge = originState.edges[edgeIndex];
         this.ctx.strokeStyle = selected == edge ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
-        let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset, this.offset)
+        let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset, this.offset, this.scale)
         midpoint.multiplyScalar(this.scale);
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         for (const destination of destinationStates) {
@@ -149,7 +150,9 @@ class EditorRenderer {
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         let label = EditorUtils.getLabel(originState, edgeIndex, aps);
-        this.drawLabelEdge(label, midpoint, labelAngle);
+
+        let labelAnchor = EditorUtils.calculateMultiLabelPosition(originState, destinationStates, midpoint, this.offset, this.scale);
+        this.drawLabelEdge(label, labelAnchor, labelAngle);
     }
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -181,7 +184,7 @@ class EditorRenderer {
      * @param {number} extraPadding - Extra horizontal padding for the text.
      * @param {number} background - should this label have background.
      */
-    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = true) {
+    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = EditorUtils.textStyle(20 * this.scale);
         label = this.labelTranslator.translate(label);
         let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding, this.scale);
@@ -253,7 +256,7 @@ class EditorRenderer {
         this.ctx.strokeStyle = edge == selected ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = destinationState.position.clone().add(this.offset).multiplyScalar(this.scale);
-        let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, originState.edges[edgeIndex].offset.clone().multiplyScalar(this.scale));
+        let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, edge.offset.clone().multiplyScalar(this.scale));
         let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
         let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
         this.ctx.beginPath();
@@ -371,7 +374,6 @@ class EditorRenderer {
         for (let i = 0; i < sets.length; i++) {
             let angleOffset = (((1 - sets.length) / 2) + i) * s;
             let angle = 135 - angleOffset;
-            console.log(angle);
             let position = new Victor(0, this.circleSize * 1).rotateDeg(angle).add(stateCenter);
             this.drawAccSet(position, sets[i]);
         }
@@ -381,7 +383,6 @@ class EditorRenderer {
         this.ctx.arc(point.x, point.y, this.circleSize / 3, 0, Math.PI * 2);
         this.ctx.closePath();
         let color = this.accColors[label % 10];
-        console.log(color);
         this.ctx.fillStyle = color;
         this.ctx.fill();
         this.ctx.font = EditorUtils.textStyle(16 * this.scale);

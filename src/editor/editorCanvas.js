@@ -26,6 +26,7 @@ class EditorCanvas {
         this.canvas.onmouseup = this.mouseUp.bind(this);
         this.canvas.onmousemove = this.mouseMove.bind(this);
         this.canvas.ondblclick = this.doubleClick.bind(this);
+        this.canvas.onwheel = this.changeZoom.bind(this);
         this.editorState = EditorCanvas.stateEnum.IDLE;
         this.destinations = [];
         this.onStateChangedListeners = [];
@@ -148,8 +149,8 @@ class EditorCanvas {
     }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
-        let x = e.clientX - boundingBox.left - this.offset.x;
-        let y = e.clientY - boundingBox.top - this.offset.y;
+        let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
+        let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         document.activeElement.blur()
         e.preventDefault();
         e.stopPropagation();
@@ -253,12 +254,13 @@ class EditorCanvas {
     createEdgePromp(state, edge, destinations) {
         let input = document.createElement("input");
         let boundingBox = this.canvas.getBoundingClientRect();
-        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge, this.circleSize);
+        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge, this.circleSize * this.renderer.scale);
         input.setAttribute("type", "text");
         input.setAttribute("id", "edgePrompt");
-        let x = boundingBox.left + position.x + this.offset.x;
-        let y = boundingBox.top + position.y + this.offset.y;
-        input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);;")
+        let x = boundingBox.left + (position.x + this.offset.x) * this.renderer.scale;
+        let y = boundingBox.top + (position.y + this.offset.y) * this.renderer.scale;
+        console.log("position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);");
+        input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);")
         document.getElementsByTagName("body")[0].appendChild(input);
         input.focus();
         input.addEventListener("focusout", () => this.saveEdgePrompt(edge, input.value));
@@ -271,8 +273,8 @@ class EditorCanvas {
     }
     doubleClick(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
-        let x = e.clientX - boundingBox.left - this.offset.x;
-        let y = e.clientY - boundingBox.top - this.offset.y;
+        let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
+        let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE) {
@@ -307,8 +309,8 @@ class EditorCanvas {
     }
     mouseMove(e) {
         let boundingBox = this.canvas.getBoundingClientRect()
-        let x = e.clientX - boundingBox.left - this.offset.x;
-        let y = e.clientY - boundingBox.top - this.offset.y;
+        let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
+        let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         if (this.editorState == EditorCanvas.stateEnum.SELECTED || this.editorState == EditorCanvas.stateEnum.MOVE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
@@ -456,7 +458,7 @@ class EditorCanvas {
     }
     checkLoopbackEdgeCollision(state, loopbacks, position) {
         for (let [index, loopback] of loopbacks) {
-            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, loopback.offset, this.circleSize);
+            let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position, loopback.offset, this.circleSize);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = EditorUtils.getLabel(state, index, this.automaton.ap);
             label = this.labelTranslator.translate(label);
@@ -469,17 +471,19 @@ class EditorCanvas {
     checkSingleEdgeCollision(state, edgeIndex, position) {
         let edge = state.edges[edgeIndex];
         let destination = this.automaton.getStateByNumber(edge.stateConj[0]);
-        let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge);
+        let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge, this.circleSize);
+
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        label = this.labelTranslator.translate(label);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, destination.position);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        label = this.labelTranslator.translate(label);
         return this.checkLabelCollision(anchor, labelAngle, label, position);
     }
     checkMultiEdgeCollision(state, edgeIndex, position) {
         let edge = state.edges[edgeIndex];
         let destinations = this.automaton.numbersToStates(edge.stateConj);
-        let anchor = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
+        let midpoint = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
+        let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations, midpoint);
         let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
@@ -490,7 +494,7 @@ class EditorCanvas {
 
     checkLabelCollision(baseAnchor, angle, label, position, extraPadding = 0) {
         let ctx = this.canvas.getContext("2d");
-        ctx.font = "20px Arial";
+        ctx.font = EditorUtils.textStyle(20);
         let [width, height] = EditorUtils.calculateLabelSize(ctx, label, extraPadding);
         let pos = EditorUtils.calculateLabelAnchor(baseAnchor, angle, width, height)
         let [min, max] = EditorUtils.calculateLabelBounds(pos, width, height)
@@ -521,7 +525,7 @@ class EditorCanvas {
                     }
                 }
                 else if (edge.stateConj[0] == state.number) {
-                    let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, edge.offset, this.circleSize);
+                    let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position, edge.offset, this.circleSize);
                     if (this.checkCubicCollision(left, upperLeft, upperRight, right, position, 5)) {
                         return edge;
                     }
@@ -551,18 +555,14 @@ class EditorCanvas {
     * @returns {boolean} Whether or not is the point near quadratic curve.    
     */
     checkQuadraticCollision(p0, p1, p2, position, distance) {
-        console.log("checking QuadraticCollision")
         var dist = EditorUtils.approxBezierLength(p0, p1, p2);
         let steps = Math.ceil(dist)
         let stepSize = 1 / steps;
         let distanceLimitSquared = distance * distance;
         for (var i = 0; i < steps; i++) {
             let bezierPoint = EditorUtils.getPointOnQuadraticBezier(p0, p1, p2, i * stepSize);
-            //console.log("bezierpoint: " + bezierPoint.toString());
-            //console.log("position: " + position.toString());
             let distanceSquared = bezierPoint.subtract(position).lengthSq();
             if (distanceSquared < distanceLimitSquared) {
-                console.log("tru");
                 return true;
             }
         }
@@ -581,6 +581,17 @@ class EditorCanvas {
             }
         }
         return false;
+    }
+    changeZoom(e) {
+        let change = 1 - (e.deltaY / 10);
+        console.log("change: " + this.renderer.scale);
+        if ((this.renderer.scale * change) > 0.1) {
+            this.renderer.scale *= change;
+            console.log("scale: " + this.renderer.scale);
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        this.draw();
     }
 }
 EditorCanvas.stateEnum = {

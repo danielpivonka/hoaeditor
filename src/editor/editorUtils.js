@@ -154,24 +154,24 @@ class EditorUtils {
         intervals.sort((a, b) => { return EditorUtils.angleDistance(a[0], a[1]) - EditorUtils.angleDistance(b[0], b[1]) });
         return intervals[offset];
     }
-    static calculateLoopbackPoints(state, edgeOffset, circleSize, offset = new Victor(0, 0)) {
+    static calculateLoopbackPoints(position, edgeOffset, circleSize, offset = new Victor(0, 0)) {
         let angle = edgeOffset.angleDeg();
         let left = new Victor(1, 0)
             .rotateDeg(angle - 14)
             .multiplyScalar(circleSize)
-            .add(state.position).add(offset);
+            .add(position).add(offset);
         let right = new Victor(1, 0)
             .rotateDeg(angle + 16)
             .multiplyScalar(circleSize)
-            .add(state.position).add(offset);
+            .add(position).add(offset);
         let upperLeft = new Victor(1, 0)
             .rotateDeg(angle - 20)
             .multiplyScalar(edgeOffset.length())
-            .add(state.position).add(offset);
+            .add(position).add(offset);
         let upperRight = new Victor(1, 0)
             .rotateDeg(angle + 20)
             .multiplyScalar(edgeOffset.length())
-            .add(state.position).add(offset);
+            .add(position).add(offset);
         return [left, right, upperLeft, upperRight]
     }
     static calculateMultiedgeLoopbackPoints(angle, originVector, circleSize) {
@@ -201,22 +201,30 @@ class EditorUtils {
     }
 
     static calculateLabelPosition(originState, destinationStates, edge, circleSize) {
-        JSON.stringify(edge);
         if (edge.stateConj.count > 1) {
             let midpoint = this.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset)[0];
-            return midpoint;
+            return this.calculateMultiLabelPosition(originState, destinationStates, midpoint);
         }
         if (originState.number == destinationStates[0].number) {
-            return this.calculateLoopbackLabelPosition(originState, edge.offset, circleSize)
+            return this.calculateLoopbackLabelPosition(originState.position, edge.offset, circleSize)
         }
-        return this.calculateSingleLabelPosition(originState, destinationStates[0], edge);
+        return this.calculateSingleLabelPosition(originState, destinationStates[0], edge, circleSize);
     }
-    static calculateSingleLabelPosition(originState, destinationState, edge) {
+    static calculateMultiLabelPosition(originState, destinationStates, midpoint, offset = new Victor(0, 0), scale = 1) {
+        let points = [];
+        for (const destination of destinationStates) {
+            if (destination.numer != originState.number) {
+                points.push(this.getPointOnQuadraticBezier(originState.position.clone().add(offset).multiplyScalar(scale), midpoint, destination.position.clone().add(offset).multiplyScalar(scale), 0.5));
+            }
+        }
+        return this.calculateMidpointBetweenVectors(points);
+    }
+    static calculateSingleLabelPosition(originState, destinationState, edge, circleSize) {
         let originVector = Victor.fromObject(originState.position);
         let destinationVector = Victor.fromObject(destinationState.position);
         let midpoint = EditorUtils.calculateMiddleWithOffset(originVector, destinationVector, edge.offset);
-        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, this.circleSize);
-        let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, this.circleSize);
+        let fromPoint = EditorUtils.getNearestPointOnCircle(originVector, midpoint, circleSize);
+        let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
         return EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
     }
     static calculateLabelAnchor(anchor, angle, width, height) {
@@ -224,15 +232,15 @@ class EditorUtils {
         anchorOffset = new Victor(EditorUtils.clamp(-width, width, anchorOffset.x), EditorUtils.clamp(-height, height, anchorOffset.y));
         return anchor.clone().add(anchorOffset);
     }
-    static calculateLabelSize(ctx, label, extraPadding) {
+    static calculateLabelSize(ctx, label, extraPadding, scale = 1) {
         let textMeasurements = ctx.measureText(label);
-        let height = 20 + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
-        let width = (textMeasurements.width + 20 + extraPadding) / 2; // +20 to give further padding
+        let height = 20 * scale + extraPadding / 2; // TextMetrics.fontBoundingBox is not widely supported
+        let width = (textMeasurements.width + 20 * scale + extraPadding) / 2; // +20 to give further padding
         return [width, height]
     }
 
-    static calculateMultiEdgeMidpoint(originState, destinationStates, offset = new Victor(0, 0), globalOffset = new Victor(0, 0)) {
-        let originVector = Victor.fromObject(originState.position).add(globalOffset);
+    static calculateMultiEdgeMidpoint(originState, destinationStates, offset = new Victor(0, 0), globalOffset = new Victor(0, 0), scale = 1) {
+        let originVector = originState.position.clone().add(globalOffset);
         let midpoint = new Victor(0, 0);
         let divider = 0;
         for (const destination of destinationStates) {
@@ -250,8 +258,8 @@ class EditorUtils {
         midpoint.add(originVector);
         return [midpoint, angle];
     }
-    static calculateLoopbackLabelPosition(state, offset, circleSize) {
-        let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state, offset, circleSize);
+    static calculateLoopbackLabelPosition(position, offset, circleSize) {
+        let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(position, offset, circleSize);
         return EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
     }
     static calculateLabelBounds(anchor, width, height, extraPadding = 0) {
@@ -304,6 +312,10 @@ class EditorUtils {
         dist = dist + p1.clone().subtract(p2).length();
         dist = dist + p2.clone().subtract(p3).length();
         return dist
+    }
+    static textStyle(size) {
+        size = Math.floor(size);
+        return size + "px Arial";
     }
 }
 exports.EditorUtils = EditorUtils;

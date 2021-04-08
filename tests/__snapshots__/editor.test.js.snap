@@ -32,6 +32,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -1050,7 +1064,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "1",
+      "text": "b",
     },
     "transform": Array [
       1,
@@ -1338,7 +1352,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!1",
+      "text": "!b",
     },
     "transform": Array [
       1,
@@ -2059,7 +2073,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&!1",
+      "text": "a&!b",
     },
     "transform": Array [
       1,
@@ -2644,7 +2658,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&1",
+      "text": "!a&b",
     },
     "transform": Array [
       1,
@@ -3114,7 +3128,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0",
+      "text": "a",
     },
     "transform": Array [
       1,
@@ -3423,7 +3437,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0",
+      "text": "!a",
     },
     "transform": Array [
       1,
@@ -3893,7 +3907,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&1",
+      "text": "a&b",
     },
     "transform": Array [
       1,
@@ -4363,7 +4377,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&!1",
+      "text": "!a&!b",
     },
     "transform": Array [
       1,
@@ -4708,6 +4722,20 @@ Array [
       0,
     ],
     "type": "textBaseline",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -5977,7 +6005,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0",
+      "text": "a",
     },
     "transform": Array [
       1,
@@ -6773,7 +6801,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "1",
+      "text": "b",
     },
     "transform": Array [
       1,
@@ -6803,7 +6831,7 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "b",
-      "x": 400,
+      "x": 366.6666666666667,
       "y": 420,
     },
     "transform": Array [
@@ -7197,7 +7225,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "2",
+      "text": "c",
     },
     "transform": Array [
       1,
@@ -8414,6 +8442,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -9144,7 +9186,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&!1",
+      "text": "!a&!b",
     },
     "transform": Array [
       1,
@@ -9432,7 +9474,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&1",
+      "text": "!a&b",
     },
     "transform": Array [
       1,
@@ -9720,7 +9762,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&1",
+      "text": "a&b",
     },
     "transform": Array [
       1,
@@ -10784,7 +10826,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&!1",
+      "text": "a&!b",
     },
     "transform": Array [
       1,
@@ -11093,7 +11135,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&!1",
+      "text": "!a&!b",
     },
     "transform": Array [
       1,
@@ -11402,7 +11444,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&!1",
+      "text": "a&!b",
     },
     "transform": Array [
       1,
@@ -11711,7 +11753,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&1",
+      "text": "!a&b",
     },
     "transform": Array [
       1,
@@ -12020,7 +12062,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&1",
+      "text": "a&b",
     },
     "transform": Array [
       1,
@@ -12329,7 +12371,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&!1",
+      "text": "!a&!b",
     },
     "transform": Array [
       1,
@@ -12638,7 +12680,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&!1",
+      "text": "a&!b",
     },
     "transform": Array [
       1,
@@ -12947,7 +12989,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "!0&1",
+      "text": "!a&b",
     },
     "transform": Array [
       1,
@@ -13256,7 +13298,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&1",
+      "text": "a&b",
     },
     "transform": Array [
       1,
@@ -13511,6 +13553,20 @@ Array [
       0,
     ],
     "type": "textBaseline",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -15482,6 +15538,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -17391,6 +17461,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -19339,6 +19423,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -21869,6 +21967,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -24396,6 +24508,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -26962,6 +27088,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -29489,6 +29629,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -32080,6 +32234,20 @@ Array [
       0,
     ],
     "type": "fillText",
+  },
+  Object {
+    "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
   },
   Object {
     "props": Object {
@@ -34707,6 +34875,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -37270,6 +37452,20 @@ Array [
   },
   Object {
     "props": Object {
+      "value": 1.1,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "lineWidth",
+  },
+  Object {
+    "props": Object {
       "height": 600,
       "width": 800,
       "x": 0,
@@ -39030,7 +39226,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0",
+      "text": "a",
     },
     "transform": Array [
       1,
@@ -39809,7 +40005,7 @@ Array [
   },
   Object {
     "props": Object {
-      "text": "0&1",
+      "text": "a&b",
     },
     "transform": Array [
       1,

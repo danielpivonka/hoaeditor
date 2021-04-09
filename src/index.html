@@ -6,14 +6,17 @@
 </head>
 
 <body>
-    <input type="text" id="HOAInput">
-    <input type="button" id="HOAParse" value="Parse">
-    <h3>RAW</h3>
-    <p id="rawText"></p>
-    <h3>JSON</h3>
-    <p id="jsonText"></p>
-    <h3>HOA</h3>
-    <p id="hoaText"></p>
+    <div id="input_container" class="parse_area">
+        <textarea id="HOA_input" class="parse_text" spellcheck="false"></textarea>
+        <div class="button_row">
+            <button id="HOA_parse" type="button">Parse</button>
+            <button id="close" type="button">Close</button>
+        </div>
+    </div>
+    <div class="button_row">
+        <button id="import" type="button">Import</button>
+        <button id="export" type="button">Export</button>
+    </div>
     <div id="editorContainer">
         <div id="canvasContainer">
             <canvas id="canvas"></canvas>

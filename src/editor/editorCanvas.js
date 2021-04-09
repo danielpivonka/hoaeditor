@@ -218,7 +218,6 @@ class EditorCanvas {
             this.draw();
         }
         else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge) {
-            console.log("modifying");
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             let wasMono = this.first.stateConj.length == 1;

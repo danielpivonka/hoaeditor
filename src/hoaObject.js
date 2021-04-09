@@ -329,7 +329,7 @@ class HOA {
      * 
      * @returns {string} Hoa string.
      */
-    toHoaString(extended = true) {
+    toHoaString(extended = false) {
         let string = "";
         string += "HOA: " + this.version + "\n";
         if (this.stateCount) {
@@ -393,7 +393,6 @@ class HOA {
      * @param {string} importString - string representing PositionsExport.
      */
     importPositions(importString) {
-        console.log(importString.replace(/\\"/g, "\""))
 
         /**@type {PositionsExport}*/
         let importData = JSON.parse(importString.replace(/\\"/g, "\"").slice(1, -1));

@@ -90,8 +90,6 @@ class hoaListenerImpl extends listener {
         }
     }
     exitBody(ctx) {
-        console.log("body exited");
-        console.log(this.positions)
         if (this.positions) {
             this.data.importPositions(this.positions);
         }

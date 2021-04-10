@@ -19,6 +19,9 @@ class HOA {
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
+        this.version = "";
+        this.accname = "";
+        this.name = "";
     }
     /**
      * Sets the hoa format version.
@@ -326,7 +329,7 @@ class HOA {
      * 
      * @returns {string} Hoa string.
      */
-    toHoaString() {
+    toHoaString(extended = false) {
         let string = "";
         string += "HOA: " + this.version + "\n";
         if (this.stateCount) {
@@ -356,6 +359,10 @@ class HOA {
         if (this.name) {
             string += "name: " + "\"" + this.name + "\"" + "\n";
         }
+        if (extended) {
+            string += "positions:";
+            string += "\"" + this.exportPositions() + "\"" + "\n";
+        }
         for (const alias of this.aliases) {
             string += "Alias: " + alias.aname + " " + alias.lexpr + "\n";
         }
@@ -376,9 +383,88 @@ class HOA {
         string += "--END--\n";
         return string;
     }
+    exportPositions() {
+        let exportData = new PositionsExport(this.states.values(), this.start);
+        return JSON.stringify(exportData).replace(/"/g, "\\\"");
+    }
+    /**
+     * Constructs simplified representation of state.
+     * 
+     * @param {string} importString - string representing PositionsExport.
+     */
+    importPositions(importString) {
+
+        /**@type {PositionsExport}*/
+        let importData = JSON.parse(importString.replace(/\\"/g, "\"").slice(1, -1));
+        for (let stateIndex = 0; stateIndex < importData.states.length; stateIndex++) {
+            let state = this.states.get(stateIndex);
+            let importedState = importData.states[stateIndex];
+            state.position = Victor.fromObject(importedState.position);
+            for (let edgeIndex = 0; edgeIndex < state.edges.length; edgeIndex++) {
+                state.edges[edgeIndex].position = Victor.fromObject(importedState.edges[edgeIndex]);
+            }
+        }
+        for (let startIndex = 0; startIndex < importData.starts.length; startIndex++) {
+            this.start[startIndex].position = Victor.fromObject(importData.starts[startIndex]);
+        }
+    }
     getEdgeCount(fromIndex, toIndex) {
         let count = this.states.get(fromIndex).edges.filter((element) => element.stateConj.includes(toIndex)).length;
         return count;
+    }
+}
+class PositionsExport {
+
+
+    /**
+    * Constructs an empty state with given number.
+    * 
+    * @param {State[]} statesIn - Array of states.
+    * @param {Start[]} startsIn - Array of starts.
+    */
+    constructor(statesIn, startsIn) {
+        /**@type {PositionExport[]}*/
+        this.starts = [];
+        /**@type {StateExport[]}*/
+        this.states = [];
+        for (const state of statesIn) {
+            let stateExport = new StateExport(state.position);
+            for (const edge of state.edges) {
+                stateExport.edges.push(new PositionExport(edge.offset));
+            }
+            this.states.push(stateExport);
+        }
+        for (const start of startsIn) {
+            this.starts.push(new PositionExport(start.position))
+        }
+    }
+}
+class StateExport {
+
+    /**
+     * Constructs simplified representation of state.
+     * 
+     * @param {Victor} victor - Position of the state.
+     */
+    constructor(victor) {
+        /**@type {PositionExport}*/
+        this.position;
+        /**@type {PositionExport[]}*/
+        this.edges = [];
+        this.position = new PositionExport(victor)
+    }
+}
+class PositionExport {
+    /**
+     * Constructs simplified representation of position with whole number values.
+     * 
+     * @param {Victor} victor - Victor from which the position will be constructed.
+     */
+    constructor(victor) {
+        /**@type {number}*/
+        this.x = Math.round(victor.x);
+        /**@type {number}*/
+        this.y = Math.round(victor.y);
     }
 }
 class State {
@@ -397,9 +483,9 @@ class State {
         /**@type {Position}*/
         this.position;
         /**@type {string}*/
-        this.label;
+        this.label = "";
         /**@type {string}*/
-        this.name;
+        this.name = "";
     }
     setLabel(label) {
         this.label = label;
@@ -456,7 +542,7 @@ class Edge {
      * @param {int} parent - number of parent state.
      */
     constructor(stateConj, parent) {
-        this.stateConj = stateConj;
+        this.stateConj = stateConj || "";
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);
@@ -487,7 +573,7 @@ class Edge {
 class Start {
     constructor(stateConj) {
         /**@type{number[]}*/
-        this.stateConj = stateConj;
+        this.stateConj = stateConj || "";
         this.position = null;
     }
     addEdge(stateConj) {

@@ -7,6 +7,7 @@ class hoaListenerImpl extends listener {
         listener.call(this);
         this.data = new hoaObject();
         this.lastState = null;
+        this.positions;
     }
     enterFormatVersion(ctx) {
         this.data.setVersion(ctx.IDENTIFIER().getText());
@@ -49,6 +50,9 @@ class hoaListenerImpl extends listener {
             this.data.addProp(ctx.propval().getChild(i).getText());
         }
     }
+    enterPositions(ctx) {
+        this.positions = ctx.STRING().getText();
+    }
     enterEtc(ctx) {
         let etc = [];
         for (let i = 0; i < ctx.getChildCount(); i++) {
@@ -83,6 +87,11 @@ class hoaListenerImpl extends listener {
             for (let i = 1; i < ctx.accSig().getChildCount() - 1; i++) {
                 edge.addAccSet(parseInt(ctx.accSig().getChild(i).getText(), 10));
             }
+        }
+    }
+    exitBody(ctx) {
+        if (this.positions) {
+            this.data.importPositions(this.positions);
         }
     }
 }

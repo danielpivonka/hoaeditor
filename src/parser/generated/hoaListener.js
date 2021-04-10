@@ -1,4 +1,4 @@
-// Generated from ./src/parser/hoa.g4 by ANTLR 4.8
+// Generated from hoa.g4 by ANTLR 4.8
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
@@ -143,6 +143,15 @@ hoaListener.prototype.enterName = function(ctx) {
 
 // Exit a parse tree produced by hoaParser#name.
 hoaListener.prototype.exitName = function(ctx) {
+};
+
+
+// Enter a parse tree produced by hoaParser#positions.
+hoaListener.prototype.enterPositions = function(ctx) {
+};
+
+// Exit a parse tree produced by hoaParser#positions.
+hoaListener.prototype.exitPositions = function(ctx) {
 };
 
 

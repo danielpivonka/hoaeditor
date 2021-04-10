@@ -63,8 +63,6 @@ class EditorCanvas {
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
-        console.log(this.editorState);
-
     }
     /**
      * Binds automaton to editor.
@@ -218,7 +216,6 @@ class EditorCanvas {
             this.draw();
         }
         else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge) {
-            console.log("modifying");
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             let wasMono = this.first.stateConj.length == 1;
@@ -259,7 +256,6 @@ class EditorCanvas {
         input.setAttribute("id", "edgePrompt");
         let x = boundingBox.left + (position.x + this.offset.x) * this.renderer.scale;
         let y = boundingBox.top + (position.y + this.offset.y) * this.renderer.scale;
-        console.log("position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);");
         input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);")
         document.getElementsByTagName("body")[0].appendChild(input);
         input.focus();
@@ -504,7 +500,6 @@ class EditorCanvas {
         for (const state of this.automaton.states.values()) {
             for (const edge of state.edges) {
                 if (edge.stateConj.length > 1) {
-                    console.log("checking for multi edge collision")
                     let destinationStates = this.automaton.numbersToStates(edge.stateConj);
                     let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(state, destinationStates, edge.offset)
                     let fromPoint = EditorUtils.getNearestPointOnCircle(state.position, midpoint, this.circleSize);
@@ -584,10 +579,8 @@ class EditorCanvas {
     }
     changeZoom(e) {
         let change = 1 - (e.deltaY / 10);
-        console.log("change: " + this.renderer.scale);
         if ((this.renderer.scale * change) > 0.1) {
             this.renderer.scale *= change;
-            console.log("scale: " + this.renderer.scale);
         }
         e.preventDefault();
         e.stopPropagation();

@@ -1,15 +1,17 @@
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
+const AccSetVerifier = require('../verifiers/accSetVerifier.js').AccSetVerifier;
 
 class StateSidebar {
-    constructor() {
+    constructor(automaton) {
         this.collapsedState = [];
         this.sidebarRedrawRequestListener = null;
+        this.accSetVerifier = new AccSetVerifier(automaton);
     }
     generateSidebar(state) {
         let sidebar = document.createElement("div");
-        sidebar.append(this.createAccSetsList(state));
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
+        sidebarTable.append(this.createAccSet(state.accSets));
         sidebarTable.append(this.createName(state));
         sidebarTable.append(this.createLabel(state));
         sidebar.append(sidebarTable);
@@ -32,35 +34,26 @@ class StateSidebar {
         field.oninput = (e) => { state.label = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }
-    createAccSetsList(state) {
-        state.accSets = state.accSets.filter((e) => e != null);
-        let wrap = SidebarUtils.createList(this.createAccSet.bind(this), state.accSets, "Acceptance sets", this.collapsedState);
-        let inner = wrap.getElementsByTagName("div")[0];
-        let addButton = document.createElement("button")
-        addButton.setAttribute("type", "button");
-        addButton.innerHTML = "Add";
-        addButton.addEventListener("click", () => {
-            state.accSets.push(0);
-            this.requestRedraw();
-        });
-        inner.append(addButton);
-        return wrap;
 
-    }
-    createAccSet(accSets, index) {
-        let valueField = SidebarUtils.createField(index + "sas");
-        valueField.value = accSets[index];
-        valueField.oninput = (e) => {
-            accSets[index] = e.target.value;
+    createAccSet(accSetArray) {
+        console.log(accSetArray);
+        let id = "accSet";
+        let label = SidebarUtils.createLabel(id, "Acceptance sets:");
+        let field = SidebarUtils.createField(id);
+        field.value = accSetArray.join(" ");
+        field.oninput = (e) => {
+            let value = e.target.value;
+            let parsedValues = value.split(" ").map(num => parseInt(num));
+            if (this.accSetVerifier.verify(parsedValues)) {
+                accSetArray.length = 0;
+                accSetArray.push(...parsedValues);
+                field.className = "inputField";
+            }
+            else {
+                field.className = "inputFieldError";
+            }
         };
-        let removeButton = document.createElement("button")
-        removeButton.setAttribute("type", "button");
-        removeButton.innerHTML = "X";
-        removeButton.addEventListener("click", () => {
-            accSets[index] = null;
-            this.requestRedraw();
-        });
-        return SidebarUtils.createDivWithChildren(valueField, removeButton);
+        return SidebarUtils.createDivWithChildren(label, field);
     }
     requestRedraw() {
         if (this.sidebarRedrawRequestListener != null) {

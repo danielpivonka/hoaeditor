@@ -349,21 +349,35 @@ class EditorRenderer {
      */
     drawAccSetsQuadratic(from, mid, end, sets) {
         let s = this.circleSize;
+       
+        let steps = 500;
+        let points = EditorUtils.getPointsOnBezier(steps, from, mid, end);
+        let bezierLength = points.slice(-1)[0];
+        let centerDistance = points[Math.round(steps / 2)];
+        let center = centerDistance / bezierLength;
+        if (s * sets.length > bezierLength*0.9) {
+            s = bezierLength*0.9 / sets.length;
+        }
         for (let i = 0; i < sets.length; i++) {
             let absoluteOffset = (((1 - sets.length) / 2) + i) * s;
-            let bezierLength = EditorUtils.approxBezierLength(from, mid, end);
-            let relativeOffset = absoluteOffset / bezierLength + 0.5;
-            let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, relativeOffset);
+            let relativeOffset = absoluteOffset / bezierLength + center;
+            let convertedOffset = EditorUtils.getTAtPercentage(points,relativeOffset);
+            let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, convertedOffset);
             this.drawAccSet(point, sets[i]);
         }
     }
     drawAccSetsCubic(p0, p1, p2, p3, sets) {
         let s = this.circleSize;
+        let points = EditorUtils.getPointsOnBezier(500, p0, p1, p2, p3);
+        let bezierLength = points.slice(-1)[0];
+        if (s * sets.length > bezierLength) {
+            s = bezierLength / sets.length;
+        }
         for (let i = 0; i < sets.length; i++) {
-            let absoluteOffset = (((1 - sets.length) / 2) + i) * s;
-            let bezierLength = EditorUtils.approxBezierLength(p0, p1, p2, p3);
+            let absoluteOffset = (((1 - sets.length) / 2) + i) * (s);
             let relativeOffset = absoluteOffset / bezierLength + 0.5;
-            let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, relativeOffset);
+            let convertedOffset = EditorUtils.getTAtPercentage(points,relativeOffset);
+            let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, convertedOffset);
             this.drawAccSet(point, sets[i]);
         }
     }

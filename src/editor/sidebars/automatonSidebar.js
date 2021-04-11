@@ -1,5 +1,5 @@
 
-const HOA = require('../hoaObject').HOA;
+const HOA = require('../../hoaObject').HOA;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 class AutomatonSidebar {
     constructor(automaton) {

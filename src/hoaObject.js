@@ -274,7 +274,7 @@ class HOA {
                     blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
                 }
             }
-            else {
+            else if (start.stateConj.length == 1){
                 let stateNumber = start.stateConj[0];
                 let statePosition = this.getStateByNumber(stateNumber).position;
                 let originVector = start.position;

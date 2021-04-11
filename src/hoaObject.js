@@ -19,7 +19,7 @@ class HOA {
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
-        this.version = "";
+        this.version = "v1";
         this.accname = "";
         this.name = "";
     }
@@ -162,6 +162,16 @@ class HOA {
     }
     numbersToStates(numbers) {
         return numbers.map((number) => { return this.getStateByNumber(number); });
+    }
+    hasMultiEdge() {
+        for (const state of this.states.values()) {
+            for (const edge of state.edges.values()) {
+                if (edge.stateConj.length > 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     setImplicitPositions(width, height) {
         let rows = Math.round(Math.sqrt(this.states.size));

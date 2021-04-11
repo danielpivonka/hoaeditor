@@ -25,6 +25,7 @@ class EditorRenderer {
         this.scale = 1;
         this.labelTranslator = null;
         this.offset = new Victor(0, 0);
+        this.hasMultiEdge = false;
         this.accColors = ["#285943", "#07020D", "#03F7EB", "#ea2b1f", "#13315c", "#8d80ad", "#FFA400", "#009FFD", "#20BF55", "#F6CA83"]
     }
 
@@ -50,6 +51,7 @@ class EditorRenderer {
         this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton);
+        this.hasMultiEdge = automaton.hasMultiEdge();
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
             this.drawState(state, this.circleSize, selected);
@@ -152,7 +154,8 @@ class EditorRenderer {
         let label = EditorUtils.getLabel(originState, edgeIndex, aps);
 
         let labelAnchor = EditorUtils.calculateMultiLabelPosition(originState, destinationStates, midpoint, this.offset, this.scale);
-        this.drawLabelEdge(label, labelAnchor, labelAngle);
+        let pos = this.drawLabelEdge(label, labelAnchor, labelAngle);
+        this.drawLabelAccSet(edge.accSets, pos, labelAngle)
     }
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -183,6 +186,7 @@ class EditorRenderer {
      * @param {number} angle - Perpendicular angle to the edge in direction of anchor.
      * @param {number} extraPadding - Extra horizontal padding for the text.
      * @param {number} background - should this label have background.
+     * @returns {Victor} position of the rendered label
      */
     drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = EditorUtils.textStyle(20 * this.scale);
@@ -197,7 +201,25 @@ class EditorRenderer {
         }
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(label, pos.x, pos.y);
+        return pos;
+    }
+    drawLabelAccSet(accSets,anchor,angle) {
+        let roundedAngle = this.roundAngle(angle);
+        let verticalOffset = new Victor(this.circleSize, 0).rotateToDeg(roundedAngle);
+        let baseAnchor = anchor.clone().add(verticalOffset);
+        let perpendicular = verticalOffset.clone().rotateDeg(90).normalize();
+        let spacing = this.circleSize;
+        for (let i = 0; i < accSets.length; i++) {
+            let offsetMagnitude = (((1 - accSets.length) / 2) + i) * spacing;
+            let horizontalOffset = perpendicular.clone().multiplyScalar(offsetMagnitude);
+            this.drawAccSet(horizontalOffset.add(baseAnchor), accSets[i]);
+        }
 
+    }
+    roundAngle(angle) {
+        console.log("angle to round: " + angle)
+        if (angle < 0) return -90;
+        return 90;
     }
     drawState(state, circleSize, selected) {
         this.ctx.strokeStyle = 'black';
@@ -237,12 +259,19 @@ class EditorRenderer {
             this.ctx.bezierCurveTo(upperLeft.x, upperLeft.y, upperRight.x, upperRight.y, right.x, right.y);
             this.ctx.stroke();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
-            this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = EditorUtils.getLabel(state, index, aps);
-            this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
+            let pos = this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
+            if (this.hasMultiEdge) {
+                this.drawLabelAccSet(loopback.accSets, pos, loopback.offset.angleDeg())
+            }
+            else {
+                this.drawAccSetsCubic(left, upperLeft, upperRight, right, loopback.accSets);
+
+            }
         }
     }
+    
     /**
      * Draws an edge from one state to another.
      * 
@@ -264,12 +293,18 @@ class EditorRenderer {
         this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, toPoint.x, toPoint.y);
         this.ctx.stroke();
         this.drawArrowhead(toPoint.clone().subtract(midpoint), toPoint)
-        this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
         let label = EditorUtils.getLabel(originState, edgeIndex, aps);
-        this.drawLabelEdge(label, anchor, angle);
+        let labelPos = this.drawLabelEdge(label, anchor, angle);
+        if (this.hasMultiEdge) {
+            this.drawLabelAccSet(edge.accSets,labelPos,angle)
+         }
+        else {
+            this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
+        }
+
     }
     drawEdgeBetweenPositions(fromPoint, position) {
         fromPoint.add(this.offset).multiplyScalar(this.scale);

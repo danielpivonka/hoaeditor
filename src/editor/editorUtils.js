@@ -309,7 +309,6 @@ class EditorUtils {
     }
     static approxBezierLength(iters, p0, p1, p2, p3 = null) {
         let len = this.getPointsOnBezier(iters, p0, p1, p2, p3).slice(-1)[0];
-        console.log(len);
         return len;
     }
     static getPointsOnBezier(count, p0, p1, p2, p3 = null) {
@@ -328,7 +327,6 @@ class EditorUtils {
             }
             points.push((points[points.length-1]||0) + segment1.subtract(segment2).length());
         }
-        console.log(JSON.stringify(points));
         return points
     }
     static getTAtPercentage(arrayOfPoints, percentage) {

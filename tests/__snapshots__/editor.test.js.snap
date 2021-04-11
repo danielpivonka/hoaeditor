@@ -1897,6 +1897,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "a&!b",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "a&!b",
+      "x": 400,
+      "y": 437.7439024390244,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -1914,8 +1973,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 400,
-      "y": 417.7439024390244,
+      "x": 400.43752244751363,
+      "y": 417.74370476321985,
     },
     "transform": Array [
       1,
@@ -1975,8 +2034,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 400,
-            "y": 417.7439024390244,
+            "x": 400.43752244751363,
+            "y": 417.74370476321985,
           },
           "transform": Array [
             1,
@@ -2044,67 +2103,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 400,
-      "y": 417.7439024390244,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "a&!b",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "a&!b",
-      "x": 400,
-      "y": 437.7439024390244,
+      "x": 400.43752244751363,
+      "y": 417.74370476321985,
     },
     "transform": Array [
       1,
@@ -2482,6 +2482,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "!a&b",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "!a&b",
+      "x": 400,
+      "y": 362.2560975609756,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -2499,8 +2558,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 400,
-      "y": 382.2560975609756,
+      "x": 399.56247755248637,
+      "y": 382.25629523678015,
     },
     "transform": Array [
       1,
@@ -2560,8 +2619,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 400,
-            "y": 382.2560975609756,
+            "x": 399.56247755248637,
+            "y": 382.25629523678015,
           },
           "transform": Array [
             1,
@@ -2629,67 +2688,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 400,
-      "y": 382.2560975609756,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "!a&b",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "!a&b",
-      "x": 400,
-      "y": 362.2560975609756,
+      "x": 399.56247755248637,
+      "y": 382.25629523678015,
     },
     "transform": Array [
       1,
@@ -2952,6 +2952,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "a",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "a",
+      "x": 582.1811102257914,
+      "y": 114.22802353181574,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -2969,8 +3028,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 571.6811102257914,
-      "y": 133.79042369130536,
+      "x": 571.5747717000049,
+      "y": 133.72961166427984,
     },
     "transform": Array [
       1,
@@ -3030,8 +3089,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 571.6811102257914,
-            "y": 133.79042369130536,
+            "x": 571.5747717000049,
+            "y": 133.72961166427984,
           },
           "transform": Array [
             1,
@@ -3099,67 +3158,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 571.6811102257914,
-      "y": 133.79042369130536,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "a",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "a",
-      "x": 582.1811102257914,
-      "y": 114.22802353181574,
+      "x": 571.5747717000049,
+      "y": 133.72961166427984,
     },
     "transform": Array [
       1,
@@ -3731,6 +3731,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "a&b",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "a&b",
+      "x": 195.35418348375742,
+      "y": 462.12711344603235,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -3748,8 +3807,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 206.85418348375742,
-      "y": 447.71505887101875,
+      "x": 206.93110125200357,
+      "y": 447.81039848306636,
     },
     "transform": Array [
       1,
@@ -3809,8 +3868,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 206.85418348375742,
-            "y": 447.71505887101875,
+            "x": 206.93110125200357,
+            "y": 447.81039848306636,
           },
           "transform": Array [
             1,
@@ -3878,67 +3937,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 206.85418348375742,
-      "y": 447.71505887101875,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "a&b",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "a&b",
-      "x": 195.35418348375742,
-      "y": 462.12711344603235,
+      "x": 206.93110125200357,
+      "y": 447.81039848306636,
     },
     "transform": Array [
       1,
@@ -4201,6 +4201,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "!a&!b",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "!a&!b",
+      "x": 620.6259153802065,
+      "y": 421.07646820360293,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -4218,8 +4277,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 608.1259153802065,
-      "y": 416.1347345293428,
+      "x": 608.1510889451135,
+      "y": 416.01485010029864,
     },
     "transform": Array [
       1,
@@ -4279,8 +4338,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 608.1259153802065,
-            "y": 416.1347345293428,
+            "x": 608.1510889451135,
+            "y": 416.01485010029864,
           },
           "transform": Array [
             1,
@@ -4348,67 +4407,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 608.1259153802065,
-      "y": 416.1347345293428,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "!a&!b",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "!a&!b",
-      "x": 620.6259153802065,
-      "y": 421.07646820360293,
+      "x": 608.1510889451135,
+      "y": 416.01485010029864,
     },
     "transform": Array [
       1,
@@ -7519,6 +7519,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "t",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "t",
+      "x": 202.13826195955215,
+      "y": 129.8499597569816,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -7536,8 +7595,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 212.63826195955215,
-      "y": 145.8225926019449,
+      "x": 202.13826195955215,
+      "y": 104.8499597569816,
     },
     "transform": Array [
       1,
@@ -7597,8 +7656,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 212.63826195955215,
-            "y": 145.8225926019449,
+            "x": 202.13826195955215,
+            "y": 104.8499597569816,
           },
           "transform": Array [
             1,
@@ -7666,67 +7725,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 212.63826195955215,
-      "y": 145.8225926019449,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "t",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "t",
       "x": 202.13826195955215,
-      "y": 129.8499597569816,
+      "y": 104.8499597569816,
     },
     "transform": Array [
       1,
@@ -39050,6 +39050,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "a",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "a",
+      "x": 582.1811102257914,
+      "y": 114.22802353181574,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -39067,8 +39126,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 571.6811102257914,
-      "y": 133.79042369130536,
+      "x": 571.5747717000049,
+      "y": 133.72961166427984,
     },
     "transform": Array [
       1,
@@ -39128,8 +39187,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 571.6811102257914,
-            "y": 133.79042369130536,
+            "x": 571.5747717000049,
+            "y": 133.72961166427984,
           },
           "transform": Array [
             1,
@@ -39197,67 +39256,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 571.6811102257914,
-      "y": 133.79042369130536,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "a",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "a",
-      "x": 582.1811102257914,
-      "y": 114.22802353181574,
+      "x": 571.5747717000049,
+      "y": 133.72961166427984,
     },
     "transform": Array [
       1,
@@ -39829,6 +39829,65 @@ Array [
     "type": "stroke",
   },
   Object {
+    "props": Object {
+      "value": "20px Arial",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "font",
+  },
+  Object {
+    "props": Object {
+      "text": "a&b",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "measureText",
+  },
+  Object {
+    "props": Object {
+      "value": "#000000",
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillStyle",
+  },
+  Object {
+    "props": Object {
+      "maxWidth": null,
+      "text": "a&b",
+      "x": 266.5613058534875,
+      "y": 496.51306350336284,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "fillText",
+  },
+  Object {
     "props": Object {},
     "transform": Array [
       1,
@@ -39846,8 +39905,8 @@ Array [
       "endAngle": 6.283185307179586,
       "radius": 8.333333333333334,
       "startAngle": 0,
-      "x": 266.5613058534875,
-      "y": 476.51306350336284,
+      "x": 266.68380373173227,
+      "y": 476.5125590007294,
     },
     "transform": Array [
       1,
@@ -39907,8 +39966,8 @@ Array [
             "endAngle": 6.283185307179586,
             "radius": 8.333333333333334,
             "startAngle": 0,
-            "x": 266.5613058534875,
-            "y": 476.51306350336284,
+            "x": 266.68380373173227,
+            "y": 476.5125590007294,
           },
           "transform": Array [
             1,
@@ -39976,67 +40035,8 @@ Array [
     "props": Object {
       "maxWidth": null,
       "text": "0",
-      "x": 266.5613058534875,
-      "y": 476.51306350336284,
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillText",
-  },
-  Object {
-    "props": Object {
-      "value": "20px Arial",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "font",
-  },
-  Object {
-    "props": Object {
-      "text": "a&b",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "measureText",
-  },
-  Object {
-    "props": Object {
-      "value": "#000000",
-    },
-    "transform": Array [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-    ],
-    "type": "fillStyle",
-  },
-  Object {
-    "props": Object {
-      "maxWidth": null,
-      "text": "a&b",
-      "x": 266.5613058534875,
-      "y": 496.51306350336284,
+      "x": 266.68380373173227,
+      "y": 476.5125590007294,
     },
     "transform": Array [
       1,

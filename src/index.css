@@ -16,10 +16,17 @@
     display:flex;
     flex-direction: column;
 }
-.inputField{
-    max-width: 75%;
-    margin: 5px;
+input { display: table-cell;
+    border-style: solid;
+    border-color: black;
+    border-radius: 4px; }
 
+.inputField,.inputFieldError {
+    max-width: 75%;
+    margin: 5px; 
+}
+.inputFieldError{
+    border-color: red;
 }
 .collapsibleButton{
     text-align: left;
@@ -54,9 +61,7 @@ visibility: collapse;
     margin-right: 5%;
     margin-top: 5%;
 }
-textarea {
-    resize: none;
-  }
+
 .button_row {
     display: flex;
     justify-content: flex-end;
@@ -68,5 +73,8 @@ textarea {
 }
 .sidebarTable  { display: table;      }
 .sidebarRow     { display: table-row;  }
+
+textarea {
+    resize: none;
+  }
 label { display: table-cell; }
-input { display: table-cell; }

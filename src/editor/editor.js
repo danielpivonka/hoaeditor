@@ -1,7 +1,7 @@
 const EditorCanvas = require('./editorCanvas').EditorCanvas;
-const AutomatonSidebar = require('./automatonSidebar').AutomatonSidebar;
-const StateSidebar = require('./stateSidebar').StateSidebar;
-const EdgeSidebar = require('./edgeSidebar').EdgeSidebar;
+const AutomatonSidebar = require('./sidebars/automatonSidebar').AutomatonSidebar;
+const StateSidebar = require('./sidebars/stateSidebar').StateSidebar;
+const EdgeSidebar = require('./sidebars/edgeSidebar').EdgeSidebar;
 const State = require('../hoaObject').State;
 const Edge = require('../hoaObject').Edge;
 const HOA = require('../hoaObject').HOA;
@@ -12,10 +12,7 @@ class Editor {
         this.editorCanvas = new EditorCanvas(canvas);
         this.editorCanvas.onComponentSelectedListeners.push(this.componentSelected.bind(this));
         this.automatonSidebar = null;
-        this.stateSidebar = new StateSidebar();
-        this.edgeSidebar = new EdgeSidebar();
-        this.stateSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
-        this.edgeSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
+
         this.selected = null;
         this.setAutomaton(new HOA());
     }
@@ -23,7 +20,11 @@ class Editor {
     setAutomaton(automaton) {
         this.editorCanvas.setAutomaton(automaton);
         this.automatonSidebar = new AutomatonSidebar(automaton);
+        this.stateSidebar = new StateSidebar(automaton);
+        this.edgeSidebar = new EdgeSidebar(automaton);
         this.automatonSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
+        this.stateSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
+        this.edgeSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
         this.drawSidebar();
     }
     setShift(val) {

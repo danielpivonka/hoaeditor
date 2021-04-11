@@ -550,7 +550,7 @@ class EditorCanvas {
     * @returns {boolean} Whether or not is the point near quadratic curve.    
     */
     checkQuadraticCollision(p0, p1, p2, position, distance) {
-        var dist = EditorUtils.approxBezierLength(p0, p1, p2);
+        var dist = EditorUtils.approxBezierLength(10,p0, p1, p2);
         let steps = Math.ceil(dist)
         let stepSize = 1 / steps;
         let distanceLimitSquared = distance * distance;
@@ -564,7 +564,7 @@ class EditorCanvas {
         return false;
     }
     checkCubicCollision(p0, p1, p2, p3, position, distance) {
-        var dist = EditorUtils.approxBezierLength(p0, p1, p2, p3);
+        var dist = EditorUtils.approxBezierLength(10,p0, p1, p2, p3);
         let steps = Math.ceil(dist)
         let stepSize = 1 / steps;
         let distanceLimitSquared = distance * distance;

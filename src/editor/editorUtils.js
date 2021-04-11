@@ -307,11 +307,41 @@ class EditorUtils {
         }
         return result;
     }
-    static approxBezierLength(p0, p1, p2, p3 = p2) {
-        var dist = p0.clone().subtract(p1).length();
-        dist = dist + p1.clone().subtract(p2).length();
-        dist = dist + p2.clone().subtract(p3).length();
-        return dist
+    static approxBezierLength(iters, p0, p1, p2, p3 = null) {
+        let len = this.getPointsOnBezier(iters, p0, p1, p2, p3).slice(-1)[0];
+        return len;
+    }
+    static getPointsOnBezier(count, p0, p1, p2, p3 = null) {
+        let points = [];
+        for (let i = 0; i < count-1; i++) {
+            let step = 1 / count;
+            let segment1;
+            let segment2;
+            if (p3) {
+                segment1 = this.getPointOnCubicBezier(p0, p1, p2, p3, step * i);
+                segment2 = this.getPointOnCubicBezier(p0, p1, p2, p3, step * (i + 1));
+            }
+            else {
+                segment1 = this.getPointOnQuadraticBezier(p0, p1, p2, step * i);
+                segment2 = this.getPointOnQuadraticBezier(p0, p1, p2, step * (i + 1));
+            }
+            points.push((points[points.length-1]||0) + segment1.subtract(segment2).length());
+        }
+        return points
+    }
+    static getTAtPercentage(arrayOfPoints, percentage) {
+        let curveLength = arrayOfPoints.slice(-1)[0];
+        let desiredLength = percentage * curveLength;
+        let optimalIndex;
+        let optimalDist = Number.POSITIVE_INFINITY;
+        for (let i = 0; i < arrayOfPoints.length; i++) {
+            let dist = Math.abs(arrayOfPoints[i] - desiredLength);
+            if (dist < optimalDist) {
+                optimalDist = dist;
+                optimalIndex = i;
+            }
+        }
+        return optimalIndex / (arrayOfPoints.length-1);
     }
     static textStyle(size) {
         size = Math.floor(size);

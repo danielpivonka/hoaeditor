@@ -217,7 +217,6 @@ class EditorRenderer {
 
     }
     roundAngle(angle) {
-        console.log("angle to round: " + angle)
         if (angle < 0) return -90;
         return 90;
     }

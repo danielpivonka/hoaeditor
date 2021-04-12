@@ -187,19 +187,6 @@ class HOA {
                 positionsSet++;
             }
         }
-        for (const start of this.start) {
-            let states = this.numbersToStates(start.stateConj);
-
-            let positions = EditorUtils.statesToVectors(states);
-
-            let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
-            if (start.stateConj.length > 1) {
-                start.position = new Victor(anchor.x, anchor.y);
-            }
-            else {
-                start.position = new Victor(anchor.x, anchor.y + 50);
-            }
-        }
     }
     SetImplicitOffsets() {
         this.stateCount = this.states.size;
@@ -262,28 +249,6 @@ class HOA {
                 }
             }
         }
-
-        for (const start of this.start) {
-            if (start.stateConj.length > 1) {
-                let destinationStates = this.numbersToStates(start.stateConj);
-                let statePositions = EditorUtils.statesToPositions(destinationStates);
-                let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(start.position)));
-                for (const destinationState of destinationStates) {
-                    let destinationVector = destinationState.position;
-                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
-                    blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
-                }
-            }
-            else {
-                let stateNumber = start.stateConj[0];
-                let statePosition = this.getStateByNumber(stateNumber).position;
-                let originVector = start.position;
-                let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, circleSize);
-                let angle = EditorUtils.calculateBlockedAngle(destinationVector, statePosition);
-
-                blockedAngles[stateNumber].push(angle);
-            }
-        }
         return blockedAngles;
     }
     calculateLoopbackAngles() {
@@ -320,6 +285,52 @@ class HOA {
                 let angle = EditorUtils.calculateImplicitLoopbackAngle(loopbacks.length, i, interval);
                 loopback.offset = new Victor(1, 0).rotateDeg(angle).multiplyScalar(circleSize * 4);
                 i++;
+            }
+        }
+    }
+    calculateStartAngles(circleSize) {
+        let blockedAngles = [];
+        for (const stateKey of this.states.keys()) {
+            blockedAngles[stateKey] = [];
+        }
+        for (const start of this.start) {
+            if (start.stateConj.length > 1) {
+                let destinationStates = this.numbersToStates(start.stateConj);
+                let statePositions = EditorUtils.statesToPositions(destinationStates);
+                let midpoint = EditorUtils.calculateMidpointBetweenVectors(statePositions.concat(new Array(start.position)));
+                for (const destinationState of destinationStates) {
+                    let destinationVector = destinationState.position;
+                    let toPoint = EditorUtils.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                    blockedAngles[destinationState.number].push(EditorUtils.calculateBlockedAngle(toPoint, destinationVector));
+                }
+            }
+            else if (start.stateConj.length == 1){
+                let stateNumber = start.stateConj[0];
+                let statePosition = this.getStateByNumber(stateNumber).position;
+                let originVector = start.position;
+                let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, circleSize);
+                let angle = EditorUtils.calculateBlockedAngle(destinationVector, statePosition);
+
+                blockedAngles[stateNumber].push(angle);
+            }
+        }
+        return blockedAngles;
+    }
+    calculateStartAnchors(blockedAngles) {
+        for (const start of this.start) {
+            let states = this.numbersToStates(start.stateConj);
+            let positions = EditorUtils.statesToPositions(states);
+            let anchor = EditorUtils.calculateMidpointBetweenVectors(positions);
+            let perpendicular = anchor.clone().rotateDeg(90).normalize().multiplyScalar(50);
+            if (start.stateConj.length > 1) {
+                start.position = perpendicular.add(anchor);
+            }
+            else {
+                let state = states[0];
+                let interval = EditorUtils.getFreeAngleInterval(blockedAngles[state.number]);
+                let angle = EditorUtils.calculateImplicitLoopbackAngle(1, 0, interval);
+                let offset = new Victor(50, 0).rotateToDeg(angle);
+                start.position = offset.add(anchor);
             }
         }
     }

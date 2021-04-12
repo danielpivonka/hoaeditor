@@ -77,6 +77,9 @@ class EditorCanvas {
         this.automaton.SetImplicitOffsets();
         let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
         this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
+        let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
+        let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
+        this.automaton.calculateStartAnchors(mergedAngles)
         this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
         this.draw();
     }
@@ -85,6 +88,8 @@ class EditorCanvas {
         let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
         let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
+        let startAngles = this.automaton.calculateStartAngles(this.circleSize)
+        mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
         if (this.selected instanceof State || this.selected instanceof Edge) {
             this.renderer.draw(this.automaton, this.offset, mergedAngles, this.selected);
 
@@ -350,12 +355,6 @@ class EditorCanvas {
     }
 
     checkCollisionsAtPosition(position) {
-        for (const state of this.automaton.states.values()) {
-            if (this.checkCircleCollision(state.position, this.circleSize, position)) {
-                this.setSelected(state);
-                return
-            }
-        }
         for (const start of this.automaton.start) {
 
             if (this.checkCircleCollision(start.position, this.circleSize / 5, position)) {
@@ -363,6 +362,13 @@ class EditorCanvas {
                 return
             }
         }
+        for (const state of this.automaton.states.values()) {
+            if (this.checkCircleCollision(state.position, this.circleSize, position)) {
+                this.setSelected(state);
+                return
+            }
+        }
+        
         let labelResult = this.checkEdgeLabelCollision(position);
         if (labelResult) {
             this.setSelected(labelResult);

@@ -159,14 +159,12 @@ class EditorCanvas {
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selected != null) {
+            if (this.selected) {
                 this.downLocation = new Victor(x, y);
-                this.changeState(EditorCanvas.stateEnum.SELECTED)
-                this.draw();
-            }
-            else {
+                this.changeState(EditorCanvas.stateEnum.MOVE);
+            } else {
                 this.downLocation = new Victor(x, y).add(this.offset);
-                this.changeState(EditorCanvas.stateEnum.DRAG)
+                this.changeState(EditorCanvas.stateEnum.DRAG);
             }
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE) {
@@ -180,7 +178,6 @@ class EditorCanvas {
                 this.draw();
             }
             this.changeState(EditorCanvas.stateEnum.IDLE);
-
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
             this.first = this.selected;
@@ -286,7 +283,15 @@ class EditorCanvas {
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE) {
-            this.addStateAtPosition(x, y);
+            this.checkCollisionsAtPosition(new Victor(x, y));
+            if (this.selected instanceof State || this.selected instanceof Start) {
+                this.downLocation = new Victor(x, y);
+                this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
+                this.draw();
+            }
+            else {
+                this.addStateAtPosition(x, y);
+            }
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
             let start = this.automaton.addStart([]);
@@ -302,15 +307,12 @@ class EditorCanvas {
     mouseUp(e) {
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == EditorCanvas.stateEnum.SELECTED && !(this.selected instanceof Edge)) {
-            this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
-            this.draw();
-
-        } else if (this.editorState == EditorCanvas.stateEnum.SELECTED || this.editorState == EditorCanvas.stateEnum.MOVE) {
-            this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
-
-        }
-        else if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT && this.editorState != EditorCanvas.stateEnum.SELECTED_MODIFY && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST && this.editorState != EditorCanvas.stateEnum.ADD_START) {
+        if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT
+            && this.editorState != EditorCanvas.stateEnum.SELECTED_MODIFY
+            && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI
+            && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN
+            && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_LAST
+            && this.editorState != EditorCanvas.stateEnum.ADD_START) {
             this.changeState(EditorCanvas.stateEnum.IDLE)
             this.draw();
         }
@@ -319,11 +321,10 @@ class EditorCanvas {
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
-        if (this.editorState == EditorCanvas.stateEnum.SELECTED || this.editorState == EditorCanvas.stateEnum.MOVE) {
+        if (this.editorState == EditorCanvas.stateEnum.MOVE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
             }
-            this.changeState(EditorCanvas.stateEnum.MOVE)
             let dx = x - this.downLocation.x;
             let dy = y - this.downLocation.y;
             this.moveSelectedItem(dx, dy);
@@ -346,7 +347,7 @@ class EditorCanvas {
             let destination = new Victor(x, y);
             if (this.selected instanceof State) {
                 let fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, destination, this.circleSize);
-                this.renderer.drawEdgeBetweenPositions(fromPoint, destination);
+                this.renderer.drawLineBetweenPositions(fromPoint, destination);
 
             }
             else if (this.selected instanceof Start) {
@@ -370,7 +371,7 @@ class EditorCanvas {
     checkCollisionsAtPosition(position) {
         for (const start of this.automaton.start) {
 
-            if (this.checkCircleCollision(start.position, this.circleSize / 5, position)) {
+            if (this.checkCircleCollision(start.position, this.circleSize / 4, position)) {
                 this.setSelected(start);
                 return
             }

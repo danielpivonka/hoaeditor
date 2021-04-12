@@ -173,13 +173,14 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                this.addEdgePrompt(this.first, [this.selected.number]);
+                this.addEdge(this.first, [this.selected.number]);
             } else {
                 this.first = null;
                 this.destinations = [];
-                this.changeState(EditorCanvas.stateEnum.IDLE);
                 this.draw();
             }
+            this.changeState(EditorCanvas.stateEnum.IDLE);
+
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
             this.first = this.selected;
@@ -202,7 +203,7 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
             else {
-                this.addEdgePrompt(this.first, this.destinations);
+                this.addEdge(this.first, this.destinations);
             }
             this.setSelected(this.first);
             this.draw();
@@ -215,7 +216,7 @@ class EditorCanvas {
                 this.destinations.push(this.selected.number);
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
             }
-            this.addEdgePrompt(this.first, this.destinations);
+            this.addEdge(this.first, this.destinations);
             this.changeState(EditorCanvas.stateEnum.IDLE);
             this.setSelected(this.first);
             this.draw();
@@ -242,14 +243,14 @@ class EditorCanvas {
 
         }
     }
-    addEdgePrompt(from, to) {
+    addEdge(from, to) {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
         }
-        if (from instanceof State) {
+        if (from instanceof State && edge.canHaveLabel()) {
             this.createEdgePromp(from, edge, to);
         }
     }

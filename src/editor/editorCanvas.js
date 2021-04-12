@@ -414,7 +414,7 @@ class EditorCanvas {
     }
 
     moveMonoEdge(edge, dx, dy) {
-        let perpendicular = EditorUtils.calculatePerpendicular(this.automaton.getStateByNumber(edge.stateConj[0]).position, this.automaton.getStateByNumber(edge.parent).position)
+        let perpendicular = EditorUtils.calculatePerpendicular(this.automaton.getStateByNumber(edge.stateConj[0]).position, edge.parent.position)
         let movementVector = new Victor(dx, dy).rotateDeg(-perpendicular.angleDeg());
         edge.offset.add(movementVector);
     }

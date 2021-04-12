@@ -26,6 +26,7 @@ class EdgeSidebar {
         let label = SidebarUtils.createLabel(id, "Label:");
         let field = SidebarUtils.createField(id);
         field.value = edge.label;
+        field.disabled = !edge.canHaveLabel();
         field.oninput = (e) => { edge.label = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }

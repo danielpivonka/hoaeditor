@@ -31,6 +31,7 @@ class StateSidebar {
         let label = SidebarUtils.createLabel(id, "Label:");
         let field = SidebarUtils.createField(id);
         field.value = state.label;
+        field.disabled = !state.canHaveLabel();
         field.oninput = (e) => { state.label = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }

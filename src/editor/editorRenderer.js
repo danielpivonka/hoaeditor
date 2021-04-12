@@ -305,15 +305,26 @@ class EditorRenderer {
         }
 
     }
-    drawEdgeBetweenPositions(fromPoint, position) {
+    drawLineBetweenPositions(fromPoint, position) {
+
         fromPoint.add(this.offset).multiplyScalar(this.scale);
         position.add(this.offset).multiplyScalar(this.scale);
         this.ctx.beginPath();
         this.ctx.moveTo(fromPoint.x, fromPoint.y);
-        this.ctx.lineTo(position.x, position.y);
+        this.ctx.lineTo(position.x, position.y)
         this.ctx.stroke();
         this.drawArrowhead(position.clone().subtract(fromPoint), position)
     }
+    drawQuadraticCurveBetweenPositions(fromPoint,midpoint, position) {
+        fromPoint.add(this.offset).multiplyScalar(this.scale);
+    position.add(this.offset).multiplyScalar(this.scale);
+    this.ctx.beginPath();
+    this.ctx.moveTo(fromPoint.x, fromPoint.y);
+    this.ctx.quadraticCurveTo(midpoint.x,midpoint.y,position.x, position.y)
+    this.ctx.stroke();
+    this.drawArrowhead(position.clone().subtract(midpoint), position)
+    }
+    
     /**
      * Draws an arrowhead onto bound canvas.
      * 

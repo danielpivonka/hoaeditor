@@ -514,6 +514,14 @@ class State {
     setName(name) {
         this.name = name;
     }
+    canHaveLabel() {
+        for (const edge of this.edges) {
+            if (edge.label) {
+                return false
+            }
+        }
+        return true
+    }
     setPosition(x, y) {
         this.position = new Victor(x, y);
     }
@@ -527,7 +535,7 @@ class State {
      * @returns {Edge} The newly created edge.
      */
     addEdge(stateConj) {
-        let edge = new Edge(stateConj, this.number);
+        let edge = new Edge(stateConj, this);
         this.edges.push(edge);
         return edge;
     }
@@ -560,19 +568,23 @@ class Edge {
      * Constructs a new edge with given destinations.
      * 
      * @param {number[]} stateConj - Array of numbers representing stateConj.
-     * @param {int} parent - number of parent state.
+     * @param {State} parent - parent state.
      */
     constructor(stateConj, parent) {
         this.stateConj = stateConj || "";
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);
+        this.label = "";
     }
     setLabel(label) {
         this.label = label;
     }
     addAccSet(setNumber) {
         this.accSets.push(setNumber);
+    }
+    canHaveLabel() {
+        return !this.parent.label;
     }
     stringify() {
         let str = "";

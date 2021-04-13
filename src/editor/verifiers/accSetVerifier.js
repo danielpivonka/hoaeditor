@@ -20,7 +20,7 @@ class AccSetVerifier {
             console.log("length")
             return false
         }
-        return !(accSetArray.some(num => num > this.automaton.acceptance.count || num < 0))
+        return !(accSetArray.some(num => num > this.automaton.acceptance.count-1 || num < 0))
     }
 }
 exports.AccSetVerifier = AccSetVerifier;

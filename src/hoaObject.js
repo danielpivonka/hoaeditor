@@ -16,6 +16,7 @@ class HOA {
         this.acceptance = {
             count: 0, str: ""
         };
+        this.hasExplicitPositions = false;
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
@@ -441,7 +442,7 @@ class HOA {
             let importedState = importData.states[stateIndex];
             state.position = Victor.fromObject(importedState.position);
             for (let edgeIndex = 0; edgeIndex < state.edges.length; edgeIndex++) {
-                state.edges[edgeIndex].position = Victor.fromObject(importedState.edges[edgeIndex]);
+                state.edges[edgeIndex].offset = Victor.fromObject(importedState.edges[edgeIndex]);
             }
         }
         for (let startIndex = 0; startIndex < importData.starts.length; startIndex++) {

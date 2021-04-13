@@ -92,6 +92,7 @@ class hoaListenerImpl extends listener {
     exitBody(ctx) {
         if (this.positions) {
             this.data.importPositions(this.positions);
+            this.data.hasExplicitPositions = true;
         }
     }
 }

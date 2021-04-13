@@ -75,13 +75,15 @@ class EditorCanvas {
     setAutomaton(automaton) {
         /**@type {HOA}*/
         this.automaton = automaton;
-        this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
-        this.automaton.SetImplicitOffsets();
-        let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-        this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
-        let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
-        let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-        this.automaton.calculateStartAnchors(mergedAngles)
+        if (!this.automaton.hasExplicitPositions) {
+            this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
+            this.automaton.SetImplicitOffsets();
+            let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
+            this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
+            let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
+            let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
+            this.automaton.calculateStartAnchors(mergedAngles)
+        }
         this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
         this.draw();
     }

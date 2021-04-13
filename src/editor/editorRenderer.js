@@ -231,7 +231,7 @@ class EditorRenderer {
             this.ctx.stroke();
             this.ctx.font = EditorUtils.textStyle(18 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y - circleSize / 2);
-            this.ctx.fillText(state.label, pos.x, pos.y + circleSize / 2);
+            this.ctx.fillText(this.labelTranslator.translate(state.label), pos.x, pos.y + circleSize / 2);
         }
         else {
             this.ctx.font = EditorUtils.textStyle(36 * this.scale);

@@ -88,7 +88,7 @@ class AutomatonSidebar {
     }
     createAccname() {
         let id = "accname";
-        let label = SidebarUtils.createLabel(id, "Acceptance name:");
+        let label = SidebarUtils.createLabel(id, "acceptance name:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.accname;
         field.oninput = (e) => { this.automaton.accname = e.target.value; };
@@ -96,7 +96,7 @@ class AutomatonSidebar {
     }
     createName() {
         let id = "name";
-        let label = SidebarUtils.createLabel(id, "Name:");
+        let label = SidebarUtils.createLabel(id, "name:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.name;
         field.oninput = (e) => { this.automaton.name = e.target.value; };

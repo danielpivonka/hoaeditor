@@ -16,6 +16,7 @@ class HOA {
         this.acceptance = {
             count: 0, str: ""
         };
+        this.hasExplicitPositions = false;
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
@@ -340,6 +341,25 @@ class HOA {
         }
         this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });
         this.states.delete(stateToRemove.number);
+        this.collapseStateNumbers(stateToRemove.number)
+    }
+    collapseStateNumbers(removedStateNumber) {
+        let size = this.states.size+1;
+        for (let i = 0; i < size; i++) {
+            if (i != removedStateNumber) {
+                let state = this.states.get(i);
+                if (state.number > removedStateNumber) {
+                    this.states.set(state.number - 1, state);
+                    state.number -= 1;
+                }
+            for (const edge of state.edges) {
+                    edge.stateConj = edge.stateConj.map(n => n > removedStateNumber ? n - 1 : n);
+                }
+            }
+        }
+        if (removedStateNumber != size-1) {
+            this.states.delete(this.states.size - 1);
+        }
     }
     removeStart(startToRemove) {
         this.start = this.start.filter((start) => { return start != startToRemove });
@@ -422,7 +442,7 @@ class HOA {
             let importedState = importData.states[stateIndex];
             state.position = Victor.fromObject(importedState.position);
             for (let edgeIndex = 0; edgeIndex < state.edges.length; edgeIndex++) {
-                state.edges[edgeIndex].position = Victor.fromObject(importedState.edges[edgeIndex]);
+                state.edges[edgeIndex].offset = Victor.fromObject(importedState.edges[edgeIndex]);
             }
         }
         for (let startIndex = 0; startIndex < importData.starts.length; startIndex++) {

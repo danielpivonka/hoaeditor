@@ -39,7 +39,10 @@ class EdgeSidebar {
         field.oninput = (e) => {
             let value = e.target.value;
             let parsedValues = value.split(" ").map(num => parseInt(num));
-            if (this.accSetVerifier.verify(parsedValues)) {
+            if (value == "") {
+                accSetArray.length = 0;
+            }
+            else if (this.accSetVerifier.verify(parsedValues)) {
                 accSetArray.length = 0;
                 accSetArray.push(...parsedValues);
                 field.className = "inputField";

@@ -191,23 +191,26 @@ test('move start', () => {
 
   let result = parse(hoaIn);
   editor.setAutomaton(result);
+  let automaton = editor.getAutomaton();
+  let oldPosition = automaton.start[0].position.clone();
   var downEvt = new MouseEvent("mouseDown", {
-    clientX: 269,
-    clientY: 353,
+    clientX: oldPosition.x,
+    clientY: oldPosition.y,
   });
   editor.mouseDown(downEvt);
   var moveEvt = new MouseEvent("mouseDown", {
-    clientX: 279,
-    clientY: 363,
+    clientX: oldPosition.x+10,
+    clientY: oldPosition.y+10,
   });
   editor.mouseMove(moveEvt);
   editor.mouseUp(moveEvt);
-  let automaton = editor.getAutomaton();
-  let position = automaton.start[0].position;
-  expect(position.x).toBeLessThan(279 + editor.circleSize / 5);
-  expect(position.y).toBeLessThan(363 + editor.circleSize / 5);
-  expect(position.x).toBeGreaterThan(279 - editor.circleSize / 5);
-  expect(position.y).toBeGreaterThan(363 - editor.circleSize / 5);
+  let newPosition = automaton.start[0].position;
+  console.log(oldPosition.toString());
+  console.log(newPosition.toString());
+  expect(newPosition.x).toBeLessThan(oldPosition.x+10 + editor.circleSize / 5);
+  expect(newPosition.y).toBeLessThan(oldPosition.y+10 + editor.circleSize / 5);
+  expect(newPosition.x).toBeGreaterThan(oldPosition.x+10 - editor.circleSize / 5);
+  expect(newPosition.y).toBeGreaterThan(oldPosition.y+10 - editor.circleSize / 5);
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })

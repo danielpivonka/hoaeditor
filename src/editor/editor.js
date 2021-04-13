@@ -12,7 +12,8 @@ class Editor {
         this.editorCanvas = new EditorCanvas(canvas);
         this.editorCanvas.onComponentSelectedListeners.push(this.componentSelected.bind(this));
         this.automatonSidebar = null;
-
+        this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
+        this.editorCanvas.detailRemoveListener = this.removeDetail;
         this.selected = null;
         this.setAutomaton(new HOA());
     }
@@ -38,15 +39,8 @@ class Editor {
     }
     drawSidebar() {
         this.sidebarContainer.innerHTML = "";
-        if (!this.selected) {
-            this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
-        }
-        else if (this.selected instanceof State) {
-            this.sidebarContainer.append(this.stateSidebar.generateSidebar(this.selected));
-        }
-        else if (this.selected instanceof Edge) {
-            this.sidebarContainer.append(this.edgeSidebar.generateSidebar(this.selected));
-        }
+        this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
+       
     }
     resized() {
         this.editorCanvas.resized();
@@ -54,6 +48,25 @@ class Editor {
     componentSelected(component) {
         this.selected = component;
         this.drawSidebar();
+    }
+    showDetails(object, mousePosition) {
+        let container = document.createElement("div");
+        container.className = "container detail_area"
+        container.style.left = mousePosition.x+10+ "px";
+        container.style.top = mousePosition.y + "px";
+        container.setAttribute("id", "objectDetail");
+        if (object instanceof State) {
+            container.appendChild(this.stateSidebar.generateSidebar(this.selected));
+        }
+        else if (object instanceof Edge) {
+            container.appendChild(this.edgeSidebar.generateSidebar(this.selected));
+        }
+        document.getElementsByTagName("body")[0].appendChild(container);
+    }
+    removeDetail() {
+        if (document.getElementById("objectDetail")) {
+            document.getElementById("objectDetail").remove();
+        }
     }
 }
 exports.Editor = Editor;

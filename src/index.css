@@ -41,18 +41,26 @@ input { display: table-cell;
     height: 75vh;
 }
 .parse_area{
+    visibility: collapse;
+
     width: 40%;
 height: 90%;
-position: absolute;
 left: 30%;
 top: 5%;
-background-color: whitesmoke;
-border: black;
-border-style: solid;
-border-width: thin;
-display: flex;
-flex-direction: column;
-visibility: collapse;
+
+}
+.container{
+    position: absolute;
+    background-color: whitesmoke;
+    border: black;
+    border-style: solid;
+    border-width: thin;
+    display: flex;
+    flex-direction: column;
+}
+.detail_area{
+    padding: 2vh;
+    opacity: 0.9;
 }
 .parse_text
 {

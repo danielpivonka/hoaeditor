@@ -31,6 +31,8 @@ class EditorCanvas {
         this.destinations = [];
         this.onStateChangedListeners = [];
         this.onComponentSelectedListeners = [];
+        this.detailRequestedListener;
+        this.detailRemoveListener;
         this.offset = new Victor(0, 0)
         this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
 
@@ -60,6 +62,7 @@ class EditorCanvas {
     }
     changeState(state) {
         this.editorState = state;
+        console.log(state);
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
@@ -130,6 +133,7 @@ class EditorCanvas {
                 this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
             }
         }
+        this.draw();
     }
 
     removeClicked() {
@@ -155,13 +159,14 @@ class EditorCanvas {
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         document.activeElement.blur()
+        this.removeDetail();
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected) {
                 this.downLocation = new Victor(x, y);
-                this.changeState(EditorCanvas.stateEnum.MOVE);
+                this.changeState(EditorCanvas.stateEnum.SELECTED);
             } else {
                 this.downLocation = new Victor(x, y).add(this.offset);
                 this.changeState(EditorCanvas.stateEnum.DRAG);
@@ -282,16 +287,17 @@ class EditorCanvas {
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == EditorCanvas.stateEnum.IDLE) {
+        this.removeDetail();
+        if (this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State || this.selected instanceof Start) {
                 this.downLocation = new Victor(x, y);
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
                 this.draw();
             }
-            else {
-                this.addStateAtPosition(x, y);
-            }
+        }
+        else if (this.editorState == EditorCanvas.stateEnum.IDLE) {
+            this.addStateAtPosition(x, y);
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
             let start = this.automaton.addStart([]);
@@ -307,7 +313,12 @@ class EditorCanvas {
     mouseUp(e) {
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT
+        if (this.editorState == EditorCanvas.stateEnum.SELECTED) {
+            this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
+            this.requestDetail(this.selected,this.downLocation);
+            this.draw();
+        }
+        else if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT
             && this.editorState != EditorCanvas.stateEnum.SELECTED_MODIFY
             && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI
             && this.editorState != EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN
@@ -321,10 +332,11 @@ class EditorCanvas {
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
-        if (this.editorState == EditorCanvas.stateEnum.MOVE) {
+        if (this.editorState == EditorCanvas.stateEnum.SELECTED||this.editorState == EditorCanvas.stateEnum.MOVE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
             }
+            this.changeState(EditorCanvas.stateEnum.MOVE)
             let dx = x - this.downLocation.x;
             let dy = y - this.downLocation.y;
             this.moveSelectedItem(dx, dy);
@@ -400,6 +412,17 @@ class EditorCanvas {
         this.selected = object;
         for (const fn of this.onComponentSelectedListeners) {
             fn(object);
+        }
+    }
+    requestDetail(object,position) {
+        if (this.detailRequestedListener) {
+            this.detailRequestedListener(object,position);
+        }
+    }
+
+    removeDetail() {
+        if (this.detailRemoveListener) {
+            this.detailRemoveListener();
         }
     }
     moveSelectedItem(dx, dy) {

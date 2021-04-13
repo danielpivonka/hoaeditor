@@ -340,6 +340,25 @@ class HOA {
         }
         this.start = this.start.filter((start) => { return !start.stateConj.includes(stateToRemove.number) });
         this.states.delete(stateToRemove.number);
+        this.collapseStateNumbers(stateToRemove.number)
+    }
+    collapseStateNumbers(removedStateNumber) {
+        let size = this.states.size+1;
+        for (let i = 0; i < size; i++) {
+            if (i != removedStateNumber) {
+                let state = this.states.get(i);
+                if (state.number > removedStateNumber) {
+                    this.states.set(state.number - 1, state);
+                    state.number -= 1;
+                }
+            for (const edge of state.edges) {
+                    edge.stateConj = edge.stateConj.map(n => n > removedStateNumber ? n - 1 : n);
+                }
+            }
+        }
+        if (removedStateNumber != size-1) {
+            this.states.delete(this.states.size - 1);
+        }
     }
     removeStart(startToRemove) {
         this.start = this.start.filter((start) => { return start != startToRemove });

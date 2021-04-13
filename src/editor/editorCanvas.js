@@ -62,7 +62,6 @@ class EditorCanvas {
     }
     changeState(state) {
         this.editorState = state;
-        console.log(state);
         for (const fn of this.onStateChangedListeners) {
             fn(state);
         }
@@ -137,6 +136,7 @@ class EditorCanvas {
     }
 
     removeClicked() {
+        this.removeDetail();
         if (this.selected instanceof State) {
             this.automaton.removeState(this.selected);
             this.draw();

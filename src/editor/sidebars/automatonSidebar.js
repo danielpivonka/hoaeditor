@@ -1,12 +1,26 @@
 
 const HOA = require('../../hoaObject').HOA;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
+const LexprField = require('./lexprField.js').LexprField;
 class AutomatonSidebar {
-    constructor(automaton) {
+    constructor(automaton,translator) {
         /**@type { HOA }*/
         this.automaton = automaton;
         this.sidebarRedrawRequestListener = null;
+        this.automatonChangedListeners = [];
         this.collapsedState = [];
+        this.translator = translator;
+        this.keyboard;
+        this.selectedAliasIndex = -1;
+        this.aliasFields = [];
+    }
+    addAutomatonChangedListener(func) {
+        this.automatonChangedListeners.push(func)
+    }
+    automatonChanged() {
+        for (const func of this.automatonChangedListeners) {
+            func();
+        }
     }
     generateSidebar() {
         let sidebar = document.createElement("div");
@@ -49,6 +63,7 @@ class AutomatonSidebar {
 
     }
     createAliasList() {
+        this.aliasFields = [];
         this.automaton.aliases = this.automaton.aliases.filter((e) => e != null);
         let wrap = SidebarUtils.createList(this.createAlias.bind(this), this.automaton.aliases, "Aliases", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -67,7 +82,10 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, index + ":");
         let field = SidebarUtils.createField(id);
         field.value = array[index];
-        field.oninput = (e) => { array[index] = e.target.value; };
+        field.oninput = (e) => {
+            array[index] = e.target.value;
+            this.automatonChanged();
+        };
         return SidebarUtils.createDivWithChildren(label, field);
     }
     createAcceptanceCount() {
@@ -108,17 +126,16 @@ class AutomatonSidebar {
         let keyField = SidebarUtils.createField(index + "k");
         let aliasObject = array[index]
         keyField.value = aliasObject.aname.substring(1);
-        keyField.oninput = (e) => {
-            if (e.target.value) {
-                aliasObject.aname = "@" + e.target.value;
-            }
-        };
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
-        let valueField = SidebarUtils.createField(index + "v");
-        valueField.value = aliasObject.lexpr;
-        valueField.oninput = (e) => {
-            aliasObject.lexpr = e.target.value;
-        };
+        let lexprObj = new LexprField(this.automaton, this.translator)
+        let valueField = lexprObj.drawField(aliasObject.lexpr)
+        this.aliasFields.push(lexprObj);
+        lexprObj.onSelected = () => {
+            if (this.selectedAliasIndex != index) {
+                this.deselectAliases(lexprObj);
+            }
+            this.selectedAliasIndex = index;
+        }
         let removeButton = document.createElement("button")
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";
@@ -127,6 +144,14 @@ class AutomatonSidebar {
             this.requestRedraw();
         });
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
+    }
+    deselectAliases(except) {
+        console.log("deselecting")
+        for (const field of this.aliasFields) {
+            if (field != except) {
+                field.deselect();
+            }
+        }
     }
 }
 exports.AutomatonSidebar = AutomatonSidebar;

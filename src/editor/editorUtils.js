@@ -141,7 +141,9 @@ class EditorUtils {
     }
 
     static getFreeAngleInterval(angles, offset = 0) {
-        if (angles == null) {
+        console.log("requested angles: " + JSON.stringify(angles));
+        if (angles.length==0) {
+            console.log("returning default");
             return [0, 359];
         }
         angles.sort((a, b) => { return a - b });
@@ -284,10 +286,10 @@ class EditorUtils {
      * @returns {Victor[]} Vectors with state positions.
      */
     static getLabel(state, edgeIndex, aps) {
-        if (state.edges[edgeIndex].label) {
-            return state.edges[edgeIndex].label;
+        if (state.edges[edgeIndex].getLabelString()) {
+            return state.edges[edgeIndex].getLabelString();
         }
-        if (state.edges.length == Math.pow(2, aps.length) && !state.label) {
+        if (state.edges.length == Math.pow(2, aps.length) && !state.getLabelString()) {
             return this.calculateImplicitLabel(edgeIndex, aps.length);
         }
         return "";

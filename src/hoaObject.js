@@ -60,8 +60,10 @@ class HOA {
      * @param {string} lexpr - Label, atomic proposition, already existing alias, or a group of thereof.
      */
     addAlias(aname, lexpr) {
+        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        let lexprParsed = lexpr.match(regex);
         this.aliases.push({
-            aname: aname, lexpr: lexpr
+            aname: aname, lexpr: lexprParsed
         });
     }
     /**
@@ -143,11 +145,13 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addState(number) {
+        console.log("adding state");
         if (this.states.get(number)) {
             //TODO error message
         }
         else {
             this.states.set(number, new State(number));
+            console.log("added state: " + this.states.get(number));
             return this.states.get(number);
         }
     }
@@ -453,6 +457,7 @@ class HOA {
         let count = this.states.get(fromIndex).edges.filter((element) => element.stateConj.includes(toIndex)).length;
         return count;
     }
+    
 }
 class PositionsExport {
 
@@ -523,20 +528,21 @@ class State {
         this.edges = [];
         /**@type {Position}*/
         this.position;
-        /**@type {string}*/
-        this.label = "";
+        /**@type {string[]}*/
+        this.label = [];
         /**@type {string}*/
         this.name = "";
     }
-    setLabel(label) {
-        this.label = label;
+    setLabelByString(labelString) {
+        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        this.label = labelString.match(regex);
     }
     setName(name) {
         this.name = name;
     }
     canHaveLabel() {
         for (const edge of this.edges) {
-            if (edge.label) {
+            if (edge.label!=0) {
                 return false
             }
         }
@@ -559,10 +565,13 @@ class State {
         this.edges.push(edge);
         return edge;
     }
+    getLabelString() {
+        return this.label.join("");
+    }
     stringify() {
         let str = "State:"
-        if (this.label) {
-            str += " [" + this.label + "]";
+        if (this.label.length!=0) {
+            str += " [" + this.getLabelString() + "]";
         }
         str += " " + this.number;
         if (this.name) {
@@ -595,21 +604,25 @@ class Edge {
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);
-        this.label = "";
+        this.label = [];
     }
-    setLabel(label) {
-        this.label = label;
+    setLabelByString(labelString) {
+        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        this.label = labelString.match(regex);
+    }
+    getLabelString() {
+        return this.label.join("");
     }
     addAccSet(setNumber) {
         this.accSets.push(setNumber);
     }
     canHaveLabel() {
-        return !this.parent.label;
+        return this.parent.label.length==0;
     }
     stringify() {
         let str = "";
-        if (this.label) {
-            str += "[" + this.label + "] ";
+        if (this.label.length!=0) {
+            str += "[" + this.getLabelString() + "] ";
         }
         str += this.stateConj.toString().replace(",", "&");
         if (this.accSets.length > 0) {

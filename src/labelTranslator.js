@@ -1,8 +1,7 @@
 class LabelTranslator {
-    constructor(aliases, aps) {
+    constructor(automaton) {
         /**@type{Object[]}*/
-        this.aliases = aliases;
-        this.aps = aps;
+        this.automaton = automaton;
         this.aliasRegex = /!?\s*@[0-9a-zA-Z_-]+/g;
         this.apRegex = /\d+/g;
     }
@@ -35,10 +34,10 @@ class LabelTranslator {
     }
     apReplacer(digitString) {
         let digit = parseInt(digitString);
-        return this.aps[digit];
+        return this.automaton.ap[digit];
     }
     getByAname(aname) {
-        return this.aliases.find(e => e.aname == aname).lexpr;
+        return this.automaton.aliases.find(e => e.aname == aname).lexpr.join("");
     }
 }
 exports.LabelTranslator = LabelTranslator;

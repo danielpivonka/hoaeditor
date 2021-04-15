@@ -8,11 +8,10 @@ const Start = require('../hoaObject').Start;
 const Edge = require('../hoaObject').Edge;
 
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
-const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 
 class EditorCanvas {
-    constructor(canvas) {
+    constructor(canvas,translator) {
         /**@type {HOA}*/
         this.automaton = new HOA();
         /**@type {HTMLCanvasElement}*/
@@ -32,9 +31,9 @@ class EditorCanvas {
         this.onStateChangedListeners = [];
         this.onComponentSelectedListeners = [];
         this.detailRequestedListener;
-        this.detailRemoveListener;
+        this.onFocusListeners = [];
         this.offset = new Victor(0, 0)
-        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
+        this.labelTranslator = translator;
 
     }
     resized() {
@@ -72,7 +71,7 @@ class EditorCanvas {
      * @param {HOA} automaton - Automaton object.
      */
 
-    setAutomaton(automaton) {
+    setAutomaton(automaton,translator) {
         /**@type {HOA}*/
         this.automaton = automaton;
         if (!this.automaton.hasExplicitPositions) {
@@ -84,7 +83,7 @@ class EditorCanvas {
             let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
             this.automaton.calculateStartAnchors(mergedAngles)
         }
-        this.labelTranslator = new LabelTranslator(this.automaton.aliases, this.automaton.ap);
+        this.labelTranslator = translator;
         this.draw();
     }
 
@@ -95,10 +94,10 @@ class EditorCanvas {
         let startAngles = this.automaton.calculateStartAngles(this.circleSize)
         mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
         if (this.selected instanceof State || this.selected instanceof Edge) {
-            this.renderer.draw(this.automaton, this.offset, mergedAngles, this.selected);
+            this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator, this.selected);
 
         } else {
-            this.renderer.draw(this.automaton, this.offset, mergedAngles);
+            this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator);
         }
     }
     getAutomaton() {
@@ -161,7 +160,7 @@ class EditorCanvas {
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         document.activeElement.blur()
-        this.removeDetail();
+        this.onFocus();
         e.preventDefault();
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
@@ -244,7 +243,6 @@ class EditorCanvas {
             }
             this.selected = this.first;
             this.draw();
-
         }
     }
     addEdge(from, to) {
@@ -254,42 +252,14 @@ class EditorCanvas {
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
         }
-        if (from instanceof State && edge.canHaveLabel()) {
-            this.createEdgePromp(from, edge, to);
-        }
     }
-    createEdgePromp(state, edge, destinations) {
-        let input = document.createElement("input");
-        let boundingBox = this.canvas.getBoundingClientRect();
-        let position = EditorUtils.calculateLabelPosition(state, this.automaton.numbersToStates(destinations), edge, this.circleSize * this.renderer.scale);
-        input.setAttribute("type", "text");
-        input.setAttribute("id", "edgePrompt");
-        let x = boundingBox.left + (position.x + this.offset.x) * this.renderer.scale;
-        let y = boundingBox.top + (position.y + this.offset.y) * this.renderer.scale;
-        input.setAttribute("style", "position: absolute; left: " + x + "px;top: " + y + "px; transform: translate(-50%, -50%);")
-        document.getElementsByTagName("body")[0].appendChild(input);
-        input.focus();
-        input.addEventListener("focusout", () => this.saveEdgePrompt(edge, input.value));
-        input.addEventListener("keydown", (e) => {
-            if (e.key == "Enter") { this.saveEdgePrompt(edge, input.value); }
-            else if (e.key == "Escape") {
-                state.edges = state.edges.filter(e => e != edge);
-                document.getElementById("edgePrompt").remove();
-            }
-        })
-    }
-    saveEdgePrompt(edge, input) {
-        edge.setLabel(input);
-        document.getElementById("edgePrompt").remove()
-        this.draw();
-    }
+
     doubleClick(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         e.preventDefault();
         e.stopPropagation();
-        this.removeDetail();
         if (this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State || this.selected instanceof Start) {
@@ -422,10 +392,13 @@ class EditorCanvas {
         }
     }
 
-    removeDetail() {
-        if (this.detailRemoveListener) {
-            this.detailRemoveListener();
+    onFocus() {
+        for (const fn of this.onFocusListeners) {
+            fn();
         }
+    }
+    addOnFocusListener(listener) {
+        this.onFocusListeners.push(listener);
     }
     moveSelectedItem(dx, dy) {
         if (this.selected instanceof State) {

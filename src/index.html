@@ -8,16 +8,19 @@
 <body>
     <div id="input_container" class="container parse_area">
         <textarea id="HOA_input" class="parse_text" spellcheck="false"></textarea>
-        <div class="button_row">
-            <button id="HOA_parse" type="button">Parse</button>
-            <button id="close" type="button">Close</button>
+        <div class="button_row reverse">
+            <button id="HOA_parse" class="button" type="button">Parse</button>
+            <button id="close" class="button" type="button">Close</button>
         </div>
     </div>
-    <div class="button_row">
-        <button id="import" type="button">Import</button>
-        <button id="export" type="button">Export</button>
-        <button id="export_with_pos" type="button">Export with positions</button>
+    <div class="header">
+    <div class="button_row reverse">
+        <button id="import" class="button" type="button">Import</button>
+        <button id="export" class="button" type="button">Export</button>
+        <button id="export_with_pos" class="button" type="button">Export with positions</button>
     </div>
+</div>
+
     <div id="editorContainer">
         <div id="canvasContainer">
             <canvas id="canvas"></canvas>

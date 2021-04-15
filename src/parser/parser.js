@@ -1,9 +1,8 @@
-//@ts-nocheck
-
 const antlr4 = require('antlr4/index');
 const hoaLexer = require('./generated/hoaLexer');
 const hoaParser = require('./generated/hoaParser');
 const listener = require('./listenerImplementation').hoaListenerImpl;
+
 const HOA = require('../hoaObject').HOA;
 
 
@@ -14,14 +13,16 @@ const HOA = require('../hoaObject').HOA;
  * @returns {HOA} Automaton object.
  */
 function parse(input) {
-    var chars = new antlr4.InputStream(input);
-    var lexer = new hoaLexer.hoaLexer(chars);
-    var tokens = new antlr4.CommonTokenStream(lexer);
-    var parser = new hoaParser.hoaParser(tokens);
+    let chars = new antlr4.InputStream(input);
+    let lexer = new hoaLexer.hoaLexer(chars);
+    let tokens = new antlr4.CommonTokenStream(lexer);
+    let parser = new hoaParser.hoaParser(tokens);
     parser.buildParseTrees = true;
-    var tree = parser.automaton();
-    var list = new listener();
+    let tree = parser.automaton();
+    let list = new listener();
     antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
     return list.data;
 }
+
 exports.parse = parse;
+

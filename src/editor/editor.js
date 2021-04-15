@@ -1,10 +1,11 @@
 const EditorCanvas = require('./editorCanvas').EditorCanvas;
 const AutomatonSidebar = require('./sidebars/automatonSidebar').AutomatonSidebar;
-const StateSidebar = require('./sidebars/stateSidebar').StateSidebar;
-const EdgeSidebar = require('./sidebars/edgeSidebar').EdgeSidebar;
+const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
 const State = require('../hoaObject').State;
 const Edge = require('../hoaObject').Edge;
 const HOA = require('../hoaObject').HOA;
+const LabelTranslator = require('../labelTranslator').LabelTranslator;
+
 
 class Editor {
     constructor(canvas, sidebarContainer) {
@@ -13,19 +14,27 @@ class Editor {
         this.editorCanvas.onComponentSelectedListeners.push(this.componentSelected.bind(this));
         this.automatonSidebar = null;
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
-        this.editorCanvas.detailRemoveListener = this.removeDetail;
+        this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.selected = null;
-        this.setAutomaton(new HOA());
+        let automaton = new HOA();
+        console.log("aliases: " + JSON.stringify(automaton.aliases));
+        this.setAutomaton(automaton);
+        this.currentDetail;
+        document.body.addEventListener('mousedown', () => this.resetFocus());
+        this.editorCanvas.addOnFocusListener(() => this.resetFocus());
     }
 
+    resetFocus() {
+        this.automatonSidebar.deselectAliases();
+        this.removeDetail()
+    }
     setAutomaton(automaton) {
-        this.editorCanvas.setAutomaton(automaton);
-        this.automatonSidebar = new AutomatonSidebar(automaton);
-        this.stateSidebar = new StateSidebar(automaton);
-        this.edgeSidebar = new EdgeSidebar(automaton);
+        this.translator = new LabelTranslator(automaton);
+        this.editorCanvas.setAutomaton(automaton,this.translator);
+        this.automatonSidebar = new AutomatonSidebar(automaton,this.translator);
+        this.detail = new ObjectDetail(automaton,this.translator);
         this.automatonSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
-        this.stateSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
-        this.edgeSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
+        this.automatonSidebar.addAutomatonChangedListener(() => this.editorCanvas.draw());
         this.drawSidebar();
     }
     setShift(val) {
@@ -55,17 +64,26 @@ class Editor {
         container.style.left = mousePosition.x+10+ "px";
         container.style.top = mousePosition.y + "px";
         container.setAttribute("id", "objectDetail");
-        if (object instanceof State) {
-            container.appendChild(this.stateSidebar.generateSidebar(this.selected));
-        }
-        else if (object instanceof Edge) {
-            container.appendChild(this.edgeSidebar.generateSidebar(this.selected));
-        }
+        container.appendChild(this.detail.generateDetail(object));
+        container.addEventListener("mousedown", (e) => {
+            e.stopPropagation()
+            this.detail.lexprField.deselect();
+        });
+        this.currentDetail = this.detail;
         document.getElementsByTagName("body")[0].appendChild(container);
     }
+    
     removeDetail() {
+        if (this.currentDetail) {
+            console.log("calling close");
+            this.currentDetail.close();
+            this.currentDetail = null;
+        }
         if (document.getElementById("objectDetail")) {
             document.getElementById("objectDetail").remove();
+        }
+        if (this.automatonSidebar) {
+            //this.automatonSidebar.closeKeyboard();
         }
     }
 }

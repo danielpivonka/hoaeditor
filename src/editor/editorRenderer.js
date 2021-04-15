@@ -3,7 +3,6 @@ const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
-const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 class EditorRenderer {
 
@@ -23,7 +22,7 @@ class EditorRenderer {
         /**@type {number}*/
         this.drawnEdges = [];
         this.scale = 1;
-        this.labelTranslator = null;
+        this.labelTranslator;
         this.offset = new Victor(0, 0);
         this.hasMultiEdge = false;
         this.accColors = ["#285943", "#07020D", "#03F7EB", "#ea2b1f", "#13315c", "#8d80ad", "#FFA400", "#009FFD", "#20BF55", "#F6CA83"]
@@ -43,12 +42,12 @@ class EditorRenderer {
      * @param {Object} selected - the selected object.
      * @param {number[][]} angles - blocked angles.
      */
-    draw(automaton, offset, angles, selected) {
+    draw(automaton, offset, angles,translator, selected) {
         this.drawnEdges = [];
         this.offset = offset;
+        this.labelTranslator = translator;
         this.circleSize = this.baseCircleSize * this.scale;
         this.ctx.lineWidth = this.scale * 1.1;
-        this.labelTranslator = new LabelTranslator(automaton.aliases, automaton.ap);
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton);
         this.hasMultiEdge = automaton.hasMultiEdge();
@@ -83,9 +82,14 @@ class EditorRenderer {
 
     drawStateLabels(state, blockedAngles) {
         let interval = EditorUtils.getFreeAngleInterval(blockedAngles[state.number]);
-        let distance = (interval[1] - interval[0]);
-        distance = distance > 0 ? distance : distance + 360;
-        let angle = interval[0] + distance * 0.5;
+        let angle;
+        if (interval) {
+            let distance = (interval[1] - interval[0]);
+            distance = distance > 0 ? distance : distance + 360;
+            angle = interval[0] + distance * 0.5;
+        } else {
+            angle = 180;
+        }
         let anchor = new Victor(1, 0);
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         anchor.add(state.position.clone().add(this.offset)).multiplyScalar(this.scale);
@@ -224,14 +228,14 @@ class EditorRenderer {
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
         let pos = state.position.clone().add(this.offset).multiplyScalar(this.scale);
-        if (state.label) {
+        if (state.label.length!=0) {
             this.ctx.beginPath();
             this.ctx.moveTo(pos.x - circleSize, pos.y);
             this.ctx.lineTo(pos.x + circleSize, pos.y);
             this.ctx.stroke();
             this.ctx.font = EditorUtils.textStyle(18 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y - circleSize / 2);
-            this.ctx.fillText(this.labelTranslator.translate(state.label), pos.x, pos.y + circleSize / 2);
+            this.ctx.fillText(this.labelTranslator.translate(state.getLabelString()), pos.x, pos.y + circleSize / 2);
         }
         else {
             this.ctx.font = EditorUtils.textStyle(36 * this.scale);

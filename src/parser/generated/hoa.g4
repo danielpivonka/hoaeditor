@@ -50,7 +50,7 @@ vertex: stateName edge*;
 stateName: 'State:' label? INT STRING? accSig?;
 accSig: '{' INT* '}';
 edge: label? stateConj accSig?;
-label: '[' lexpr ']';
+label: '['lexpr']';
 BODYDELIM: '--BODY--';
 ENDDELIM: '--END--';
 HEADERNAME: [a-zA-Z_][0-9a-zA-Z_-]* ':';

@@ -10,6 +10,7 @@ class AccSetVerifier {
     }
 
     verify(accSetArray) {
+        console.log(JSON.stringify(accSetArray))
         for (const element of accSetArray) {
             if (isNaN(element)) {
                 console.log("nan")

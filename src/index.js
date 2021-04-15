@@ -2,6 +2,8 @@
 require('./index.html')
 require('./index.css')
 const parse = require('./parser/parser').parse;
+const parseLabel = require('./parser/parser').parseLabel;
+
 const Editor = require('./editor/editor').Editor
 const field = document.getElementById('HOA_input');
 const container = document.getElementById('input_container');
@@ -27,7 +29,6 @@ function showExport(withPositions) {
     field.readOnly = true;
     field.value = editor.editorCanvas.automaton.toHoaString(withPositions);
 }
-
 
 let editor = new Editor(canvas, sidebarContainer);
 window.addEventListener('resize', () => editor.resized());

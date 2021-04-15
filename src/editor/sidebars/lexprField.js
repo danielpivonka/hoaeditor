@@ -10,16 +10,20 @@ class LexprField {
         this.onSelected;
         this.keyboardNode;
         this.cursorNode;
+        this.originalArray;
+        this.localArray = [];
     }
     drawField(labelArray) {
         let field = document.createElement("div");
-        this.drawElements(field, labelArray);
+        this.originalArray = labelArray;
+        this.localArray = [...labelArray];
+        this.drawElements(field, this.localArray);
         field.onclick = (e) => {
             e.stopPropagation();
-            this.createKeyboard(field, labelArray)
-            this.labelCursor = labelArray.length;
+            this.createKeyboard(field, this.localArray)
+            this.labelCursor = this.localArray.length;
             this.slected()
-            this.drawElements(field, labelArray);
+            this.drawElements(field, this.localArray);
             console.log("empty clicked");
         }
         return field;
@@ -92,7 +96,10 @@ class LexprField {
             this.labelKeyboard.onInput = (str) => {
                 labelArray.splice(this.labelCursor, 0, str)
                 this.labelCursor++;
-                this.drawElements(field,labelArray)
+                this.drawElements(field, labelArray)
+                if (labelArray.length==0||verifyLabel(labelArray)) {
+                    this.originalArray.splice(0, labelArray.length, ...labelArray);
+                }
             };
             this.labelCursor = labelArray.length;
             this.keyboardNode = this.labelKeyboard.generateKeyboard();

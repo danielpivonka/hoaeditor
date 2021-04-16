@@ -13,29 +13,33 @@ class LexprField {
         this.originalArray;
         this.localArray = [];
         this.excluded;
+        this.field;
     }
     setExcludedObject(object) {
         this.excluded = object;
     }
     drawField(labelArray) {
-        let field = document.createElement("div");
+        this.field = document.createElement("div");
         this.originalArray = labelArray;
         this.localArray = [...labelArray];
-        this.drawElements(field, this.localArray);
-        field.onclick = (e) => {
+        this.drawElements(this.field, this.localArray);
+        let sel =  (e) => {
             e.stopPropagation();
-            this.createKeyboard(field, this.localArray)
+            e.preventDefault();
+            this.createKeyboard(this.field, this.localArray)
             this.labelCursor = this.localArray.length;
-            this.slected()
-            this.drawElements(field, this.localArray);
+            this.selected()
+            this.drawElements(this.field, this.localArray);
             console.log("empty clicked");
-        }
-        field.onmousedown = (e) => {
+         }
+        this.field.onclick = sel;
+        this.field.oncontextmenu = sel;
+        this.field.onmousedown = (e) => {
             e.stopPropagation();
         }
-        return field;
+        return this.field;
     }
-    slected() {
+    selected() {
         if (this.onSelected) {
             this.onSelected();
         }
@@ -60,15 +64,12 @@ class LexprField {
                 cursorDrawn = true;
             }
             element.onmousedown = (e) => {
-                e.stopPropagation();
-                this.slected()
                 this.createKeyboard(field,labelArray)
                 this.labelCursor = i;
                 this.drawElements(field,labelArray)
             };
             element.oncontextmenu = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+
                 labelArray.splice(i, 1);
                 this.attemptCommit();
                 this.drawElements(field,labelArray)
@@ -102,6 +103,7 @@ class LexprField {
             this.cursorNode = null;
         }
         this.labelCursor = -1;
+        this.drawElements(this.field, this.originalArray)
     }
     createKeyboard(field,labelArray) {
         if (!this.keyboardNode) {
@@ -118,8 +120,10 @@ class LexprField {
         }
     }
     attemptCommit() {
+        console.log("attempting commit")
         if (this.localArray.length == 0 || verifyLabel(this.localArray)) {
-            this.originalArray.splice(0, this.localArray.length, ...this.localArray);
+            this.originalArray.splice(0, this.originalArray.length, ...this.localArray);
+            console.log("commited")
         }
     }
 }

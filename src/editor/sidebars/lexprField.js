@@ -63,13 +63,12 @@ class LexprField {
                 this.drawCursor(field);
                 cursorDrawn = true;
             }
-            element.onmousedown = (e) => {
+            element.onmousedown = () => {
                 this.createKeyboard(field,labelArray)
                 this.labelCursor = i;
                 this.drawElements(field,labelArray)
             };
-            element.oncontextmenu = (e) => {
-
+            element.oncontextmenu = () => {
                 labelArray.splice(i, 1);
                 this.attemptCommit();
                 this.drawElements(field,labelArray)

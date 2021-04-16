@@ -192,8 +192,36 @@ class HOA {
         return false;
     }
     isAPUsed(ap) {
-        this.isAliasUsed(String(ap));
+        let APString = String(ap);
+        for (const alias of this.aliases) {
+            if (alias.lexpr.find(lexpr => (lexpr == APString))) {
+                return true;
+            }
+        }
+        return this.isAliasUsed(APString);
 
+    }
+    removeAP(index) {
+        this.ap.splice(index, 1);
+        for (const alias of this.aliases) {
+            this.replaceNumbersInLexpr(alias.lexpr, index);
+        }
+        for (const state of this.states.values()) {
+            this.replaceNumbersInLexpr(state.label, index);
+            for (const edge of state.edges) {
+                this.replaceNumbersInLexpr(edge.label, index);
+            }
+        }
+    }
+    replaceNumbersInLexpr(lexprArray, threshold) {
+        if (lexprArray) {
+            for (let i = 0; i < lexprArray.length; i++) {
+                let element = lexprArray[i];
+                if (!isNaN(element) && Number(element) > threshold) {
+                    lexprArray[i] = String(element - 1);
+                }
+            }
+        }
     }
     setImplicitPositions(width, height) {
         let rows = Math.round(Math.sqrt(this.states.size));

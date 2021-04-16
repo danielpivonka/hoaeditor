@@ -6,7 +6,6 @@ class AutomatonSidebar {
     constructor(automaton,translator) {
         /**@type { HOA }*/
         this.automaton = automaton;
-        this.sidebarRedrawRequestListener = null;
         this.automatonChangedListeners = [];
         this.collapsedState = [];
         this.translator = translator;
@@ -35,12 +34,6 @@ class AutomatonSidebar {
         sidebar.append(sidebarTable);
         return sidebar;
     }
-    requestRedraw() {
-        if (this.sidebarRedrawRequestListener != null) {
-            this.sidebarRedrawRequestListener();
-        }
-    }
-
     createApList() {
         let wrap = SidebarUtils.createList(this.createAP.bind(this), this.automaton.ap, "Atomic propositions", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -49,16 +42,9 @@ class AutomatonSidebar {
         addButton.innerHTML = "Add";
         addButton.addEventListener("click", () => {
             this.automaton.ap.push("")
-            this.requestRedraw();
+            this.automatonChanged();
         });
-        let removeButton = document.createElement("button")
-        removeButton.setAttribute("type", "button");
-        removeButton.innerHTML = "Remove";
-        removeButton.addEventListener("click", () => {
-            this.automaton.ap.pop();
-            this.requestRedraw();
-        });
-        inner.append(SidebarUtils.createDivWithChildren(addButton, removeButton));
+        inner.append(SidebarUtils.createDivWithChildren(addButton));
         return wrap;
 
     }
@@ -72,7 +58,7 @@ class AutomatonSidebar {
         addButton.innerHTML = "Add";
         addButton.addEventListener("click", () => {
             this.automaton.aliases.push({ aname: "", lexpr: "" })
-            this.requestRedraw();
+            this.automatonChanged();
         });
         inner.append(addButton);
         return wrap;
@@ -84,9 +70,18 @@ class AutomatonSidebar {
         field.value = array[index];
         field.oninput = (e) => {
             array[index] = e.target.value;
-            this.automatonChanged();
+            
         };
-        return SidebarUtils.createDivWithChildren(label, field);
+        field.onblur = () => { this.automatonChanged(); };
+        let removeButton = document.createElement("button")
+        removeButton.setAttribute("type", "button");
+        removeButton.innerHTML = "X";
+        removeButton.disabled = this.automaton.isAPUsed(index);
+        removeButton.addEventListener("click", () => {
+            this.automaton.removeAP(index);
+            this.automatonChanged();
+        });
+        return SidebarUtils.createDivWithChildren(label, field,removeButton);
     }
     createAcceptanceCount() {
         let id = "acccount";
@@ -126,13 +121,15 @@ class AutomatonSidebar {
         let keyField = SidebarUtils.createField(index + "k");
         let aliasObject = array[index]
         keyField.value = aliasObject.aname.substring(1);
-        let isUsed = this.automaton.isAliasUsed(aliasObject.aname);;
+        let isUsed = this.automaton.isAliasUsed(aliasObject.aname);
         keyField.disabled = isUsed;
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
         let lexprObj = new LexprField(this.automaton, this.translator)
+        console.log("generating lexpr field");
         lexprObj.setExcludedObject(aliasObject);
         let valueField = document.createElement("div");
         valueField.className = "cell";
+        lexprObj.onValueChanged = () => this.automatonChanged();
         let valueContent = lexprObj.drawField(aliasObject.lexpr)
         valueField.appendChild(valueContent);
         this.aliasFields.push(lexprObj);
@@ -145,7 +142,7 @@ class AutomatonSidebar {
         removeButton.disabled = isUsed;
         removeButton.addEventListener("click", () => {
             array[index] = null;
-            this.requestRedraw();
+            this.automatonChanged();
         });
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }

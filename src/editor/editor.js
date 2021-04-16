@@ -33,8 +33,7 @@ class Editor {
         this.editorCanvas.setAutomaton(automaton,this.translator);
         this.automatonSidebar = new AutomatonSidebar(automaton,this.translator);
         this.detail = new ObjectDetail(automaton,this.translator);
-        this.automatonSidebar.sidebarRedrawRequestListener = this.drawSidebar.bind(this);
-        this.automatonSidebar.addAutomatonChangedListener(() => this.editorCanvas.draw());
+        this.automatonSidebar.addAutomatonChangedListener(() => this.refresh());
         this.drawSidebar();
     }
     setShift(val) {
@@ -45,6 +44,10 @@ class Editor {
     }
     escapeClicked() {
         this.editorCanvas.escapeClicked();
+    }
+    refresh() {
+        this.editorCanvas.draw();
+        this.drawSidebar();
     }
     drawSidebar() {
         this.sidebarContainer.innerHTML = "";

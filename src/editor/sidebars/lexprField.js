@@ -14,6 +14,8 @@ class LexprField {
         this.localArray = [];
         this.excluded;
         this.field;
+        this.onValueChanged;
+        this.changed = false;
     }
     setExcludedObject(object) {
         this.excluded = object;
@@ -23,14 +25,15 @@ class LexprField {
         this.originalArray = labelArray;
         this.localArray = [...labelArray];
         this.drawElements(this.field, this.localArray);
-        let sel =  (e) => {
+        let sel = (e) => {
             e.stopPropagation();
             e.preventDefault();
-            this.createKeyboard(this.field, this.localArray)
-            this.labelCursor = this.localArray.length;
-            this.selected()
-            this.drawElements(this.field, this.localArray);
-            console.log("empty clicked");
+            if (!this.selected) {
+                this.createKeyboard(this.field, this.localArray)
+                this.labelCursor = this.localArray.length;
+                this.selected()
+                this.drawElements(this.field, this.localArray);
+            }
          }
         this.field.onclick = sel;
         this.field.oncontextmenu = sel;
@@ -40,11 +43,12 @@ class LexprField {
         return this.field;
     }
     selected() {
+        this.changed = false;
         if (this.onSelected) {
             this.onSelected();
         }
 }
-    drawElements(field,labelArray) {
+    drawElements(field, labelArray) {
         field.innerHTML = "";
         let cursorDrawn = false;
         if (labelArray.length==0||verifyLabel(labelArray)) {
@@ -102,7 +106,9 @@ class LexprField {
             this.cursorNode = null;
         }
         this.labelCursor = -1;
-        this.drawElements(this.field, this.originalArray)
+        if (this.changed) {
+            this.valueChanged();
+        }
     }
     createKeyboard(field,labelArray) {
         if (!this.keyboardNode) {
@@ -119,10 +125,14 @@ class LexprField {
         }
     }
     attemptCommit() {
-        console.log("attempting commit")
         if (this.localArray.length == 0 || verifyLabel(this.localArray)) {
             this.originalArray.splice(0, this.originalArray.length, ...this.localArray);
-            console.log("commited")
+            this.changed = true;
+        }
+    }
+    valueChanged() {
+        if (this.onValueChanged) {
+            this.onValueChanged();
         }
     }
 }

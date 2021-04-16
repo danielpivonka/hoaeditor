@@ -16,6 +16,9 @@
     display:flex;
     flex-direction: column;
 }
+.cell{
+    display: table-cell;
+}
 input { display: table-cell;
     border-style: solid;
     border-color: black;

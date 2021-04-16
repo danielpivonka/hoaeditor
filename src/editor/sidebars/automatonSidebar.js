@@ -128,13 +128,14 @@ class AutomatonSidebar {
         keyField.value = aliasObject.aname.substring(1);
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
         let lexprObj = new LexprField(this.automaton, this.translator)
-        let valueField = lexprObj.drawField(aliasObject.lexpr)
+        lexprObj.setExcludedObject(aliasObject);
+        let valueField = document.createElement("div");
+        valueField.className = "cell";
+        let valueContent = lexprObj.drawField(aliasObject.lexpr)
+        valueField.appendChild(valueContent);
         this.aliasFields.push(lexprObj);
         lexprObj.onSelected = () => {
-            if (this.selectedAliasIndex != index) {
-                this.deselectAliases(lexprObj);
-            }
-            this.selectedAliasIndex = index;
+            this.deselectAliases(lexprObj);
         }
         let removeButton = document.createElement("button")
         removeButton.setAttribute("type", "button");

@@ -12,6 +12,10 @@ class LexprField {
         this.cursorNode;
         this.originalArray;
         this.localArray = [];
+        this.excluded;
+    }
+    setExcludedObject(object) {
+        this.excluded = object;
     }
     drawField(labelArray) {
         let field = document.createElement("div");
@@ -25,6 +29,9 @@ class LexprField {
             this.slected()
             this.drawElements(field, this.localArray);
             console.log("empty clicked");
+        }
+        field.onmousedown = (e) => {
+            e.stopPropagation();
         }
         return field;
     }
@@ -63,6 +70,7 @@ class LexprField {
                 e.preventDefault();
                 e.stopPropagation();
                 labelArray.splice(i, 1);
+                this.attemptCommit();
                 this.drawElements(field,labelArray)
             }
             field.appendChild(element);
@@ -77,6 +85,10 @@ class LexprField {
     }
     drawCursor(field) {
         let cursor = document.createElement("div");
+        let inner = document.createElement("span");
+        inner.innerHTML = "."
+        inner.style.visibility = "hidden";
+        cursor.appendChild(inner);
         cursor.className = "cursor blink";
         this.cursorNode = field.appendChild(cursor);
     }
@@ -97,14 +109,17 @@ class LexprField {
                 labelArray.splice(this.labelCursor, 0, str)
                 this.labelCursor++;
                 this.drawElements(field, labelArray)
-                if (labelArray.length==0||verifyLabel(labelArray)) {
-                    this.originalArray.splice(0, labelArray.length, ...labelArray);
-                }
+                this.attemptCommit();
             };
             this.labelCursor = labelArray.length;
-            this.keyboardNode = this.labelKeyboard.generateKeyboard();
+            this.keyboardNode = this.labelKeyboard.generateKeyboard(this.excluded);
             document.getElementsByTagName("body")[0].appendChild(this.keyboardNode )
             this.drawElements(field,labelArray)
+        }
+    }
+    attemptCommit() {
+        if (this.localArray.length == 0 || verifyLabel(this.localArray)) {
+            this.originalArray.splice(0, this.localArray.length, ...this.localArray);
         }
     }
 }

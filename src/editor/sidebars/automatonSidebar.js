@@ -126,6 +126,8 @@ class AutomatonSidebar {
         let keyField = SidebarUtils.createField(index + "k");
         let aliasObject = array[index]
         keyField.value = aliasObject.aname.substring(1);
+        let isUsed = this.automaton.isAliasUsed(aliasObject.aname);;
+        keyField.disabled = isUsed;
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
         let lexprObj = new LexprField(this.automaton, this.translator)
         lexprObj.setExcludedObject(aliasObject);
@@ -140,6 +142,7 @@ class AutomatonSidebar {
         let removeButton = document.createElement("button")
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";
+        removeButton.disabled = isUsed;
         removeButton.addEventListener("click", () => {
             array[index] = null;
             this.requestRedraw();

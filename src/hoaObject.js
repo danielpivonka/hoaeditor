@@ -178,6 +178,23 @@ class HOA {
         }
         return false;
     }
+    isAliasUsed(aname) {
+        for (const state of this.states.values()) {
+            if (state.label.find(lexpr => (lexpr == aname))) {
+                return true;
+            }
+            for (const edge of state.edges) {
+                if (edge.label.find(lexpr => (lexpr == aname))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    isAPUsed(ap) {
+        this.isAliasUsed(String(ap));
+
+    }
     setImplicitPositions(width, height) {
         let rows = Math.round(Math.sqrt(this.states.size));
         let columns = Math.ceil(this.states.size / rows);

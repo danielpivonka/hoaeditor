@@ -91,6 +91,7 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = SidebarUtils.createField(id, "number");
         field.value = this.automaton.acceptance.count;
+        field.min = this.automaton.getHighestAccSetUsed()+1;
         field.oninput = (e) => { this.automaton.acceptance.count = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }

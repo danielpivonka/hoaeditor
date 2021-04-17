@@ -178,6 +178,20 @@ class HOA {
         }
         return false;
     }
+    getHighestAccSetUsed() {
+        let max = -1;
+        for (const state of this.states.values()) {
+            max = Math.max(max, ...state.accSets)
+            for (const edge of state.edges) {
+                max = Math.max(max, ...edge.accSets)
+            }
+        }
+        return max;
+    }
+    getMaxIntFromString(string) {
+        let array = string.split(" ");
+        return Math.max(...array);
+    }
     isAliasUsed(aname) {
         for (const state of this.states.values()) {
             if (state.label.find(lexpr => (lexpr == aname))) {

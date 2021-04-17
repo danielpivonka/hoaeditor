@@ -73,6 +73,7 @@ class Editor {
             this.detail.lexprField.deselect();
         });
         this.currentDetail = this.detail;
+        this.currentDetail.onAutomatonChanged = () => this.refresh();
         document.getElementsByTagName("body")[0].appendChild(container);
     }
     

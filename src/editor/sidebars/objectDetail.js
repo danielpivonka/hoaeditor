@@ -14,6 +14,7 @@ class ObjectDetail {
         this.currentLabel;
         this.currentAccSet;
         this.object;
+        this.onAutomatonChanged;
     }
     generateDetail(object) {
         this.object = object;
@@ -86,6 +87,9 @@ class ObjectDetail {
         if (verifyLabel(this.currentLabel)) {
             console.log("label verified as true");
             this.object.label = this.currentLabel;
+        }
+        if (this.onAutomatonChanged) {
+            this.onAutomatonChanged();
         }
     }
 }

@@ -16,6 +16,7 @@ class LexprField {
         this.field;
         this.onValueChanged;
         this.changed = false;
+        this.isSelected = false;
     }
     setExcludedObject(object) {
         this.excluded = object;
@@ -28,12 +29,8 @@ class LexprField {
         let sel = (e) => {
             e.stopPropagation();
             e.preventDefault();
-            if (!this.selected) {
-                this.createKeyboard(this.field, this.localArray)
-                this.labelCursor = this.localArray.length;
-                this.selected()
-                this.drawElements(this.field, this.localArray);
-            }
+            this.selected(this.localArray.length);
+            this.drawElements(this.field, this.localArray);
          }
         this.field.onclick = sel;
         this.field.oncontextmenu = sel;
@@ -42,11 +39,20 @@ class LexprField {
         }
         return this.field;
     }
-    selected() {
+    selected(cursor) {
+        this.labelCursor = cursor;
+        console.log("setting cursor: " + cursor);
+        console.log("current cursor: " + this.labelCursor);
+    if (!this.isSelected) {
         this.changed = false;
+        this.isSelected = true;
+        this.createKeyboard(this.field, this.localArray)
         if (this.onSelected) {
             this.onSelected();
         }
+
+    }
+
 }
     drawElements(field, labelArray) {
         field.innerHTML = "";
@@ -67,12 +73,16 @@ class LexprField {
                 this.drawCursor(field);
                 cursorDrawn = true;
             }
-            element.onmousedown = () => {
-                this.createKeyboard(field,labelArray)
-                this.labelCursor = i;
-                this.drawElements(field,labelArray)
+            element.onclick = (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                this.selected(i);
+                this.drawElements(this.field, this.localArray);
             };
-            element.oncontextmenu = () => {
+            element.oncontextmenu = (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                this.selected(this.localArray.length);
                 labelArray.splice(i, 1);
                 this.attemptCommit();
                 this.drawElements(field,labelArray)
@@ -109,6 +119,7 @@ class LexprField {
         if (this.changed) {
             this.valueChanged();
         }
+        this.isSelected = false;
     }
     createKeyboard(field,labelArray) {
         if (!this.keyboardNode) {
@@ -118,7 +129,6 @@ class LexprField {
                 this.drawElements(field, labelArray)
                 this.attemptCommit();
             };
-            this.labelCursor = labelArray.length;
             this.keyboardNode = this.labelKeyboard.generateKeyboard(this.excluded);
             document.getElementsByTagName("body")[0].appendChild(this.keyboardNode )
             this.drawElements(field,labelArray)

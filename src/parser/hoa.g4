@@ -37,7 +37,8 @@ lexpr:
 	| '(' lexpr ')' lexpr2;
 lexpr2: '&' lexpr lexpr2 | '|' lexpr lexpr2 |;
 acceptanceCond:
-	IDENTIFIER '(' '!'? INT ')' acceptanceCond2
+	'Inf' '(' '!'? INT ')' acceptanceCond2
+	| 'Fin' '(' '!'? INT ')' acceptanceCond2
 	| '(' acceptanceCond ')' acceptanceCond2
 	| BOOLEAN acceptanceCond2;
 acceptanceCond2:

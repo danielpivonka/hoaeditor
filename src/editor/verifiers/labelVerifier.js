@@ -38,7 +38,6 @@ function checkStructure(label) {
         reportContextSensitivity: () => { },
       });
     parser.label();
-    console.log("success: " + success)
     return success;
 }
 

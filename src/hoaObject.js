@@ -145,13 +145,11 @@ class HOA {
      * @returns {State} The newly created state.
      */
     addState(number) {
-        console.log("adding state");
         if (this.states.get(number)) {
             //TODO error message
         }
         else {
             this.states.set(number, new State(number));
-            console.log("added state: " + this.states.get(number));
             return this.states.get(number);
         }
     }
@@ -468,7 +466,7 @@ class HOA {
             string += "\"" + this.exportPositions() + "\"" + "\n";
         }
         for (const alias of this.aliases) {
-            string += "Alias: " + alias.aname + " " + alias.lexpr + "\n";
+            string += "Alias: " + alias.aname + " " + alias.lexpr.join("") + "\n";
         }
         if (this.properties.length > 0) {
             string += "properties:";
@@ -666,10 +664,13 @@ class Edge {
         this.label = [];
     }
     setLabelByString(labelString) {
-        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        let regex = /@\w+|&|\||!|\(|\)|t|f|\d+/g
         this.label = labelString.match(regex);
     }
     getLabelString() {
+        if (!this.label) {
+            return "";
+        }
         return this.label.join("");
     }
     addAccSet(setNumber) {
@@ -702,12 +703,8 @@ class Start {
         this.position = null;
     }
     addEdge(newStateConj) {
-        console.log(JSON.stringify(newStateConj))
         for (const state of newStateConj) {
-            console.log("state in: " + state);
             let stateNum = Number(state);
-            console.log("stateNum: " + stateNum);
-            console.log("filtered: " + this.stateConj.filter(e => e == stateNum));
             if (this.stateConj.length>0 &&this.stateConj.filter(e => e == stateNum).length>0) {
                 this.stateConj = this.stateConj.filter(e => e != stateNum);
             } else {

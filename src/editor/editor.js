@@ -17,7 +17,6 @@ class Editor {
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.selected = null;
         let automaton = new HOA();
-        console.log("aliases: " + JSON.stringify(automaton.aliases));
         this.setAutomaton(automaton);
         this.currentDetail;
         document.body.addEventListener('mousedown', () => this.resetFocus());
@@ -85,7 +84,6 @@ class Editor {
     
     removeDetail() {
         if (this.currentDetail) {
-            console.log("calling close");
             this.currentDetail.close();
             this.currentDetail = null;
         }

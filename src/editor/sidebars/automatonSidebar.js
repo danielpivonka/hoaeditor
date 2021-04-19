@@ -186,7 +186,6 @@ class AutomatonSidebar {
         return removeButton;
     }
     deselectAliases(except) {
-        console.log("deselecting")
         for (const field of this.aliasFields) {
             if (field != except) {
                 field.deselect();

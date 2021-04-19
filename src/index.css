@@ -91,6 +91,19 @@ top: 5%;
     padding: 2vh;
     opacity: 0.9;
 }
+.error_message{
+    background-color: #f99;
+    border-color: red;
+    border-style: solid;
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+#error_log{
+    margin-top: 5px;
+margin-bottom: 5px;
+margin-right: 5%;
+margin-left: 5%;
+}
 .blink{
     animation:blink_frames 2s steps(2,start) infinite;
 }

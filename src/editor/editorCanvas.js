@@ -11,7 +11,7 @@ const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
 class EditorCanvas {
-    constructor(canvas,translator) {
+    constructor(canvas) {
         /**@type {HOA}*/
         this.automaton = new HOA();
         /**@type {HTMLCanvasElement}*/
@@ -33,7 +33,7 @@ class EditorCanvas {
         this.detailRequestedListener;
         this.onFocusListeners = [];
         this.offset = new Victor(0, 0)
-        this.labelTranslator = translator;
+        this.labelTranslator;
         this.lastMove;
 
     }
@@ -249,7 +249,6 @@ class EditorCanvas {
     addEdge(from, to) {
         this.first = null;
         this.destinations = [];
-        console.log("to: " + JSON.stringify(to));
         let edge = from.addEdge(to);
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
@@ -354,14 +353,14 @@ class EditorCanvas {
             let midpoint;
             let fromPoint;
             if (this.selected instanceof Start) {
-                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.scale)[0]
+                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, midpoint, 0);
             }
             else {
-                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.scale)[0]
+                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.parent.position, midpoint, this.circleSize);
             }
-            this.renderer.drawQuadraticCurveBetweenPositions(fromPoint,midpoint,new Victor(x, y));
+            this.renderer.drawQuadraticCurveBetweenPositions(fromPoint,midpoint.multiplyScalar(this.renderer.scale),new Victor(x, y));
         }
     }
 

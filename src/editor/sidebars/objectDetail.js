@@ -81,11 +81,9 @@ class ObjectDetail {
     commitChanges() {
         let parsedAccSet = this.currentAccSet.split(" ").filter(s=> s!="" && s!=" ").map(num => parseInt(num));
         if (this.accSetVerifier.verify(parsedAccSet)) {
-            console.log("setting acc set: " + parsedAccSet)
             this.object.accSets = parsedAccSet;
         }
         if (verifyLabel(this.currentLabel)) {
-            console.log("label verified as true");
             this.object.label = this.currentLabel;
         }
         if (this.onAutomatonChanged) {

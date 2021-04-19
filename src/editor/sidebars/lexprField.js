@@ -41,8 +41,6 @@ class LexprField {
     }
     selected(cursor) {
         this.labelCursor = cursor;
-        console.log("setting cursor: " + cursor);
-        console.log("current cursor: " + this.labelCursor);
     if (!this.isSelected) {
         this.changed = false;
         this.isSelected = true;

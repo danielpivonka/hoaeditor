@@ -98,7 +98,6 @@ class EditorRenderer {
     }
     drawStarts(automaton, selected) {
         for (const start of automaton.start) {
-            console.log(JSON.stringify(start));
             let color = start == selected ? "#8888FF" : "#000000";
             this.drawStartingPoint(start,color);
             if (start.stateConj.length > 1) {

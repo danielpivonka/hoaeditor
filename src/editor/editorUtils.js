@@ -137,9 +137,7 @@ class EditorUtils {
     }
 
     static getFreeAngleInterval(angles, offset = 0) {
-        console.log("requested angles: " + JSON.stringify(angles));
         if (angles.length==0) {
-            console.log("returning default");
             return [0, 359];
         }
         angles.sort((a, b) => { return a - b });

@@ -696,16 +696,28 @@ class Edge {
     }
 }
 class Start {
-    constructor(stateConj) {
+    constructor(stateConj = []) {
         /**@type{number[]}*/
-        this.stateConj = stateConj || "";
+        this.stateConj = stateConj;
         this.position = null;
     }
-    addEdge(stateConj) {
-        this.stateConj = this.stateConj.concat(stateConj)
+    addEdge(newStateConj) {
+        console.log(JSON.stringify(newStateConj))
+        for (const state of newStateConj) {
+            console.log("state in: " + state);
+            let stateNum = Number(state);
+            console.log("stateNum: " + stateNum);
+            console.log("filtered: " + this.stateConj.filter(e => e == stateNum));
+            if (this.stateConj.length>0 &&this.stateConj.filter(e => e == stateNum).length>0) {
+                this.stateConj = this.stateConj.filter(e => e != stateNum);
+            } else {
+                this.stateConj.push(stateNum);
+            }
+        }
     }
-
 }
+
+
 exports.HOA = HOA;
 exports.State = State;
 exports.Edge = Edge;

@@ -3,6 +3,7 @@ const HOA = require('../../hoaObject').HOA;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 const LexprField = require('./lexprField.js').LexprField;
 const AliasKeyVerifier = require('../verifiers/aliasKeyVerifier.js').AliasKeyVerifier;
+const verifyAccCond = require('../verifiers/accConditionVerifier').verifyAccCond;
 
 class AutomatonSidebar {
     constructor(automaton,translator) {
@@ -15,6 +16,7 @@ class AutomatonSidebar {
         this.selectedAliasIndex = -1;
         this.aliasFields = [];
         this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
+        this.oldAccCond;
     }
     addAutomatonChangedListener(func) {
         this.automatonChangedListeners.push(func)
@@ -100,7 +102,20 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance condition:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.acceptance.str;
-        field.oninput = (e) => { this.automaton.acceptance.str = e.target.value; };
+        field.oninput = (e) => { if (verifyAccCond(e.target.value)) {
+            field.className = "inputField"
+        }
+        else {
+            field.className = "inputField error"
+        }
+        };
+        field.onblur = (e) => {
+            if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value)) {
+                this.automaton.acceptance.str = e.target.value;
+                this.automaton.accname = "";
+            }
+            this.automatonChanged();
+        }
         return SidebarUtils.createDivWithChildren(label, field);
     }
     createAccname() {

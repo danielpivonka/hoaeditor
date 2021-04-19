@@ -34,6 +34,7 @@ class EditorCanvas {
         this.onFocusListeners = [];
         this.offset = new Victor(0, 0)
         this.labelTranslator = translator;
+        this.lastMove;
 
     }
     resized() {
@@ -42,7 +43,7 @@ class EditorCanvas {
             this.draw();
         }
     }
-    addOnStateonStateChangedListener(fn) {
+    addonStateChangedListener(fn) {
         this.onStateChangedListeners.push(fn);
     }
     removeOnStateonStateChangedListener(fn) {
@@ -93,12 +94,8 @@ class EditorCanvas {
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
         let startAngles = this.automaton.calculateStartAngles(this.circleSize)
         mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
-        if (this.selected instanceof State || this.selected instanceof Edge) {
             this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator, this.selected);
 
-        } else {
-            this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator);
-        }
     }
     getAutomaton() {
         return this.automaton;
@@ -134,26 +131,25 @@ class EditorCanvas {
             }
         }
         this.draw();
+        this.mouseMove(this.lastMove);
     }
 
     removeClicked() {
-        this.removeDetail();
         if (this.selected instanceof State) {
             this.automaton.removeState(this.selected);
-            this.draw();
-            this.setSelected(null);
         }
         else if (this.selected instanceof Start) {
             this.automaton.removeStart(this.selected);
-            this.draw();
-            this.setSelected(null);
         } else if (this.selected instanceof Edge) {
             for (const state of this.automaton.states.values()) {
                 state.edges = state.edges.filter(edge => edge != this.selected);
             }
-            this.draw();
-            this.setSelected(null);
+            
         }
+        else return;
+        this.draw();
+        this.setSelected(null);
+        this.changeState(EditorCanvas.stateEnum.IDLE);
     }
     mouseDown(e) {
         let boundingBox = this.canvas.getBoundingClientRect();
@@ -224,21 +220,26 @@ class EditorCanvas {
             this.setSelected(this.first);
             this.draw();
         }
-        else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge) {
+        else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge||this.selected instanceof Start) {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             let wasMono = this.first.stateConj.length == 1;
-            if (this.selected instanceof State && this.first instanceof Edge) {
-                if (this.first.stateConj.includes(this.selected.number) && this.first.stateConj.length > 1) {
-                    this.first.stateConj = this.first.stateConj.filter(n => n != this.selected.number);
+            if (this.selected instanceof State) {
+                if (this.first instanceof Edge) {
+                    if (this.first.stateConj.includes(this.selected.number) && this.first.stateConj.length > 1) {
+                        this.first.stateConj = this.first.stateConj.filter(n => n != this.selected.number);
+                    }
+                    else {
+                        this.first.stateConj.push(this.selected.number)
+                    }
                 }
-                else {
-                    this.first.stateConj.push(this.selected.number)
+                else if (this.first instanceof Start) {
+                    this.first.addEdge([this.selected.number]);
                 }
 
             }
             let isMono = this.first.stateConj.length == 1;
-            if (isMono != wasMono) {
+            if (isMono != wasMono && this.first instanceof Edge) {
                 this.first.offset = new Victor(0, 0);
             }
             this.selected = this.first;
@@ -248,6 +249,7 @@ class EditorCanvas {
     addEdge(from, to) {
         this.first = null;
         this.destinations = [];
+        console.log("to: " + JSON.stringify(to));
         let edge = from.addEdge(to);
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
@@ -272,7 +274,7 @@ class EditorCanvas {
             this.addStateAtPosition(x, y);
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_START) {
-            let start = this.automaton.addStart([]);
+            let start = this.automaton.addStart();
             start.position = new Victor(x, y);
         }
         this.draw();
@@ -287,7 +289,9 @@ class EditorCanvas {
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.SELECTED) {
             this.changeState(EditorCanvas.stateEnum.SELECTED_MODIFY);
-            this.requestDetail(this.selected,this.downLocation);
+            if (this.selected instanceof State || this.selected instanceof Edge) {
+                this.requestDetail(this.selected, this.downLocation.clone().add(this.offset).multiplyScalar(this.renderer.scale));
+            }
             this.draw();
         }
         else if (this.editorState != EditorCanvas.stateEnum.SELECTED_SHIFT
@@ -301,6 +305,7 @@ class EditorCanvas {
         }
     }
     mouseMove(e) {
+        this.lastMove = e;
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
@@ -346,8 +351,16 @@ class EditorCanvas {
         }
         else if (this.editorState == EditorCanvas.stateEnum.SELECTED_SHIFT) {
             this.draw();
-            let midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.scale)[0]
-            let fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.parent.position, midpoint, this.circleSize);
+            let midpoint;
+            let fromPoint;
+            if (this.selected instanceof Start) {
+                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.scale)[0]
+                fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, midpoint, 0);
+            }
+            else {
+                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.scale)[0]
+                fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.parent.position, midpoint, this.circleSize);
+            }
             this.renderer.drawQuadraticCurveBetweenPositions(fromPoint,midpoint,new Victor(x, y));
         }
     }

@@ -22,6 +22,10 @@ class Editor {
         this.currentDetail;
         document.body.addEventListener('mousedown', () => this.resetFocus());
         this.editorCanvas.addOnFocusListener(() => this.resetFocus());
+        this.editorCanvas.addonStateChangedListener((state) => {
+            if (state == EditorCanvas.stateEnum.ADD_EDGE) {
+                this.removeDetail();
+        } })
     }
 
     resetFocus() {
@@ -41,9 +45,11 @@ class Editor {
     }
     removeClicked() {
         this.editorCanvas.removeClicked()
+        this.removeDetail();
     }
     escapeClicked() {
         this.editorCanvas.escapeClicked();
+        this.removeDetail();
     }
     refresh() {
         this.editorCanvas.draw();
@@ -58,8 +64,8 @@ class Editor {
         this.editorCanvas.resized();
     }
     componentSelected(component) {
-        this.selected = component;
-        this.drawSidebar();
+            this.selected = component;
+            this.drawSidebar();
     }
     showDetails(object, mousePosition) {
         let container = document.createElement("div");

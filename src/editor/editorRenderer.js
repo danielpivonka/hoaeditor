@@ -49,7 +49,7 @@ class EditorRenderer {
         this.circleSize = this.baseCircleSize * this.scale;
         this.ctx.lineWidth = this.scale * 1.1;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawStarts(automaton);
+        this.drawStarts(automaton,selected);
         this.hasMultiEdge = automaton.hasMultiEdge();
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
@@ -96,15 +96,16 @@ class EditorRenderer {
         let offset = 5 * state.edges.length + 3 * state.name.length;
         this.drawLabelEdge(state.name, anchor, angle, offset, true);
     }
-    drawStarts(automaton) {
-        this.ctx.strokeStyle = "#000000"
+    drawStarts(automaton, selected) {
         for (const start of automaton.start) {
-            this.drawStartingPoint(start);
+            console.log(JSON.stringify(start));
+            let color = start == selected ? "#8888FF" : "#000000";
+            this.drawStartingPoint(start,color);
             if (start.stateConj.length > 1) {
-                this.drawMultiStart(start, automaton);
+                this.drawMultiStart(start, automaton,color);
             }
             else if (start.stateConj.length == 1) {
-                this.drawMonoStart(start, automaton);
+                this.drawMonoStart(start, automaton,color);
             }
         }
     }
@@ -353,12 +354,12 @@ class EditorRenderer {
      * @param {Start} start - Start to be drawn.
      * @param {HOA} automaton - The automaton.
      */
-    drawMultiStart(start, automaton) {
+    drawMultiStart(start, automaton,color) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         let offsetPositions = statePositions.map(position => position.clone().add(this.offset).multiplyScalar(this.scale));
         let midpoint = EditorUtils.calculateMidpointBetweenVectors(offsetPositions.concat(new Array(originVector)));
-        this.ctx.fillStyle = "#000000";
+        this.ctx.strokeStyle = color;
         for (const destinationState of automaton.numbersToStates(start.stateConj)) {
             this.drawMultiEdgeElement(start, destinationState, midpoint, 0, 0);
         }
@@ -369,19 +370,20 @@ class EditorRenderer {
      * @param {Start} start - Start to be drawn.
      * @param {HOA} automaton - The automaton.
      */
-    drawMonoStart(start, automaton) {
+    drawMonoStart(start, automaton,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         let statePosition = automaton.getStateByNumber(start.stateConj[0]).position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, this.circleSize);
+        this.ctx.strokeStyle = color;
         this.ctx.beginPath();
         this.ctx.moveTo(originVector.x, originVector.y);
         this.ctx.lineTo(destinationVector.x, destinationVector.y);
         this.ctx.stroke();
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
-    drawStartingPoint(start) {
+    drawStartingPoint(start,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
-        this.ctx.fillStyle = "#000000";
+        this.ctx.fillStyle = color;
         this.ctx.beginPath();
         this.ctx.arc(originVector.x, originVector.y, this.circleSize / 5, 0, 2 * Math.PI);
         this.ctx.fill();

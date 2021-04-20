@@ -60,8 +60,10 @@ class HOA {
      * @param {string} lexpr - Label, atomic proposition, already existing alias, or a group of thereof.
      */
     addAlias(aname, lexpr) {
+        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        let lexprParsed = lexpr.match(regex);
         this.aliases.push({
-            aname: aname, lexpr: lexpr
+            aname: aname, lexpr: lexprParsed
         });
     }
     /**
@@ -173,6 +175,65 @@ class HOA {
             }
         }
         return false;
+    }
+    getHighestAccSetUsed() {
+        let max = -1;
+        for (const state of this.states.values()) {
+            max = Math.max(max, ...state.accSets)
+            for (const edge of state.edges) {
+                max = Math.max(max, ...edge.accSets)
+            }
+        }
+        return max;
+    }
+    getMaxIntFromString(string) {
+        let array = string.split(" ");
+        return Math.max(...array);
+    }
+    isAliasUsed(aname) {
+        for (const state of this.states.values()) {
+            if (state.label.find(lexpr => (lexpr == aname))) {
+                return true;
+            }
+            for (const edge of state.edges) {
+                if (edge.label.find(lexpr => (lexpr == aname))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    isAPUsed(ap) {
+        let APString = String(ap);
+        for (const alias of this.aliases) {
+            if (alias.lexpr.find(lexpr => (lexpr == APString))) {
+                return true;
+            }
+        }
+        return this.isAliasUsed(APString);
+
+    }
+    removeAP(index) {
+        this.ap.splice(index, 1);
+        for (const alias of this.aliases) {
+            this.replaceNumbersInLexpr(alias.lexpr, index);
+        }
+        for (const state of this.states.values()) {
+            this.replaceNumbersInLexpr(state.label, index);
+            for (const edge of state.edges) {
+                this.replaceNumbersInLexpr(edge.label, index);
+            }
+        }
+    }
+    replaceNumbersInLexpr(lexprArray, threshold) {
+        if (lexprArray) {
+            for (let i = 0; i < lexprArray.length; i++) {
+                let element = lexprArray[i];
+                if (!isNaN(element) && Number(element) > threshold) {
+                    lexprArray[i] = String(element - 1);
+                }
+            }
+        }
     }
     setImplicitPositions(width, height) {
         let rows = Math.round(Math.sqrt(this.states.size));
@@ -405,7 +466,7 @@ class HOA {
             string += "\"" + this.exportPositions() + "\"" + "\n";
         }
         for (const alias of this.aliases) {
-            string += "Alias: " + alias.aname + " " + alias.lexpr + "\n";
+            string += "Alias: " + alias.aname + " " + alias.lexpr.join("") + "\n";
         }
         if (this.properties.length > 0) {
             string += "properties:";
@@ -453,6 +514,7 @@ class HOA {
         let count = this.states.get(fromIndex).edges.filter((element) => element.stateConj.includes(toIndex)).length;
         return count;
     }
+    
 }
 class PositionsExport {
 
@@ -523,20 +585,21 @@ class State {
         this.edges = [];
         /**@type {Position}*/
         this.position;
-        /**@type {string}*/
-        this.label = "";
+        /**@type {string[]}*/
+        this.label = [];
         /**@type {string}*/
         this.name = "";
     }
-    setLabel(label) {
-        this.label = label;
+    setLabelByString(labelString) {
+        let regex = /@\w+|&|\||!|\(|\)|\d+/g
+        this.label = labelString.match(regex);
     }
     setName(name) {
         this.name = name;
     }
     canHaveLabel() {
         for (const edge of this.edges) {
-            if (edge.label) {
+            if (edge.label!=0) {
                 return false
             }
         }
@@ -559,10 +622,13 @@ class State {
         this.edges.push(edge);
         return edge;
     }
+    getLabelString() {
+        return this.label.join("");
+    }
     stringify() {
         let str = "State:"
-        if (this.label) {
-            str += " [" + this.label + "]";
+        if (this.label.length!=0) {
+            str += " [" + this.getLabelString() + "]";
         }
         str += " " + this.number;
         if (this.name) {
@@ -595,21 +661,28 @@ class Edge {
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);
-        this.label = "";
+        this.label = [];
     }
-    setLabel(label) {
-        this.label = label;
+    setLabelByString(labelString) {
+        let regex = /@\w+|&|\||!|\(|\)|t|f|\d+/g
+        this.label = labelString.match(regex);
+    }
+    getLabelString() {
+        if (!this.label) {
+            return "";
+        }
+        return this.label.join("");
     }
     addAccSet(setNumber) {
         this.accSets.push(setNumber);
     }
     canHaveLabel() {
-        return !this.parent.label;
+        return this.parent.label.length==0;
     }
     stringify() {
         let str = "";
-        if (this.label) {
-            str += "[" + this.label + "] ";
+        if (this.label.length!=0) {
+            str += "[" + this.getLabelString() + "] ";
         }
         str += this.stateConj.toString().replace(",", "&");
         if (this.accSets.length > 0) {
@@ -624,16 +697,24 @@ class Edge {
     }
 }
 class Start {
-    constructor(stateConj) {
+    constructor(stateConj = []) {
         /**@type{number[]}*/
-        this.stateConj = stateConj || "";
+        this.stateConj = stateConj;
         this.position = null;
     }
-    addEdge(stateConj) {
-        this.stateConj = this.stateConj.concat(stateConj)
+    addEdge(newStateConj) {
+        for (const state of newStateConj) {
+            let stateNum = Number(state);
+            if (this.stateConj.length>0 &&this.stateConj.filter(e => e == stateNum).length>0) {
+                this.stateConj = this.stateConj.filter(e => e != stateNum);
+            } else {
+                this.stateConj.push(stateNum);
+            }
+        }
     }
-
 }
+
+
 exports.HOA = HOA;
 exports.State = State;
 exports.Edge = Edge;

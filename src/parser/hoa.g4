@@ -37,7 +37,8 @@ lexpr:
 	| '(' lexpr ')' lexpr2;
 lexpr2: '&' lexpr lexpr2 | '|' lexpr lexpr2 |;
 acceptanceCond:
-	IDENTIFIER '(' '!'? INT ')' acceptanceCond2
+	'Inf' '(' '!'? INT ')' acceptanceCond2
+	| 'Fin' '(' '!'? INT ')' acceptanceCond2
 	| '(' acceptanceCond ')' acceptanceCond2
 	| BOOLEAN acceptanceCond2;
 acceptanceCond2:
@@ -50,7 +51,7 @@ vertex: stateName edge*;
 stateName: 'State:' label? INT STRING? accSig?;
 accSig: '{' INT* '}';
 edge: label? stateConj accSig?;
-label: '[' lexpr ']';
+label: '['lexpr']';
 BODYDELIM: '--BODY--';
 ENDDELIM: '--END--';
 HEADERNAME: [a-zA-Z_][0-9a-zA-Z_-]* ':';

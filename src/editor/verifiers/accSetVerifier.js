@@ -12,12 +12,10 @@ class AccSetVerifier {
     verify(accSetArray) {
         for (const element of accSetArray) {
             if (isNaN(element)) {
-                console.log("nan")
                 return false;
             }
         }
         if ((new Set(accSetArray)).size != accSetArray.length) {
-            console.log("length")
             return false
         }
         return !(accSetArray.some(num => num > this.automaton.acceptance.count-1 || num < 0))

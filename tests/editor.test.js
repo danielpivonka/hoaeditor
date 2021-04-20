@@ -1,16 +1,23 @@
 // @ts-nocheck
-let parse = require('../src/parser/parser').parse;
+const Parser = require('../src/parser/parser').Parser;
 const EditorCanvas = require('../src/editor/editorCanvas').EditorCanvas;
+const LabelTranslator = require('../src/labelTranslator').LabelTranslator;
 let canvas;
 let ctx;
-let editor;
+let parser;
 beforeEach(() => {
+  parser = new Parser();
   canvas = document.createElement('canvas');
   canvas.width = 800;
   canvas.height = 600;
   ctx = canvas.getContext("2d");
-  editor = new EditorCanvas(canvas);
 });
+function createEditor(result){
+  let translator = new LabelTranslator(result);
+  let editor = new EditorCanvas(canvas);
+  editor.setAutomaton(result,translator);
+  return editor;
+}
 test('implicit state labels', () => {
   let hoaIn = 'HOA: v1\
     States: 3\
@@ -30,8 +37,8 @@ test('implicit state labels', () => {
     2 2 2 2\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+ createEditor(result)
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })
@@ -56,8 +63,8 @@ test('alternating start', () => {
     [2] 1\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  createEditor(result)
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })
@@ -85,8 +92,8 @@ test('alternating edge', () => {
      [!0&!1] 3 {0}\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  createEditor(result)
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })
@@ -107,8 +114,8 @@ test('unlabeled edge', () => {
      [0&1] 2 {0}\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  createEditor(result)
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })
@@ -129,8 +136,8 @@ test('state label', () => {
       0 1\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  createEditor(result)
   const events = ctx.__getEvents();
   expect(events).toMatchSnapshot();
 })
@@ -150,8 +157,8 @@ test('move state', () => {
       0 1\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  let editor = createEditor(result);
   var downEvt = new MouseEvent("mouseDown", {
     clientX: 270,
     clientY: 300,
@@ -189,8 +196,8 @@ test('move start', () => {
       0 1\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  let editor = createEditor(result);
   let automaton = editor.getAutomaton();
   let oldPosition = automaton.start[0].position.clone();
   var downEvt = new MouseEvent("mouseDown", {
@@ -205,8 +212,6 @@ test('move start', () => {
   editor.mouseMove(moveEvt);
   editor.mouseUp(moveEvt);
   let newPosition = automaton.start[0].position;
-  console.log(oldPosition.toString());
-  console.log(newPosition.toString());
   expect(newPosition.x).toBeLessThan(oldPosition.x+10 + editor.circleSize / 5);
   expect(newPosition.y).toBeLessThan(oldPosition.y+10 + editor.circleSize / 5);
   expect(newPosition.x).toBeGreaterThan(oldPosition.x+10 - editor.circleSize / 5);
@@ -230,8 +235,8 @@ test('move miss', () => {
       0\
     --END--';
 
-  let result = parse(hoaIn);
-  editor.setAutomaton(result);
+  let result = parser.parse(hoaIn);
+  let editor = createEditor(result);
   var downEvt = new MouseEvent("mouseDown", {
     clientX: 100,
     clientY: 100,

@@ -63,7 +63,7 @@ class hoaListenerImpl extends listener {
     enterStateName(ctx) {
         let state = this.data.addState(parseInt(ctx.INT().getText(), 10));
         if (ctx.label()) {
-            state.setLabel(ctx.label().lexpr().getText());
+            state.setLabelByString(ctx.label().lexpr().getText());
         }
         if (ctx.STRING()) {
             state.setName(ctx.STRING().getText().slice(1, -1));
@@ -81,7 +81,7 @@ class hoaListenerImpl extends listener {
         let intArray = stateConjArray.map(x => parseInt(x, 10));
         let edge = this.lastState.addEdge(intArray);
         if (ctx.label()) {
-            edge.setLabel(ctx.label().lexpr().getText());
+            edge.setLabelByString(ctx.label().lexpr().getText());
         }
         if (ctx.accSig()) {
             for (let i = 1; i < ctx.accSig().getChildCount() - 1; i++) {

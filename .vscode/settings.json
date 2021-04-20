@@ -1,0 +1,7 @@
+{
+    "antlr4.generation": {
+        "mode": "external",
+        "language": "JavaScript",
+        "outputDir": "generated"
+    }
+}

@@ -20,13 +20,23 @@ class Parser {
         let tokens = new antlr4.CommonTokenStream(lexer);
         let parser = new hoaParser.hoaParser(tokens);
         parser.buildParseTrees = true;
-        parser.removeErrorListeners();
         let failed = false;
+        parser.removeErrorListeners();
         parser.addErrorListener({
             syntaxError: (recognizer, offendingSymbol, line, column, msg) => {
+                failed = true;
                 this.errors.push(line + ":" + column + " " + msg);
             },
-            reportAmbiguity: () => {
+            reportAmbiguity: (recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) => {
+                console.log("ambiguity")
+                console.log(recognizer);
+                console.log(dfa);
+                console.log(startIndex);
+                console.log(stopIndex);
+                console.log(exact);
+                console.log(ambigAlts);
+                console.log(configs);
+
             },
             reportAttemptingFullContext: () => {
             },

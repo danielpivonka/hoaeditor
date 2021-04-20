@@ -17,6 +17,7 @@ class AutomatonSidebar {
         this.aliasFields = [];
         this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
         this.oldAccCond;
+        this.correctMap = new Map();
     }
     addAutomatonChangedListener(func) {
         this.automatonChangedListeners.push(func)
@@ -27,6 +28,7 @@ class AutomatonSidebar {
         }
     }
     generateSidebar() {
+        this.correctMap = new Map();
         let sidebar = document.createElement("div");
         sidebar.append(this.createApList());
         sidebar.append(this.createAliasList());
@@ -73,9 +75,24 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, index + ":");
         let field = SidebarUtils.createField(id);
         field.value = array[index];
+        if (field.value != "") {
+            field.className = "inputField"
+            this.correctMap.set(id, true);
+        }
+        else {
+            field.className = "inputField error"
+            this.correctMap.set(id, false);
+        }
         field.oninput = (e) => {
             array[index] = e.target.value;
-            
+            if (e.target.value!="") {
+                field.className = "inputField"
+                this.correctMap.set(id, true);
+            }
+            else {
+                field.className = "inputField error"
+                this.correctMap.set(id, false);
+            }
         };
         field.onblur = () => { this.automatonChanged(); };
         let removeButton = document.createElement("button")
@@ -102,12 +119,9 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance condition:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.acceptance.str;
-        field.oninput = (e) => { if (verifyAccCond(e.target.value)) {
-            field.className = "inputField"
-        }
-        else {
-            field.className = "inputField error"
-        }
+        this.setFieldCorrectness(field,verifyAccCond(field.value)&&field.value!="")
+        field.oninput = (e) => {
+            this.setFieldCorrectness(field,verifyAccCond(e.target.value)&&e.target.value!="")
         };
         field.onblur = (e) => {
             if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value)) {
@@ -145,12 +159,15 @@ class AutomatonSidebar {
         let removeButton = this.createAliasRemoveButton(array, index, isUsed);
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }
-    createLexprField(aliasObject) {
-        let lexprObj = new LexprField(this.automaton, this.translator)
+    createLexprField(aliasObject,index) {
+        let lexprObj = new LexprField(this.automaton, this.translator,true)
         lexprObj.setExcludedObject(aliasObject);
         let valueField = document.createElement("div");
         valueField.className = "cell";
-        lexprObj.onValueChanged = () => this.automatonChanged();
+        lexprObj.onValueChanged = () => {
+            this.automatonChanged()
+            this.correctMap.set(index+"v", lexprObj.isCorrect);
+        };
         let valueContent = lexprObj.drawField(aliasObject.lexpr)
         valueField.appendChild(valueContent);
         this.aliasFields.push(lexprObj);
@@ -159,17 +176,19 @@ class AutomatonSidebar {
         }
         return valueField;
     }
-    createAliasKey(aliasObject,index,isUsed) {
-        let keyField = SidebarUtils.createField(index + "k");
+    createAliasKey(aliasObject, index, isUsed) {
+        let id = index + "k";
+        let keyField = SidebarUtils.createField(id);
         keyField.value = aliasObject.aname.substring(1);
         keyField.disabled = isUsed;
+        this.setFieldCorrectness(keyField,keyField.value!="")
         keyField.oninput = (e) => {
             if (this.aliasKeyVerifier.verify(e.target.value)) {
                 aliasObject.aname = "@" + e.target.value
-                keyField.className = "inputField"
+                this.setFieldCorrectness(keyField, true)
             }
             else {
-                keyField.className = "inputField error"
+                this.setFieldCorrectness(keyField, false)
             }
         }
         return keyField;
@@ -191,6 +210,10 @@ class AutomatonSidebar {
                 field.deselect();
             }
         }
+    }
+    setFieldCorrectness(field,isCorrect) {
+        field.className = isCorrect ? "inputField" : "inputField error";
+        this.correctMap.set(field, isCorrect);
     }
 }
 exports.AutomatonSidebar = AutomatonSidebar;

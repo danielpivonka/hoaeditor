@@ -31,6 +31,11 @@ function parseClicked() {
     }
 }
 
+function enableExport(enabled) {
+    exportButton.disabled = !enabled
+    exportWithPosButton.disabled = !enabled;
+}
+
 function showExport(withPositions) {
     container.style.visibility = "visible"
     parseButton.style.visibility = "collapse"
@@ -48,18 +53,23 @@ function writeErrors(array) {
     }
 
 }
-let editor = new Editor(canvas, sidebarContainer);
-window.addEventListener('resize', () => editor.resized());
-parseButton.addEventListener('click', ()=>{
-    parseClicked();
-});
-
-closeButton.addEventListener('click',()=>hide());
 function hide() {
     container.style.visibility = "collapse"
     parseButton.style.visibility = "collapse"
 
 }
+let editor = new Editor(canvas, sidebarContainer);
+editor.onAutomatonChanged = () => {
+    enableExport(editor.isValid);
+}
+enableExport(editor.isValid);
+window.addEventListener('resize', () => editor.resized());
+parseButton.addEventListener('click', ()=>{
+    parseClicked();
+});
+
+
+closeButton.addEventListener('click',()=>hide());
 importButton.addEventListener('click', function showImport() {
     container.style.visibility = "visible"
     parseButton.style.visibility = "visible"

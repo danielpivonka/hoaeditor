@@ -2,7 +2,7 @@ const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
 const LabelKeyboard = require('./labelKeyboard.js').LabelKeyboard;
 
 class LexprField {
-    constructor(automaton, translator) {
+    constructor(automaton, translator,mandatory) {
         this.translator = translator;
         this.automaton = automaton;
         this.labelCursor = -1;
@@ -17,6 +17,8 @@ class LexprField {
         this.onValueChanged;
         this.changed = false;
         this.isSelected = false;
+        this.isCorrect = false;
+        this.isMandatory = mandatory;
     }
     setExcludedObject(object) {
         this.excluded = object;
@@ -54,12 +56,19 @@ class LexprField {
 }
     drawElements(field, labelArray) {
         field.innerHTML = "";
+        let filler = document.createElement("span");
+        filler.innerHTML = "."
+        filler.style.visibility = "hidden";
+        filler.style.width = "0px"
+        field.appendChild(filler);
         let cursorDrawn = false;
-        if (labelArray.length==0||verifyLabel(labelArray)) {
+        if ((labelArray.length!=0||!this.isMandatory)&&verifyLabel(labelArray)) {
             field.className = "label_area";
+            this.isCorrect = true;
         }
         else {
             field.className = "label_area error";
+            this.isCorrect = false;
         }
         for (let i = 0; i < labelArray.length; i++) {
             let labelElement = labelArray[i];
@@ -90,17 +99,13 @@ class LexprField {
         if (!cursorDrawn && this.labelCursor != -1) {
             this.drawCursor(field, labelArray);
         }
-        let filler = document.createElement("div");
-        filler.style.width ="10px"
-        field.appendChild(filler);
+        let padding = document.createElement("div");
+        padding.style.width ="10px"
+        field.appendChild(padding);
         
     }
     drawCursor(field) {
         let cursor = document.createElement("div");
-        let inner = document.createElement("span");
-        inner.innerHTML = "."
-        inner.style.visibility = "hidden";
-        cursor.appendChild(inner);
         cursor.className = "cursor blink";
         this.cursorNode = field.appendChild(cursor);
     }

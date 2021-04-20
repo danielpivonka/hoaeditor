@@ -24,7 +24,10 @@ class Editor {
         this.editorCanvas.addonStateChangedListener((state) => {
             if (state == EditorCanvas.stateEnum.ADD_EDGE) {
                 this.removeDetail();
-        } })
+            }
+        })
+        this.onAutomatonChanged;
+        this.isValid;
     }
 
     resetFocus() {
@@ -53,11 +56,17 @@ class Editor {
     refresh() {
         this.editorCanvas.draw();
         this.drawSidebar();
+        if (this.onAutomatonChanged) {
+            this.onAutomatonChanged();
+        }
     }
     drawSidebar() {
         this.sidebarContainer.innerHTML = "";
         this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
-       
+        this.isValid = Array.from(this.automatonSidebar.correctMap.values()).every(e => e == true);
+        if (this.onAutomatonChanged) {
+            this.onAutomatonChanged();
+        }
     }
     resized() {
         this.editorCanvas.resized();
@@ -89,9 +98,6 @@ class Editor {
         }
         if (document.getElementById("objectDetail")) {
             document.getElementById("objectDetail").remove();
-        }
-        if (this.automatonSidebar) {
-            //this.automatonSidebar.closeKeyboard();
         }
     }
 }

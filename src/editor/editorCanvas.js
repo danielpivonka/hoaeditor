@@ -356,7 +356,7 @@ class EditorCanvas {
                 midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, midpoint, 0);
             }
-            else {
+            else if (this.selected instanceof Edge){
                 midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.parent.position, midpoint, this.circleSize);
             }

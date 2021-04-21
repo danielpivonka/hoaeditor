@@ -197,7 +197,7 @@ class EditorUtils {
     }
 
     static calculateLabelPosition(originState, destinationStates, edge, circleSize) {
-        if (edge.stateConj.count > 1) {
+        if (edge.stateConj.length > 1) {
             let midpoint = this.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset)[0];
             return this.calculateMultiLabelPosition(originState, destinationStates, midpoint);
         }

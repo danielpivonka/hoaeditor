@@ -84,7 +84,9 @@ class Editor {
         container.appendChild(this.detail.generateDetail(object));
         container.addEventListener("mousedown", (e) => {
             e.stopPropagation()
+            this.detail.accSetField.deselect();
             this.detail.lexprField.deselect();
+            this.refreshdetail.accSetField.deselect();
         });
         this.currentDetail = this.detail;
         this.currentDetail.onAutomatonChanged = () => this.refresh();

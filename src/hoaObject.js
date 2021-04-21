@@ -657,7 +657,7 @@ class Edge {
      * @param {State} parent - parent state.
      */
     constructor(stateConj, parent) {
-        this.stateConj = stateConj || "";
+        this.stateConj = stateConj || [];
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);

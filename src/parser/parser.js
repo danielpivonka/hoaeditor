@@ -27,16 +27,7 @@ class Parser {
                 failed = true;
                 this.errors.push(line + ":" + column + " " + msg);
             },
-            reportAmbiguity: (recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) => {
-                console.log("ambiguity")
-                console.log(recognizer);
-                console.log(dfa);
-                console.log(startIndex);
-                console.log(stopIndex);
-                console.log(exact);
-                console.log(ambigAlts);
-                console.log(configs);
-
+            reportAmbiguity: () => {
             },
             reportAttemptingFullContext: () => {
             },

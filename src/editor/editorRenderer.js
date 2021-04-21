@@ -47,7 +47,7 @@ class EditorRenderer {
         this.offset = offset;
         this.labelTranslator = translator;
         this.circleSize = this.baseCircleSize * this.scale;
-        this.ctx.lineWidth = this.scale * 2;
+        this.ctx.lineWidth = this.scale * 1.1;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawStarts(automaton,selected);
         this.hasMultiEdge = automaton.hasMultiEdge();

@@ -201,15 +201,20 @@ class EditorCanvas {
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI_BEGIN) {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selected instanceof State) {
-                this.destinations.push(this.selected.number);
-                this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
-            } else {
-                this.changeState(EditorCanvas.stateEnum.IDLE);
+            if (this.first instanceof State) {
+                if (this.selected instanceof State) {
+                    this.destinations.push(this.selected.number);
+                    this.changeState(EditorCanvas.stateEnum.ADD_EDGE_MULTI);
+                } else {
+                    this.changeState(EditorCanvas.stateEnum.IDLE);
+                }
             }
-            this.setSelected(this.first);
-            this.draw();
-            this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
+            else if (this.first instanceof Start){
+                this.first.addEdge([this.selected.number]);
+            }
+                this.setSelected(this.first);
+                this.draw();
+                this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
         else if (this.editorState == EditorCanvas.stateEnum.ADD_EDGE_MULTI) {
             this.first = this.selected;

@@ -86,7 +86,7 @@ class Editor {
             e.stopPropagation()
             this.detail.accSetField.deselect();
             this.detail.lexprField.deselect();
-            this.refreshdetail.accSetField.deselect();
+            this.detail.accSetField.deselect();
         });
         this.currentDetail = this.detail;
         this.currentDetail.onAutomatonChanged = () => this.refresh();

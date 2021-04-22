@@ -13,6 +13,7 @@ class ObjectDetail {
         this.accSetVerifier = new AccSetVerifier(automaton);
         this.lexprField = new LexprField(automaton, translator, false)
         this.accSetField = new AccSetField(automaton);
+        this.automaton = automaton;
         this.currentLabel;
         this.object;
         this.onAutomatonChanged;
@@ -27,10 +28,11 @@ class ObjectDetail {
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
         sidebarTable.append(this.createAccSet(object.accSets));
+        sidebarTable.append(this.createLabel(object));
         if (object instanceof State) {
             sidebarTable.append(this.createName(object));
+            sidebarTable.append(this.createAddStartButton(object));
         }
-        sidebarTable.append(this.createLabel(object));
         sidebar.append(sidebarTable);
         return sidebar;
     }
@@ -64,6 +66,17 @@ class ObjectDetail {
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = this.accSetField.drawField(accSetArray);
         return SidebarUtils.createDivWithChildren(label, field);
+    }
+    createAddStartButton(state) {
+        let button = document.createElement("button");
+        button.className = "button";
+        button.innerHTML = "Add start"
+        button.onclick = () => {
+            let start = this.automaton.addStart([state.number]);
+            start.position = state.position.clone().subtractScalarX(50);
+            this.onAutomatonChanged();
+        }
+        return button;
     }
     close() {
         this.commitChanges();

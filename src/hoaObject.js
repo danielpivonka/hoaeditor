@@ -579,7 +579,7 @@ class State {
         this.accSets = [];
         /**@type {Edge[]}*/
         this.edges = [];
-        /**@type {Position}*/
+        /**@type {Victor}*/
         this.position;
         /**@type {string[]}*/
         this.label = [];

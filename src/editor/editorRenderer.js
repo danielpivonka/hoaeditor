@@ -155,7 +155,7 @@ class EditorRenderer {
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps,this.labelTranslator.translate);
 
         let labelAnchor = EditorUtils.calculateMultiLabelPosition(originState, destinationStates, midpoint, this.offset, this.scale);
         let pos = this.drawLabelEdge(label, labelAnchor, labelAngle);
@@ -194,7 +194,6 @@ class EditorRenderer {
      */
     drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = EditorUtils.textStyle(20 * this.scale);
-        label = this.labelTranslator.translate(label);
         let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding, this.scale);
         let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
         if (background) {
@@ -235,7 +234,7 @@ class EditorRenderer {
             this.ctx.stroke();
             this.ctx.font = EditorUtils.textStyle(18 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y - circleSize / 2);
-            this.ctx.fillText(this.labelTranslator.translate(state.getLabelString()), pos.x, pos.y + circleSize / 2);
+            this.ctx.fillText(this.labelTranslator.translate(state.label), pos.x, pos.y + circleSize / 2);
         }
         else {
             this.ctx.font = EditorUtils.textStyle(36 * this.scale);
@@ -263,7 +262,7 @@ class EditorRenderer {
             this.ctx.stroke();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = EditorUtils.getLabel(state, index, aps);
+            let label = EditorUtils.getLabel(state, index, aps,this.labelTranslator.translate);
             let pos = this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
             if (this.hasMultiEdge) {
                 this.drawLabelAccSet(loopback.accSets, pos, loopback.offset.angleDeg())
@@ -299,7 +298,7 @@ class EditorRenderer {
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
-        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
+        let label = EditorUtils.getLabel(originState, edgeIndex, aps,this.labelTranslator.translate);
         let labelPos = this.drawLabelEdge(label, anchor, angle);
         if (this.hasMultiEdge) {
             this.drawLabelAccSet(edge.accSets,labelPos,angle)

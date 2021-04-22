@@ -72,7 +72,7 @@ class LexprField extends AbstractField{
             let element = document.createElement("div");
 
             element.className = "label_element";
-            element.innerHTML = this.translator.translate(labelElement);
+            element.innerHTML = this.translator.translate([labelElement]);
             if (this.labelCursor == i) {
                 this.drawCursor(field);
                 cursorDrawn = true;

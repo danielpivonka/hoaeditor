@@ -23,7 +23,7 @@ class LabelKeyboard extends AbstratctKeyboard
         for (const alias of this.automaton.aliases) {
             console.log(JSON.stringify(alias))
             if (alias != excludedAlias&& alias.lexpr.length>0&&alias.aname.length>1) {
-            row.appendChild( this.generateButton(this.translator.translate(alias.lexpr.join("")), alias.aname));
+            row.appendChild( this.generateButton(alias.aname, alias.aname));
             }
         }
         return row;

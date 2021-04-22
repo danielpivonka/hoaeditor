@@ -1,5 +1,8 @@
 
 const Victor = require('victor');
+const State = require("../hoaObject.js").State;
+const Edge = require("../hoaObject.js").Edge;
+
 class EditorUtils {
     /**
      * Calculates midpoint between two points with given offset.
@@ -279,9 +282,9 @@ class EditorUtils {
      * @param {any[]} aps - Atomic propositions.
      * @returns {Victor[]} Vectors with state positions.
      */
-    static getLabel(state, edgeIndex, aps) {
+    static getLabel(state, edgeIndex, aps,translator) {
         if (state.edges[edgeIndex].getLabelString()) {
-            return state.edges[edgeIndex].getLabelString();
+            return translator(state.edges[edgeIndex].label);
         }
         if (state.edges.length == Math.pow(2, aps.length) && !state.getLabelString()) {
             return this.calculateImplicitLabel(edgeIndex, aps.length);

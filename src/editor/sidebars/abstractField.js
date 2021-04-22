@@ -4,6 +4,7 @@ class AbstractField{
         this.keyboardNode;
         this.isSelected = false;
         this.onSelected;
+        this.onKeyboardGenerated;
 
     }
     deselect() {
@@ -20,5 +21,16 @@ class AbstractField{
         filler.style.width = "0px"
         return filler;
     }
+    keyboardGenerated() {
+        if (this.onKeyboardGenerated) {
+            this.onKeyboardGenerated(this.keyboardNode);
+            this.keyboardNode.className = "container";
+        }
+        else {
+            this.keyboardNode.className = "container keyboard";
+            document.getElementsByTagName("body")[0].appendChild(this.keyboardNode);
+        }
+    }
+
 }
 exports.AbstractField = AbstractField;

@@ -14,8 +14,11 @@ class AutomatonSidebar {
         this.translator = translator;
         this.keyboard;
         this.selectedAliasIndex = -1;
-        this.aliasFields = [];
         this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
+        this.aliasFields = [];
+        for (let i = 0; i < automaton.aliases.length; i++) {
+            this.aliasFields.push(new LexprField(automaton,translator,true))
+        }
         this.oldAccCond;
         this.correctMap = new Map();
     }
@@ -56,7 +59,6 @@ class AutomatonSidebar {
 
     }
     createAliasList() {
-        this.aliasFields = [];
         this.automaton.aliases = this.automaton.aliases.filter((e) => e != null);
         let wrap = SidebarUtils.createList(this.createAlias.bind(this), this.automaton.aliases, "Aliases", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -65,6 +67,7 @@ class AutomatonSidebar {
         addButton.innerHTML = "Add";
         addButton.addEventListener("click", () => {
             this.automaton.aliases.push({ aname: "@", lexpr: [] })
+            this.aliasFields.push(new LexprField(this.automaton,this.translator,true))
             this.automatonChanged();
         });
         inner.append(addButton);
@@ -155,22 +158,23 @@ class AutomatonSidebar {
         let isUsed = this.automaton.isAliasUsed(aliasObject.aname);
         let keyField = this.createAliasKey(aliasObject,index,isUsed)
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
-        let valueField = this.createLexprField(aliasObject)
+        let valueField = this.createLexprField(aliasObject,index)
         let removeButton = this.createAliasRemoveButton(array, index, isUsed);
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }
-    createLexprField(aliasObject,index) {
-        let lexprObj = new LexprField(this.automaton, this.translator,true)
+    createLexprField(aliasObject, index) {
+        console.log(this.aliasFields);
+        let lexprObj = this.aliasFields[index];
         lexprObj.setExcludedObject(aliasObject);
         let valueField = document.createElement("div");
         valueField.className = "cell";
         lexprObj.onValueChanged = () => {
+            console.log("automaton changed");
             this.automatonChanged()
             this.correctMap.set(index+"v", lexprObj.isCorrect);
         };
         let valueContent = lexprObj.drawField(aliasObject.lexpr)
         valueField.appendChild(valueContent);
-        this.aliasFields.push(lexprObj);
         lexprObj.onSelected = () => {
             this.deselectAliases(lexprObj);
         }
@@ -200,6 +204,8 @@ class AutomatonSidebar {
     removeButton.disabled = isUsed;
     removeButton.addEventListener("click", () => {
         array[index] = null;
+        this.aliasFields.splice(index, 1);
+        console.log("clicked remove");
         this.automatonChanged();
     });
         return removeButton;
@@ -207,6 +213,7 @@ class AutomatonSidebar {
     deselectAliases(except) {
         for (const field of this.aliasFields) {
             if (field != except) {
+                console.log("deselecting: " + JSON.stringify(field.localArray));
                 field.deselect();
             }
         }

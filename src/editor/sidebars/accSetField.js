@@ -67,7 +67,7 @@ class AccSetField extends AbstractField{
                 this.drawElements(field, labelArray)
             };
             this.keyboardNode = this.accSetKeyboard.generateKeyboard(labelArray);
-            document.getElementsByTagName("body")[0].appendChild(this.keyboardNode )
+            this.keyboardGenerated();
             this.drawElements(field,labelArray)
         }
     }

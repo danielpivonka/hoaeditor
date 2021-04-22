@@ -19,12 +19,15 @@ class ObjectDetail {
         this.onAutomatonChanged;
         this.lexprField.onSelected = () => this.accSetField.deselect();
         this.accSetField.onSelected = () => this.lexprField.deselect();
-
+        this.lexprField.onKeyboardGenerated = (keyboardNode) =>this.onKeyboardGenerated(keyboardNode)
+        this.accSetField.onKeyboardGenerated = (keyboardNode) =>this.onKeyboardGenerated(keyboardNode)
+        this.sidebar;
+        this.keyboardDiv;
     }
     generateDetail(object) {
         this.object = object;
         this.currentLabel = [...object.label];
-        let sidebar = document.createElement("div");
+        this.sidebar = document.createElement("div");
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
         sidebarTable.append(this.createAccSet(object.accSets));
@@ -33,10 +36,16 @@ class ObjectDetail {
             sidebarTable.append(this.createName(object));
             sidebarTable.append(this.createAddStartButton(object));
         }
-        sidebar.append(sidebarTable);
-        return sidebar;
+        this.sidebar.append(sidebarTable);
+        this.keyboardDiv = document.createElement("div")
+        this.sidebar.append(this.keyboardDiv);
+
+        return this.sidebar;
     }
-    
+    onKeyboardGenerated(keyboardNode) {
+        this.keyboardDiv.innerHTML = "";
+        this.keyboardDiv.appendChild(keyboardNode);
+    }
     createName(object) {
         let id = "name";
         let label = SidebarUtils.createLabel(id, "name:");

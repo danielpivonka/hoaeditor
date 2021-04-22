@@ -21,7 +21,8 @@ class LabelKeyboard extends AbstratctKeyboard
         let row = document.createElement("div");
         row.className = "button_row"
         for (const alias of this.automaton.aliases) {
-            if (alias != excludedAlias) {
+            console.log(JSON.stringify(alias))
+            if (alias != excludedAlias&& alias.lexpr.length>0&&alias.aname.length>1) {
             row.appendChild( this.generateButton(this.translator.translate(alias.lexpr.join("")), alias.aname));
             }
         }
@@ -37,7 +38,6 @@ class LabelKeyboard extends AbstratctKeyboard
     }
     generateKeyboard(excludedAlias) {
         let keyboard = document.createElement("div");
-        keyboard.className = "container keyboard";
         keyboard.id = "lexprKeyboard";
         keyboard.addEventListener("mousedown", (e) => e.stopPropagation());
         keyboard.appendChild(this.generateAPRow());

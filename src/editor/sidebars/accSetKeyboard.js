@@ -8,7 +8,6 @@ class AccSetKeyboard extends AbstratctKeyboard
     }
     generateKeyboard(usedAccSets) {
         this.keyboard = document.createElement("div");
-        this.keyboard.className = "container keyboard";
         this.keyboard.id = "lexprKeyboard";
         this.keyboard.addEventListener("mousedown", (e) => e.stopPropagation());
         this.keyboard.appendChild(this.generateAliasRow(usedAccSets));

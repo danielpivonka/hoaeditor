@@ -5,7 +5,7 @@ class LabelKeyboard extends AbstratctKeyboard
     constructor(automaton, translator) {
         super(automaton)
         this.translator = translator;
-        this.basicSymbols = ["!", "(", ")", "&", "|"]
+        this.basicSymbols = ["!", "(", ")", "&", "|","t","f"]
     }
     
 

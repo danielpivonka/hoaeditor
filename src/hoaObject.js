@@ -657,7 +657,7 @@ class Edge {
         this.accSets = [];
         this.parent = parent;
         this.offset = new Victor(0, 0);
-        this.label = [];
+        this.label = ["t"];
     }
     setLabelByString(labelString) {
         let regex = /@\w+|&|\||!|\(|\)|t|f|\d+/g

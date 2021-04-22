@@ -12,7 +12,9 @@ class AbstratctKeyboard{
         button.value = display;
         button.onclick = () => {
             this.onInput(String(value))
-            this.onUpdate();
+            if (this.onUpdate) {
+                this.onUpdate();
+            }
         }
         return button;
     }

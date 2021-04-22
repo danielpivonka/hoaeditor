@@ -284,6 +284,7 @@ class EditorCanvas {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
+        edge.label = ["t"];
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
         }
@@ -532,7 +533,7 @@ class EditorCanvas {
         for (let [index, loopback] of loopbacks) {
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position, loopback.offset, this.circleSize);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = EditorUtils.getLabel(state, index, this.automaton.ap,this.labelTranslator.translate);
+            let label = EditorUtils.getLabel(state, index, this.automaton.ap,this.labelTranslator);
             if (this.checkLabelCollision(anchor, loopback.offset.angleDeg(), label, position)) {
                 return loopback;
             }
@@ -544,7 +545,7 @@ class EditorCanvas {
         let destination = this.automaton.getStateByNumber(edge.stateConj[0]);
         let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge, this.circleSize);
 
-        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap,this.labelTranslator.translate);
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap,this.labelTranslator);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, destination.position);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         return this.checkLabelCollision(anchor, labelAngle, label, position);
@@ -554,7 +555,7 @@ class EditorCanvas {
         let destinations = this.automaton.numbersToStates(edge.stateConj);
         let midpoint = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
         let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations, midpoint);
-        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap,this.labelTranslator.translate);
+        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap,this.labelTranslator);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         return this.checkLabelCollision(anchor, labelAngle, label, position);

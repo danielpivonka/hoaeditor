@@ -276,7 +276,7 @@ class EditorUtils {
 
     /**
      * Gets label of given edge.
-     * 
+     * F
      * @param {State} state - State from which the edge originates.
      * @param {number} edgeIndex - Index of the edge.
      * @param {any[]} aps - Atomic propositions.
@@ -284,22 +284,22 @@ class EditorUtils {
      */
     static getLabel(state, edgeIndex, aps,translator) {
         if (state.edges[edgeIndex].getLabelString()) {
-            return translator(state.edges[edgeIndex].label);
+            return translator.translate(state.edges[edgeIndex].label);
         }
         if (state.edges.length == Math.pow(2, aps.length) && !state.getLabelString()) {
-            return this.calculateImplicitLabel(edgeIndex, aps.length);
+            return this.calculateImplicitLabel(edgeIndex, aps.length,aps);
         }
         return "";
     }
 
-    static calculateImplicitLabel(edgeIndex, propositionCount) {
+    static calculateImplicitLabel(edgeIndex, propositionCount,aps) {
         let result = "";
         for (let i = 0; i < propositionCount; i++) {
             let mask = 1 << i;
             if (!(mask & edgeIndex)) {
                 result += "!";
             }
-            result += i
+            result += aps[i];
             if (i + 1 < propositionCount) {
                 result += "&"
             }

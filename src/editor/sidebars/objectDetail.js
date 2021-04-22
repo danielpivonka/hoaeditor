@@ -39,7 +39,7 @@ class ObjectDetail {
     
     createName(object) {
         let id = "name";
-        let label = SidebarUtils.createLabel(id, "Name:");
+        let label = SidebarUtils.createLabel(id, "name:");
         let field = SidebarUtils.createField(id);
         field.value = object.name;
         field.oninput = (e) => { object.name = e.target.value; };

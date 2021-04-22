@@ -1,26 +1,14 @@
-class LabelKeyboard
+const AbstratctKeyboard = require('./abstractKeyboard').AbstratctKeyboard;
+
+class LabelKeyboard extends AbstratctKeyboard
 {
     constructor(automaton, translator) {
-        this.automaton = automaton;
+        super(automaton)
         this.translator = translator;
-        this.basicSymbols = ["!", "(",")","&","|"]
-        this.onInputListener;
+        this.basicSymbols = ["!", "(", ")", "&", "|"]
     }
-    onInput(str) {
-        if (this.onInputListener) {
-            this.onInputListener(str)
-        }
-    }
-    generateButton(display, value) {
-        let button = document.createElement("input");
-        button.type = "button";
-        button.className = "button";
-        button.value = display;
-        button.onclick = () => {
-            this.onInput(String(value))
-        }
-        return button;
-    }
+    
+
     generateAPRow() {
         let row = document.createElement("div");
         row.className = "button_row"

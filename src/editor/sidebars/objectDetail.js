@@ -4,22 +4,25 @@ const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
 const State = require('../../hoaObject').State;
 const LexprField = require('./lexprField.js').LexprField;
 
+const AccSetField = require('./accSetField.js').AccSetField;
 
 class ObjectDetail {
     constructor(automaton,translator) {
         this.sidebarRedrawRequestListener = null;
         this.translator = translator;
         this.accSetVerifier = new AccSetVerifier(automaton);
-        this.lexprField = new LexprField(automaton,translator,false)
+        this.lexprField = new LexprField(automaton, translator, false)
+        this.accSetField = new AccSetField(automaton);
         this.currentLabel;
-        this.currentAccSet;
         this.object;
         this.onAutomatonChanged;
+        this.lexprField.onSelected = () => this.accSetField.deselect();
+        this.accSetField.onSelected = () => this.lexprField.deselect();
+
     }
     generateDetail(object) {
         this.object = object;
         this.currentLabel = [...object.label];
-        this.currentAccSet = [...object.accSets];
         let sidebar = document.createElement("div");
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
@@ -59,30 +62,15 @@ class ObjectDetail {
     createAccSet(accSetArray) {
         let id = "accSet";
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
-        let field = SidebarUtils.createField(id);
-        field.value = accSetArray.join(" ");
-        this.currentAccSet = field.value;
-        field.oninput = (e) => {
-            this.currentAccSet = e.target.value;
-            let parsedValues = this.currentAccSet.split(" ").filter(s=> s!="" && s!=" ").map(num => parseInt(num));
-            if (this.accSetVerifier.verify(parsedValues)) {
-                field.className = "inputField";
-            }
-            else {
-                field.className = "inputField error";
-            }
-        };
+        let field = this.accSetField.drawField(accSetArray);
         return SidebarUtils.createDivWithChildren(label, field);
     }
     close() {
         this.commitChanges();
         this.lexprField.deselect();
+        this.accSetField.deselect();
     }
     commitChanges() {
-        let parsedAccSet = this.currentAccSet.split(" ").filter(s=> s!="" && s!=" ").map(num => parseInt(num));
-        if (this.accSetVerifier.verify(parsedAccSet)) {
-            this.object.accSets = parsedAccSet;
-        }
         if (verifyLabel(this.currentLabel)) {
             this.object.label = this.currentLabel;
         }

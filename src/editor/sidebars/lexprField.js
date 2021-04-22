@@ -1,14 +1,13 @@
 const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
 const LabelKeyboard = require('./labelKeyboard.js').LabelKeyboard;
+const AbstractField = require('./abstractField').AbstractField;
 
-class LexprField {
-    constructor(automaton, translator,mandatory) {
+class LexprField extends AbstractField{
+    constructor(automaton, translator, mandatory) {
+        super(automaton)
         this.translator = translator;
-        this.automaton = automaton;
         this.labelCursor = -1;
         this.labelKeyboard = new LabelKeyboard(automaton, translator)
-        this.onSelected;
-        this.keyboardNode;
         this.cursorNode;
         this.originalArray;
         this.localArray = [];
@@ -16,7 +15,6 @@ class LexprField {
         this.field;
         this.onValueChanged;
         this.changed = false;
-        this.isSelected = false;
         this.isCorrect = false;
         this.isMandatory = mandatory;
     }
@@ -56,11 +54,7 @@ class LexprField {
 }
     drawElements(field, labelArray) {
         field.innerHTML = "";
-        let filler = document.createElement("span");
-        filler.innerHTML = "."
-        filler.style.visibility = "hidden";
-        filler.style.width = "0px"
-        field.appendChild(filler);
+        field.appendChild(this.createFiller());
         let cursorDrawn = false;
         if ((labelArray.length!=0||!this.isMandatory)&&verifyLabel(labelArray)) {
             field.className = "label_area";
@@ -110,10 +104,7 @@ class LexprField {
         this.cursorNode = field.appendChild(cursor);
     }
     deselect() {
-        if (this.keyboardNode) {
-            this.keyboardNode.remove();
-            this.keyboardNode = null;
-        }
+        super.deselect();
         if (this.cursorNode) {
             this.cursorNode.remove();
             this.cursorNode = null;

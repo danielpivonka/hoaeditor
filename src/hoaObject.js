@@ -8,10 +8,6 @@ class HOA {
         this.ap = []
         this.properties = []
         /**@type {Position[]}*/
-        this.positions = []
-        /**@type {number[][]}*/
-        this.edgeOffsets = []
-        /**@type {Position[]}*/
         this.startOffsets = []
         this.acceptance = {
             count: 0, str: ""

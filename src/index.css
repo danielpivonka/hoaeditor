@@ -148,3 +148,7 @@ textarea {
   }
 label { display: table-cell;
     vertical-align: middle; }
+.detailText{
+    display: table-cell;
+    white-space: pre-wrap;
+}

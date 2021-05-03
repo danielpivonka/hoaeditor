@@ -284,7 +284,7 @@ class EditorCanvas {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
-        edge.label = ["t"];
+        edge.label = from.label.length == 0 ? ["t"] : [];
         if (from.number == to[0]) {
             edge.offset.x = this.circleSize * 4;
         }
@@ -652,8 +652,10 @@ class EditorCanvas {
         return false;
     }
     changeZoom(e) {
-        let change = 1 - (e.deltaY / 10);
-        if ((this.renderer.scale * change) > 0.1) {
+        console.log(e.deltaY);
+        let change = 1 - (Math.sign(e.deltaY) / 10);
+        console.log(change);
+        if ((this.renderer.scale * change) > 0.1 && (this.renderer.scale * change)<10) {
             this.renderer.scale *= change;
         }
         e.preventDefault();

@@ -593,13 +593,30 @@ class State {
     setName(name) {
         this.name = name;
     }
-    canHaveLabel() {
+    areEdgesLabeled() {
         for (const edge of this.edges) {
             if (edge.label!=0) {
-                return false
+                return true
             }
         }
-        return true
+        return false;
+    }
+    transferLabel() {
+        for (const edge of this.edges) {
+            if (edge.label.length == 0) {
+                edge.label.splice(0, this.label.length, ...this.label);
+            }
+        }
+        this.label = [];
+    }
+    setLabel(label) {
+        this.label = label;
+        if (label.length != 0) {
+            for (const edge of this.edges) {
+                edge.label = [];
+            
+            }
+        }
     }
     setPosition(x, y) {
         this.position = new Victor(x, y);

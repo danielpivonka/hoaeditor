@@ -3,6 +3,7 @@ const AccSetVerifier = require('../verifiers/accSetVerifier.js').AccSetVerifier;
 const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
 const State = require('../../hoaObject').State;
 const LexprField = require('./lexprField.js').LexprField;
+const Edge = require('../../hoaObject').Edge;
 
 const AccSetField = require('./accSetField.js').AccSetField;
 
@@ -35,6 +36,9 @@ class ObjectDetail {
         if (object instanceof State) {
             sidebarTable.append(this.createName(object));
             sidebarTable.append(this.createAddStartButton(object));
+            if (object.areEdgesLabeled()) {
+                sidebarTable.append(this.createWarning());
+            }
         }
         this.sidebar.append(sidebarTable);
         this.keyboardDiv = document.createElement("div")
@@ -54,18 +58,10 @@ class ObjectDetail {
         field.oninput = (e) => { object.name = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }
-    createLabel(object) {
+    createLabel() {
         this.labelCursor = -1;
         let id = "label";
-        let canHaveLabel = object.canHaveLabel();
         let label = SidebarUtils.createLabel(id, "Label:");
-        if (canHaveLabel) {
-            label.style.textDecorationLine = "none"
-        }
-        else {
-            label.style.textDecorationLine = "line-through"
-            return SidebarUtils.createDivWithChildren(label);
-        }
         let field = this.lexprField.drawField(this.currentLabel)
         return SidebarUtils.createDivWithChildren(label, field);
     }
@@ -94,11 +90,29 @@ class ObjectDetail {
     }
     commitChanges() {
         if (verifyLabel(this.currentLabel)) {
-            this.object.label = this.currentLabel;
+            if (this.object instanceof State) {
+                this.object.setLabel(this.currentLabel);
+            }
+            else if (this.object instanceof Edge) {
+                if (this.object.parent.label.length!=0) {
+                    this.object.parent.transferLabel();
+                }
+                this.object.label = this.currentLabel;
+            }
         }
         if (this.onAutomatonChanged) {
             this.onAutomatonChanged();
         }
     }
+    createWarning() {
+        let warning = document.createElement("div");
+        let label = document.createElement("div");
+        warning.className = "detailText";
+        label.className = "detailText";
+        label.innerHTML = "Warning: ";
+        warning.innerHTML = "Setting label to this state<br>will erase labels from outgoing edges"
+        return SidebarUtils.createDivWithChildren(label, warning);
+    }
+
 }
 exports.ObjectDetail = ObjectDetail;

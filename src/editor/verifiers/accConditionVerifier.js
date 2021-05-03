@@ -18,8 +18,8 @@ function verifyAccCond(accCond) {
         reportAttemptingFullContext: () => { },
         reportContextSensitivity: () => { },
       });
-    parser.acceptanceCond();
-    return success;
+    let parsed = parser.acceptanceCond().getText();
+    return success && parsed == accCond;
 }
 
 exports.verifyAccCond = verifyAccCond;

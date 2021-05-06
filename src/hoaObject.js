@@ -173,14 +173,14 @@ class HOA {
         return false;
     }
     getHighestAccSetUsed() {
-        let max = -1;
+        let max = 0;
         for (const state of this.states.values()) {
             max = Math.max(max, ...state.accSets)
             for (const edge of state.edges) {
                 max = Math.max(max, ...edge.accSets)
             }
         }
-        return max;
+        return max-1;
     }
     getMaxIntFromString(string) {
         let array = string.split(" ");

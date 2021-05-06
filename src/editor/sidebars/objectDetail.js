@@ -18,10 +18,7 @@ class ObjectDetail {
         this.currentLabel;
         this.object;
         this.onAutomatonChanged;
-        this.lexprField.onSelected = () => this.accSetField.deselect();
-        this.accSetField.onSelected = () => this.lexprField.deselect();
         this.lexprField.onKeyboardGenerated = (keyboardNode) =>this.onKeyboardGenerated(keyboardNode)
-        this.accSetField.onKeyboardGenerated = (keyboardNode) =>this.onKeyboardGenerated(keyboardNode)
         this.sidebar;
         this.keyboardDiv;
     }
@@ -86,7 +83,6 @@ class ObjectDetail {
     close() {
         this.commitChanges();
         this.lexprField.deselect();
-        this.accSetField.deselect();
     }
     commitChanges() {
         if (verifyLabel(this.currentLabel)) {

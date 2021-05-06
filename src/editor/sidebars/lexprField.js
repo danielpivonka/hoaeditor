@@ -17,6 +17,20 @@ class LexprField extends AbstractField{
         this.changed = false;
         this.isCorrect = false;
         this.isMandatory = mandatory;
+        this.keyboardNode;
+        this.isSelected = false;
+        this.onSelected;
+        this.onKeyboardGenerated;
+    }
+    keyboardGenerated() {
+        if (this.onKeyboardGenerated) {
+            this.onKeyboardGenerated(this.keyboardNode);
+            this.keyboardNode.className = "container";
+        }
+        else {
+            this.keyboardNode.className = "container keyboard";
+            document.getElementsByTagName("body")[0].appendChild(this.keyboardNode);
+        }
     }
     setExcludedObject(object) {
         this.excluded = object;
@@ -107,7 +121,11 @@ class LexprField extends AbstractField{
         this.cursorNode = field.appendChild(cursor);
     }
     deselect() {
-        super.deselect();
+        if (this.keyboardNode) {
+            this.keyboardNode.remove();
+            this.keyboardNode = null;
+        }
+        this.isSelected = false;
         if (this.cursorNode) {
             this.cursorNode.remove();
             this.cursorNode = null;

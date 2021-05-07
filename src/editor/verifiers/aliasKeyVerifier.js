@@ -16,7 +16,6 @@ class AliasKeyVerifier {
         }
         for (const aliasObject of this.automaton.aliases) {
             if (aliasObject.aname.substring(1) == alias) {
-                console.log("multiplicity")
                 return false;
             }
         }

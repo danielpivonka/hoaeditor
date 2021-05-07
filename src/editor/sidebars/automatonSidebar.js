@@ -163,13 +163,11 @@ class AutomatonSidebar {
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }
     createLexprField(aliasObject, index) {
-        console.log(this.aliasFields);
         let lexprObj = this.aliasFields[index];
         lexprObj.setExcludedObject(aliasObject);
         let valueField = document.createElement("div");
         valueField.className = "cell";
         lexprObj.onValueChanged = () => {
-            console.log("automaton changed");
             this.automatonChanged()
             this.correctMap.set(index+"v", lexprObj.isCorrect);
         };
@@ -205,7 +203,6 @@ class AutomatonSidebar {
     removeButton.addEventListener("click", () => {
         array[index] = null;
         this.aliasFields.splice(index, 1);
-        console.log("clicked remove");
         this.automatonChanged();
     });
         return removeButton;
@@ -213,7 +210,6 @@ class AutomatonSidebar {
     deselectAliases(except) {
         for (const field of this.aliasFields) {
             if (field != except) {
-                console.log("deselecting: " + JSON.stringify(field.localArray));
                 field.deselect();
             }
         }

@@ -55,7 +55,6 @@ class LexprField extends AbstractField{
     }
     selected(cursor) {
         this.labelCursor = cursor;
-        console.log("this.isSelected: " + this.isSelected);
         if (!this.isSelected) {
             if (this.onSelected) {
                 this.onSelected();
@@ -64,7 +63,6 @@ class LexprField extends AbstractField{
 
         this.changed = false;
         this.isSelected = true;
-            console.log("drawing keyboard");
         this.createKeyboard(this.field, this.localArray);
     }
 
@@ -134,7 +132,6 @@ class LexprField extends AbstractField{
         if (this.changed) {
             this.valueChanged();
         }
-        console.log("deselecting");
         this.isSelected = false;
         this.changed = false;
     }

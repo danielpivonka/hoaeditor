@@ -274,38 +274,8 @@ class EditorUtils {
         return xlow && xhigh && ylow && yhigh;
     }
 
-    /**
-     * Gets label of given edge.
-     * F
-     * @param {State} state - State from which the edge originates.
-     * @param {number} edgeIndex - Index of the edge.
-     * @param {any[]} aps - Atomic propositions.
-     * @returns {Victor[]} Vectors with state positions.
-     */
-    static getLabel(state, edgeIndex, aps,translator) {
-        if (state.edges[edgeIndex].getLabelString()) {
-            return translator.translate(state.edges[edgeIndex].label);
-        }
-        if (state.edges.length == Math.pow(2, aps.length) && !state.getLabelString()) {
-            return this.calculateImplicitLabel(edgeIndex, aps.length,aps);
-        }
-        return "";
-    }
 
-    static calculateImplicitLabel(edgeIndex, propositionCount,aps) {
-        let result = "";
-        for (let i = 0; i < propositionCount; i++) {
-            let mask = 1 << i;
-            if (!(mask & edgeIndex)) {
-                result += "!";
-            }
-            result += aps[i];
-            if (i + 1 < propositionCount) {
-                result += "&"
-            }
-        }
-        return result;
-    }
+
     static approxBezierLength(iters, p0, p1, p2, p3 = null) {
         let len = this.getPointsOnBezier(iters, p0, p1, p2, p3).slice(-1)[0];
         return len;

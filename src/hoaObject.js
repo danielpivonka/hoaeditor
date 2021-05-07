@@ -173,7 +173,7 @@ class HOA {
         return false;
     }
     getHighestAccSetUsed() {
-        let max = 0;
+        let max = -0;
         for (const state of this.states.values()) {
             max = Math.max(max, ...state.accSets)
             for (const edge of state.edges) {
@@ -391,6 +391,9 @@ class HOA {
                 start.position = offset.add(anchor);
             }
         }
+    }
+    setImplicitAP() {
+        
     }
     removeState(stateToRemove) {
         for (const state of this.states.values()) {

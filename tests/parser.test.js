@@ -42,7 +42,7 @@ test('correct single line transitions with accepting states', () => {
     State: 2 "sink state" { 0 }\
     2 2 2 2\
     --END--';
-    let hoaOut = 'HOA: v1\nStates: 3\nStart: 0\nacc-name: Rabin 1\nAcceptance: 2 (Fin(0)&Inf(1))\nAP: 2 "a" "b"\n--BODY--\nState: 0 "a U b" {0}\n2\n0\n1\n1\nState: 1 {1}\n1\n1\n1\n1\nState: 2 "sink state" {0}\n2\n2\n2\n2\n--END--\n';
+    let hoaOut = 'HOA: v1\nStates: 3\nStart: 0\nacc-name: Rabin 1\nAcceptance: 2 (Fin(0)&Inf(1))\nAP: 2 "a" "b"\n--BODY--\nState: 0 "a U b" {0}\n[!a&!b] 2\n[a&!b] 0\n[!a&b] 1\n[a&b] 1\nState: 1 {1}\n[!a&!b] 1\n[a&!b] 1\n[!a&b] 1\n[a&b] 1\nState: 2 "sink state" {0}\n[!a&!b] 2\n[a&!b] 2\n[!a&b] 2\n[a&b] 2\n--END--\n';
     let result = parser.parse(hoaIn);
     expect(result.toHoaString()).toBe(hoaOut);
 })
@@ -63,7 +63,7 @@ test('correct with name and tool', () => {
       0 {1}   /* !a  &  b */\
       0 {0 1} /*  a  &  b */\
     --END--';
-    let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 2 "a" "b"\ntool: "tooly"\nname: "GFa & GFb"\n--BODY--\nState: 0\n0\n0 {0}\n0 {1}\n0 {0 1}\n--END--\n';
+    let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 2 "a" "b"\ntool: "tooly"\nname: "GFa & GFb"\n--BODY--\nState: 0\n[!a&!b] 0\n[a&!b] 0 {0}\n[!a&b] 0 {1}\n[a&b] 0 {0 1}\n--END--\n';
     let result = parser.parse(hoaIn);
     expect(result.toHoaString()).toBe(hoaOut);
 })

@@ -1,16 +1,21 @@
 const Automaton = require('../hoaObject').HOA;
-
 const State = require('../hoaObject').State;
     /**
      * Prepares the HOAObject for editing.
+     * 
      * @param {Automaton} automaton - Automaton after being parsed.
+     * @returns {boolean} If the labeling of the automaton is correct.
      */
 function postParse(automaton) {
-    checkLabels(automaton);
+    if (!checkLabels(automaton)) {
+        return false;
+    }
     fixImplicitLabels(automaton);
+    return true;
 }
     /**
      * Checks if automaton is labelled correctly.
+     * 
      * @param {Automaton} automaton - Automaton to check.
      * @returns {boolean} Result of the check.
      */
@@ -73,7 +78,10 @@ function fixImplicitLabels(automaton) {
     /**
      * Calculates implicit label of edge.
      * 
-     * @param {Automaton} automaton - Automaton to adjust.
+     * @param {number} edgeIndex - Index of edge to calculate.
+     * @param {number} propositionCount - Ammount of atomic propositions.
+     * @param {string[]} aps - List of atomic propositions.
+     * @returns {string} Calculated implicit label.
      */
 function calculateImplicitLabel(edgeIndex, propositionCount,aps) {
     let result = [];
@@ -89,4 +97,7 @@ function calculateImplicitLabel(edgeIndex, propositionCount,aps) {
     }
     return result;
 }
+
+
+
 exports.postParse = postParse;

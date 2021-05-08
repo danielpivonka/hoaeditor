@@ -1,12 +1,11 @@
 /* eslint-disable no-prototype-builtins */
-const Position = require('../hoaObject').Position;
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
 const HOA = require('../hoaObject').HOA;
 const State = require('../hoaObject').State;
 const Start = require('../hoaObject').Start;
 const Edge = require('../hoaObject').Edge;
-
+const initializePositions = require('./automatonInitializer').initializePositions;
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
@@ -88,23 +87,17 @@ class EditorCanvas {
         /**@type {HOA}*/
         this.automaton = automaton;
         if (!this.automaton.hasExplicitPositions) {
-            this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
-            this.automaton.SetImplicitOffsets();
-            let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-            this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
-            let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
-            let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-            this.automaton.calculateStartAnchors(mergedAngles)
+            initializePositions(automaton,this.canvas.width,this.canvas.height,this.circleSize)
         }
         this.labelTranslator = translator;
         this.draw();
     }
 
     draw() {
-        let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-        let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
+        let blockedAngles = EditorUtils.calculateBlockedAngles(this.automaton,this.circleSize);
+        let blockedLoopbackAngles = EditorUtils.calculateLoopbackAngles(this.automaton)
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-        let startAngles = this.automaton.calculateStartAngles(this.circleSize)
+        let startAngles = EditorUtils.calculateStartAngles(this.automaton,this.circleSize)
         mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
             this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator, this.selected);
 

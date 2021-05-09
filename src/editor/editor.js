@@ -1,9 +1,7 @@
 const EditorCanvas = require('./editorCanvas').EditorCanvas;
 const AutomatonSidebar = require('./sidebars/automatonSidebar').AutomatonSidebar;
 const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
-const State = require('../hoaObject').State;
-const Edge = require('../hoaObject').Edge;
-const HOA = require('../hoaObject').HOA;
+const Automaton = require('../hoaData/automaton').Automaton;
 const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 
@@ -16,7 +14,7 @@ class Editor {
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.selected = null;
-        let automaton = new HOA();
+        let automaton = new Automaton();
         this.setAutomaton(automaton);
         this.currentDetail;
         document.body.addEventListener('mousedown', () => this.resetFocus());

@@ -1,7 +1,7 @@
 
 const Victor = require('victor');
-const State = require("../hoaObject.js").State;
-const Edge = require("../hoaObject.js").Edge;
+const State = require("../hoaData/state").State;
+const Edge = require("../hoaData/edge").Edge;
 
 class EditorUtils {
     /**

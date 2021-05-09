@@ -1,5 +1,5 @@
 
-const HOA = require('../../hoaObject').HOA;
+const Automaton = require('../../hoaData/automaton').Automaton;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 const LexprField = require('./lexprField.js').LexprField;
 const AliasKeyVerifier = require('../verifiers/aliasKeyVerifier.js').AliasKeyVerifier;
@@ -7,7 +7,7 @@ const verifyAccCond = require('../verifiers/accConditionVerifier').verifyAccCond
 
 class AutomatonSidebar {
     constructor(automaton,translator) {
-        /**@type { HOA }*/
+        /**@type { Automaton }*/
         this.automaton = automaton;
         this.automatonChangedListeners = [];
         this.collapsedState = [];

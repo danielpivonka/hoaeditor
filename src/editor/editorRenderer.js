@@ -1,8 +1,8 @@
 
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
-const HOA = require('../hoaObject').HOA;
-const State = require('../hoaObject').State;
+const Automaton = require('../hoaData/automaton').Automaton;
+const State = require('../hoaData/state').State;
 
 class EditorRenderer {
 
@@ -37,7 +37,7 @@ class EditorRenderer {
     /**
      * Renders automaton onto bound canvas.
      * 
-     * @param {HOA} automaton - Automaton object.
+     * @param {Automaton} automaton - Automaton object.
      * @param {Victor} offset - by how much should the canvas be offset.
      * @param {Object} selected - the selected object.
      * @param {number[][]} angles - blocked angles.
@@ -350,7 +350,7 @@ class EditorRenderer {
      * Draws multistart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {HOA} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton.
      */
     drawMultiStart(start, automaton,color) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
@@ -366,7 +366,7 @@ class EditorRenderer {
      * Draws monostart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {HOA} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton.
      */
     drawMonoStart(start, automaton,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);

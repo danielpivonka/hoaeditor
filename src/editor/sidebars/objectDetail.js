@@ -1,9 +1,9 @@
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 const AccSetVerifier = require('../verifiers/accSetVerifier.js').AccSetVerifier;
 const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
-const State = require('../../hoaObject').State;
+const State = require('../../hoaData/state').State;
 const LexprField = require('./lexprField.js').LexprField;
-const Edge = require('../../hoaObject').Edge;
+const Edge = require('../../hoaData/edge').Edge;
 
 const AccSetField = require('./accSetField.js').AccSetField;
 

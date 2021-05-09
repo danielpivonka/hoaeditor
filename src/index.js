@@ -2,7 +2,7 @@
 require('./index.html')
 require('./index.css')
 const Parser = require('./parser/parser').Parser;
-const parseLabel = require('./parser/parser').parseLabel;
+const automatonToHoaString = require('./hoaData/exporter/exporter').automatonToHoaString;
 
 const Editor = require('./editor/editor').Editor
 const field = document.getElementById('HOA_input');
@@ -40,7 +40,7 @@ function showExport(withPositions) {
     container.style.visibility = "visible"
     parseButton.style.visibility = "collapse"
     field.readOnly = true;
-    field.value = editor.editorCanvas.automaton.toHoaString(withPositions);
+    field.value = automatonToHoaString(editor.editorCanvas.automaton,withPositions);
 }
 
 function writeErrors(array) {

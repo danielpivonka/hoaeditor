@@ -1,18 +1,18 @@
 /* eslint-disable no-prototype-builtins */
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
-const HOA = require('../hoaObject').HOA;
-const State = require('../hoaObject').State;
-const Start = require('../hoaObject').Start;
-const Edge = require('../hoaObject').Edge;
+const Automaton = require('../hoaData/automaton').Automaton;
+const State = require('../hoaData/state').State;
+const Start = require('../hoaData/start').Start;
+const Edge = require('../hoaData/edge').Edge;
 const initializePositions = require('./automatonInitializer').initializePositions;
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
 class EditorCanvas {
     constructor(canvas) {
-        /**@type {HOA}*/
-        this.automaton = new HOA();
+        /**@type {Automaton}*/
+        this.automaton = new Automaton();
         /**@type {HTMLCanvasElement}*/
         this.canvas = canvas;
         this.circleSize = 25;
@@ -80,11 +80,11 @@ class EditorCanvas {
     /**
      * Binds automaton to editor.
      * 
-     * @param {HOA} automaton - Automaton object.
+     * @param {Automaton} automaton - Automaton object.
      */
 
     setAutomaton(automaton,translator) {
-        /**@type {HOA}*/
+        /**@type {Automaton}*/
         this.automaton = automaton;
         if (!this.automaton.hasExplicitPositions) {
             initializePositions(automaton,this.canvas.width,this.canvas.height,this.circleSize)

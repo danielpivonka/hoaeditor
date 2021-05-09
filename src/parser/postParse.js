@@ -1,5 +1,5 @@
-const Automaton = require('../hoaObject').HOA;
-const State = require('../hoaObject').State;
+const Automaton = require('../hoaData/automaton').Automaton;
+const State = require('../hoaData/state').State;
     /**
      * Prepares the HOAObject for editing.
      * 

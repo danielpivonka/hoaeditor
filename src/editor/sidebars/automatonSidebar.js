@@ -113,21 +113,39 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = SidebarUtils.createField(id, "number");
         field.value = this.automaton.acceptance.count;
-        field.min = this.automaton.getHighestAccSetUsed()+1;
-        field.oninput = (e) => { this.automaton.acceptance.count = e.target.value; };
+        field.min = this.maxAccSetUsed();
+        field.oninput = (e) => {
+                this.automaton.acceptance.count = e.target.value; 
+        };
+        field.onchange = () => {
+            document.activeElement.blur();
+        }
+        field.onblur = () => {
+            if (this.automaton.acceptance.count < field.min) {
+                this.automaton.acceptance.count = field.min;
+            }
+            this.automatonChanged();
+        }
+        
         return SidebarUtils.createDivWithChildren(label, field);
+    }
+    maxAccSetUsed() {
+        let inAutomaton = this.automaton.getHighestAccSetUsed();
+        let matcher = /\d+/g
+        let matches = [...this.automaton.acceptance.str.matchAll(matcher)];
+        return Math.max(...matches,inAutomaton)+1;
     }
     createAcceptanceCondition() {
         let id = "acccond";
         let label = SidebarUtils.createLabel(id, "Acceptance condition:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.acceptance.str;
-        this.setFieldCorrectness(field,verifyAccCond(field.value)&&field.value!="")
+        this.setFieldCorrectness(field,verifyAccCond(field.value,this.automaton)&&field.value!="")
         field.oninput = (e) => {
-            this.setFieldCorrectness(field,verifyAccCond(e.target.value)&&e.target.value!="")
+            this.setFieldCorrectness(field,verifyAccCond(e.target.value,this.automaton)&&e.target.value!="")
         };
         field.onblur = (e) => {
-            if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value)) {
+            if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value,this.automaton)) {
                 this.automaton.acceptance.str = e.target.value;
                 this.automaton.accname = "";
             }

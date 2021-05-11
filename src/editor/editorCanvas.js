@@ -72,11 +72,6 @@ class EditorCanvas {
             fn(state);
         }
     }
-
-
-
-
-
     /**
      * Binds automaton to editor.
      * 
@@ -180,7 +175,7 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                if (!this.backEdgeLocked) {
+                if (!this.backEdgeLocked || this.selected.number !=this.first.number) {
                     this.addEdge(this.first, [this.selected.number]);
                     this.changeState(EditorCanvas.stateEnum.IDLE);
                 }
@@ -275,9 +270,11 @@ class EditorCanvas {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
-        edge.label = from.label.length == 0 ? ["t"] : [];
-        if (from.number == to[0]) {
-            edge.offset.x = this.circleSize * 4;
+        if (from instanceof State) {
+            edge.label = from.label.length == 0 ? ["t"] : [];
+            if (from.number == to[0]) {
+                edge.offset.x = this.circleSize * 4;
+            }
         }
     }
 

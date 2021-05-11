@@ -5,7 +5,7 @@ class LabelKeyboard extends AbstratctKeyboard
     constructor(automaton, translator) {
         super(automaton)
         this.translator = translator;
-        this.basicSymbols = ["!", "(", ")", "&", "|"]
+        this.basicSymbols = ["!", "(", ")", "&", "|","t","f"]
     }
     
 
@@ -21,8 +21,8 @@ class LabelKeyboard extends AbstratctKeyboard
         let row = document.createElement("div");
         row.className = "button_row"
         for (const alias of this.automaton.aliases) {
-            if (alias != excludedAlias) {
-            row.appendChild( this.generateButton(this.translator.translate(alias.lexpr.join("")), alias.aname));
+            if (alias != excludedAlias&& alias.lexpr.length>0&&alias.aname.length>1) {
+            row.appendChild( this.generateButton(alias.aname, alias.aname));
             }
         }
         return row;
@@ -37,7 +37,6 @@ class LabelKeyboard extends AbstratctKeyboard
     }
     generateKeyboard(excludedAlias) {
         let keyboard = document.createElement("div");
-        keyboard.className = "container keyboard";
         keyboard.id = "lexprKeyboard";
         keyboard.addEventListener("mousedown", (e) => e.stopPropagation());
         keyboard.appendChild(this.generateAPRow());

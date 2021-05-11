@@ -1,5 +1,8 @@
 
 const Victor = require('victor');
+const State = require("../hoaData/state").State;
+const Edge = require("../hoaData/edge").Edge;
+
 class EditorUtils {
     /**
      * Calculates midpoint between two points with given offset.
@@ -270,39 +273,116 @@ class EditorUtils {
         let yhigh = max.y > point.y
         return xlow && xhigh && ylow && yhigh;
     }
-
     /**
-     * Gets label of given edge.
+     * Calculates blocked angles of automaton.
      * 
-     * @param {State} state - State from which the edge originates.
-     * @param {number} edgeIndex - Index of the edge.
-     * @param {any[]} aps - Atomic propositions.
-     * @returns {Victor[]} Vectors with state positions.
+     * @param  {Automaton} automaton - The automaton whose angles should be calculated.
+     * @param  {number} circleSize - Circle size of automaton.
+     * @returns {number[][]} Array of arrays representing angles of each state.
      */
-    static getLabel(state, edgeIndex, aps) {
-        if (state.edges[edgeIndex].getLabelString()) {
-            return state.edges[edgeIndex].getLabelString();
+     static calculateBlockedAngles(automaton, circleSize) {
+        let blockedAngles = [];
+        for (const state of automaton.states.values()) {
+            blockedAngles[state.number] = [];
         }
-        if (state.edges.length == Math.pow(2, aps.length) && !state.getLabelString()) {
-            return this.calculateImplicitLabel(edgeIndex, aps.length);
+        for (const state of automaton.states.values()) {
+            for (const edge of state.edges) {
+                if (edge.stateConj.length > 1) {
+                    let originVector = state.position;
+                    let destinationStates = automaton.numbersToStates(edge.stateConj);
+                    let midpoint = this.calculateMultiEdgeMidpoint(state, destinationStates)[0];
+                    let fromPoint = this.getNearestPointOnCircle(originVector, midpoint, circleSize);
+                    for (const destinationState of destinationStates) {
+                        if (destinationState.number != state.number) {
+                            let destinationVector = destinationState.position;
+                            let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                            blockedAngles[state.number].push(this.calculateBlockedAngle(fromPoint, originVector));
+                            blockedAngles[destinationState.number].push(this.calculateBlockedAngle(toPoint, destinationVector));
+                        }
+                    }
+                }
+                else if (edge.stateConj[0] != state.number) {
+                    let destinationState = automaton.getStateByNumber(edge.stateConj[0]);
+                    let originVector = state.position;
+                    let destinationVector = destinationState.position;
+                    let midpoint = this.calculateMiddleWithOffset(originVector, destinationVector, edge.offset);
+                    let fromPoint = this.getNearestPointOnCircle(originVector, midpoint, circleSize);
+                    let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                    blockedAngles[state.number].push(this.calculateBlockedAngle(fromPoint, originVector));
+                    blockedAngles[destinationState.number].push(this.calculateBlockedAngle(toPoint, destinationVector));
+                }
+            }
         }
-        return "";
+        return blockedAngles;
     }
 
-    static calculateImplicitLabel(edgeIndex, propositionCount) {
-        let result = "";
-        for (let i = 0; i < propositionCount; i++) {
-            let mask = 1 << i;
-            if (!(mask & edgeIndex)) {
-                result += "!";
-            }
-            result += i
-            if (i + 1 < propositionCount) {
-                result += "&"
+
+    static calculateLoopbackAngles(automaton) {
+        let blockedAngles = [];
+        for (const state of automaton.states.values()) {
+            blockedAngles[state.number] = [];
+            for (const edge of state.edges) {
+                if (edge.stateConj.length == 1 && edge.stateConj[0] == state.number) {
+                    let baseAngle = edge.offset.angleDeg();
+                    blockedAngles[state.number].push(EditorUtils.angle360(baseAngle + 16));
+                    blockedAngles[state.number].push(EditorUtils.angle360(baseAngle - 14));
+                }
+
             }
         }
-        return result;
+        return blockedAngles;
     }
+    static calculateLoopbackAnchors(automaton,blockedAngles, circleSize) {
+        let stateLoopbacks = new Map();
+        for (const state of automaton.states.values()) {
+            let loopbacks = [];
+            for (const edgeIndex of state.edges.keys()) {
+                let edge = state.edges[edgeIndex];
+                if (edge.stateConj.length == 1 && edge.stateConj[0] == state.number) {
+                    loopbacks.push(edge);
+                }
+            }
+            stateLoopbacks.set(state, loopbacks);
+        }
+        for (let [state, loopbacks] of stateLoopbacks) {
+            let interval = this.getFreeAngleInterval(blockedAngles[state.number]);
+            let i = 0;
+            for (const loopback of loopbacks) {
+                let angle = this.calculateImplicitLoopbackAngle(loopbacks.length, i, interval);
+                loopback.offset = new Victor(1, 0).rotateDeg(angle).multiplyScalar(circleSize * 4);
+                i++;
+            }
+        }
+    }
+    static calculateStartAngles(automaton,circleSize) {
+        let blockedAngles = [];
+        for (const stateKey of automaton.states.keys()) {
+            blockedAngles[stateKey] = [];
+        }
+        for (const start of automaton.start) {
+            if (start.stateConj.length > 1) {
+                let destinationStates = automaton.numbersToStates(start.stateConj);
+                let statePositions = this.statesToPositions(destinationStates);
+                let midpoint = this.calculateMidpointBetweenVectors(statePositions.concat(new Array(start.position)));
+                for (const destinationState of destinationStates) {
+                    let destinationVector = destinationState.position;
+                    let toPoint = this.getNearestPointOnCircle(destinationVector, midpoint, circleSize);
+                    blockedAngles[destinationState.number].push(this.calculateBlockedAngle(toPoint, destinationVector));
+                }
+            }
+            else if (start.stateConj.length == 1){
+                let stateNumber = start.stateConj[0];
+                let statePosition = automaton.getStateByNumber(stateNumber).position;
+                let originVector = start.position;
+                let destinationVector = this.getNearestPointOnCircle(statePosition, originVector, circleSize);
+                let angle = this.calculateBlockedAngle(destinationVector, statePosition);
+
+                blockedAngles[stateNumber].push(angle);
+            }
+        }
+        return blockedAngles;
+    }
+
     static approxBezierLength(iters, p0, p1, p2, p3 = null) {
         let len = this.getPointsOnBezier(iters, p0, p1, p2, p3).slice(-1)[0];
         return len;

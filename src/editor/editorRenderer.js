@@ -1,8 +1,8 @@
 
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
-const HOA = require('../hoaObject').HOA;
-const State = require('../hoaObject').State;
+const Automaton = require('../hoaData/automaton').Automaton;
+const State = require('../hoaData/state').State;
 
 class EditorRenderer {
 
@@ -37,7 +37,7 @@ class EditorRenderer {
     /**
      * Renders automaton onto bound canvas.
      * 
-     * @param {HOA} automaton - Automaton object.
+     * @param {Automaton} automaton - Automaton object.
      * @param {Victor} offset - by how much should the canvas be offset.
      * @param {Object} selected - the selected object.
      * @param {number[][]} angles - blocked angles.
@@ -155,7 +155,7 @@ class EditorRenderer {
         }
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, midpoint);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
+        let label = this.labelTranslator.translate(edge.label);
 
         let labelAnchor = EditorUtils.calculateMultiLabelPosition(originState, destinationStates, midpoint, this.offset, this.scale);
         let pos = this.drawLabelEdge(label, labelAnchor, labelAngle);
@@ -194,7 +194,6 @@ class EditorRenderer {
      */
     drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = EditorUtils.textStyle(20 * this.scale);
-        label = this.labelTranslator.translate(label);
         let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding, this.scale);
         let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
         if (background) {
@@ -235,7 +234,7 @@ class EditorRenderer {
             this.ctx.stroke();
             this.ctx.font = EditorUtils.textStyle(18 * this.scale);
             this.ctx.fillText(state.number, pos.x, pos.y - circleSize / 2);
-            this.ctx.fillText(this.labelTranslator.translate(state.getLabelString()), pos.x, pos.y + circleSize / 2);
+            this.ctx.fillText(this.labelTranslator.translate(state.label), pos.x, pos.y + circleSize / 2);
         }
         else {
             this.ctx.font = EditorUtils.textStyle(36 * this.scale);
@@ -254,7 +253,7 @@ class EditorRenderer {
         }
     }
     drawLoop(state, loopbacks, aps, selected) {
-        for (let [index, loopback] of loopbacks) {
+        for (let [_, loopback] of loopbacks) {
             this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position.clone().multiplyScalar(this.scale), loopback.offset.clone().multiplyScalar(this.scale), this.circleSize, this.offset.clone().multiplyScalar(this.scale));
             this.ctx.beginPath();
@@ -263,7 +262,7 @@ class EditorRenderer {
             this.ctx.stroke();
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = EditorUtils.getLabel(state, index, aps);
+            let label = this.labelTranslator.translate(loopback.label);
             let pos = this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
             if (this.hasMultiEdge) {
                 this.drawLabelAccSet(loopback.accSets, pos, loopback.offset.angleDeg())
@@ -299,7 +298,7 @@ class EditorRenderer {
         let perpendicular = EditorUtils.calculatePerpendicular(fromPoint, toPoint);
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
-        let label = EditorUtils.getLabel(originState, edgeIndex, aps);
+        let label = this.labelTranslator.translate(edge.label);
         let labelPos = this.drawLabelEdge(label, anchor, angle);
         if (this.hasMultiEdge) {
             this.drawLabelAccSet(edge.accSets,labelPos,angle)
@@ -351,7 +350,7 @@ class EditorRenderer {
      * Draws multistart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {HOA} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton.
      */
     drawMultiStart(start, automaton,color) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
@@ -367,7 +366,7 @@ class EditorRenderer {
      * Draws monostart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {HOA} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton.
      */
     drawMonoStart(start, automaton,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);

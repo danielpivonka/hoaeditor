@@ -1,9 +1,9 @@
-const HOA = require('../../hoaObject').HOA;
+const Automaton = require('../../hoaData/automaton').Automaton;
 class AliasKeyVerifier {
     /**
      * Creates neww verifier for acc sets using data from given automaton.
      * 
-     * @param {HOA} automaton - Automaton object.
+     * @param {Automaton} automaton - Automaton object.
      */
     constructor(automaton) {
         this.automaton = automaton;
@@ -16,7 +16,6 @@ class AliasKeyVerifier {
         }
         for (const aliasObject of this.automaton.aliases) {
             if (aliasObject.aname.substring(1) == alias) {
-                console.log("multiplicity")
                 return false;
             }
         }

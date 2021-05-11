@@ -1,11 +1,11 @@
 const listener = require('./generated/hoaListener').hoaListener;
-const hoaObject = require('../hoaObject').HOA;
+const Automaton = require('../hoaData/automaton').Automaton;
 
 class hoaListenerImpl extends listener {
     constructor() {
         super()
         listener.call(this);
-        this.data = new hoaObject();
+        this.data = new Automaton();
         this.lastState = null;
         this.positions;
     }

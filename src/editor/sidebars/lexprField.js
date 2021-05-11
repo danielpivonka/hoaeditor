@@ -17,6 +17,20 @@ class LexprField extends AbstractField{
         this.changed = false;
         this.isCorrect = false;
         this.isMandatory = mandatory;
+        this.keyboardNode;
+        this.isSelected = false;
+        this.onSelected;
+        this.onKeyboardGenerated;
+    }
+    keyboardGenerated() {
+        if (this.onKeyboardGenerated) {
+            this.onKeyboardGenerated(this.keyboardNode);
+            this.keyboardNode.className = "container";
+        }
+        else {
+            this.keyboardNode.className = "container keyboard";
+            document.getElementsByTagName("body")[0].appendChild(this.keyboardNode);
+        }
     }
     setExcludedObject(object) {
         this.excluded = object;
@@ -41,14 +55,15 @@ class LexprField extends AbstractField{
     }
     selected(cursor) {
         this.labelCursor = cursor;
-    if (!this.isSelected) {
+        if (!this.isSelected) {
+            if (this.onSelected) {
+                this.onSelected();
+            }
+            this.labelCursor = cursor;
+
         this.changed = false;
         this.isSelected = true;
-        this.createKeyboard(this.field, this.localArray)
-        if (this.onSelected) {
-            this.onSelected();
-        }
-
+        this.createKeyboard(this.field, this.localArray);
     }
 
 }
@@ -69,7 +84,7 @@ class LexprField extends AbstractField{
             let element = document.createElement("div");
 
             element.className = "label_element";
-            element.innerHTML = this.translator.translate(labelElement);
+            element.innerHTML = this.translator.translate([labelElement]);
             if (this.labelCursor == i) {
                 this.drawCursor(field);
                 cursorDrawn = true;
@@ -78,7 +93,7 @@ class LexprField extends AbstractField{
                 e.stopPropagation();
                 e.preventDefault();
                 this.selected(i);
-                this.drawElements(this.field, this.localArray);
+                this.drawElements(field, this.localArray);
             };
             element.oncontextmenu = (e) => {
                 e.stopPropagation();
@@ -104,7 +119,11 @@ class LexprField extends AbstractField{
         this.cursorNode = field.appendChild(cursor);
     }
     deselect() {
-        super.deselect();
+        if (this.keyboardNode) {
+            this.keyboardNode.remove();
+            this.keyboardNode = null;
+        }
+        this.isSelected = false;
         if (this.cursorNode) {
             this.cursorNode.remove();
             this.cursorNode = null;
@@ -114,6 +133,7 @@ class LexprField extends AbstractField{
             this.valueChanged();
         }
         this.isSelected = false;
+        this.changed = false;
     }
     createKeyboard(field,labelArray) {
         if (!this.keyboardNode) {
@@ -124,15 +144,15 @@ class LexprField extends AbstractField{
                 this.attemptCommit();
             };
             this.keyboardNode = this.labelKeyboard.generateKeyboard(this.excluded);
-            document.getElementsByTagName("body")[0].appendChild(this.keyboardNode )
+            this.keyboardGenerated();
             this.drawElements(field,labelArray)
         }
     }
     attemptCommit() {
         if (this.localArray.length == 0 || verifyLabel(this.localArray)) {
             this.originalArray.splice(0, this.originalArray.length, ...this.localArray);
-            this.changed = true;
         }
+        this.changed = true;
     }
     valueChanged() {
         if (this.onValueChanged) {

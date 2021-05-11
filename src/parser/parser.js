@@ -2,6 +2,7 @@ const antlr4 = require('antlr4/index');
 const hoaLexer = require('./generated/hoaLexer');
 const hoaParser = require('./generated/hoaParser');
 const listener = require('./listenerImplementation').hoaListenerImpl;
+const postParse = require('./postParse').postParse;
 
 class Parser {
     constructor() {
@@ -40,6 +41,10 @@ class Parser {
         }
         let list = new listener();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
+
+        if (!postParse(list.data)) {
+            this.errors.push("Invalid edge labelling");
+        };
         return list.data;
     }
 }

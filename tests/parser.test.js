@@ -1,5 +1,7 @@
 // @ts-nocheck
 const Parser = require('../src/parser/parser').Parser;
+const automatonToHoaString = require('../src/hoaData/exporter/exporter').automatonToHoaString;
+
 let parser = new Parser();
 
 
@@ -21,7 +23,7 @@ test('correct with etc', () => {
     --END--';
     let hoaOut = 'HOA: v1\nStates: 2\nStart: 0\nacc-name: Rabin 1\nAcceptance: 2 (Fin(0)&Inf(1))\nAP: 2 "a" "b"\nadditional: property1 property2\nadditional2: "property1" property2\n--BODY--\nState: 0 "a U b"\n[0&!1] 0 {0}\n[1] 1 {0}\nState: 1\n[t] 1 {1}\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 
 test('correct single line transitions with accepting states', () => {
@@ -42,9 +44,9 @@ test('correct single line transitions with accepting states', () => {
     State: 2 "sink state" { 0 }\
     2 2 2 2\
     --END--';
-    let hoaOut = 'HOA: v1\nStates: 3\nStart: 0\nacc-name: Rabin 1\nAcceptance: 2 (Fin(0)&Inf(1))\nAP: 2 "a" "b"\n--BODY--\nState: 0 "a U b" {0}\n2\n0\n1\n1\nState: 1 {1}\n1\n1\n1\n1\nState: 2 "sink state" {0}\n2\n2\n2\n2\n--END--\n';
+    let hoaOut = 'HOA: v1\nStates: 3\nStart: 0\nacc-name: Rabin 1\nAcceptance: 2 (Fin(0)&Inf(1))\nAP: 2 "a" "b"\n--BODY--\nState: 0 "a U b" {0}\n[!a&!b] 2\n[a&!b] 0\n[!a&b] 1\n[a&b] 1\nState: 1 {1}\n[!a&!b] 1\n[a&!b] 1\n[!a&b] 1\n[a&b] 1\nState: 2 "sink state" {0}\n[!a&!b] 2\n[a&!b] 2\n[!a&b] 2\n[a&b] 2\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 
 test('correct with name and tool', () => {
@@ -63,9 +65,9 @@ test('correct with name and tool', () => {
       0 {1}   /* !a  &  b */\
       0 {0 1} /*  a  &  b */\
     --END--';
-    let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 2 "a" "b"\ntool: "tooly"\nname: "GFa & GFb"\n--BODY--\nState: 0\n0\n0 {0}\n0 {1}\n0 {0 1}\n--END--\n';
+    let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 2 "a" "b"\ntool: "tooly"\nname: "GFa & GFb"\n--BODY--\nState: 0\n[!a&!b] 0\n[a&!b] 0 {0}\n[!a&b] 0 {1}\n[a&b] 0 {0 1}\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 
 test('correct with labeled', () => {
@@ -85,7 +87,7 @@ test('correct with labeled', () => {
     --END--';
     let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 2 "a" "b"\nname: "GFa & GFb"\n--BODY--\nState: 0\n[!0&!1] 0\n[0&!1] 0 {0}\n[!0&1] 0 {1}\n[0&1] 0 {0 1}\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 test('correct with aliases', () => {
     let hoaIn = 'HOA: v1\
@@ -106,7 +108,7 @@ test('correct with aliases', () => {
     --END--';
     let hoaOut = 'HOA: v1\nStates: 1\nStart: 0\nacc-name: generalized-Buchi 2\nAcceptance: 2 (Inf(0)&Inf(1))\nAP: 3 "a" "b" "c"\nname: "GFa & GF(b & c)"\nAlias: @a 0\nAlias: @bc 1&2\n--BODY--\nState: 0\n[!@a&!@bc] 0\n[@a&!@bc] 0 {0}\n[!@a&@bc] 0 {1}\n[@a&@bc] 0 {0 1}\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 test('correct with state labels', () => {
     let hoaIn = 'HOA: v1\
@@ -125,7 +127,7 @@ test('correct with state labels', () => {
     --END--';
     let hoaOut = 'HOA: v1\nStates: 2\nStart: 0\nStart: 1\nacc-name: Buchi\nAcceptance: 1 Inf(0)\nAP: 1 "a"\nname: "GFa"\n--BODY--\nState: [0] 0 {0}\n0\n1\nState: [!0] 1\n0\n1\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })
 test('correct with properties', () => {
     let hoaIn = 'HOA: v1\
@@ -153,5 +155,5 @@ test('correct with properties', () => {
     --END--';
     let hoaOut = 'HOA: v1\nStates: 4\nStart: 0\nacc-name: Buchi\nAcceptance: 1 Inf(0)\nAP: 2 "a" "b"\nname: "GFa | G(b <-> Xa)"\nproperties: explicit-labels trans-labels\n--BODY--\nState: 0\n[t] 1\n[1] 2\n[!1] 3\nState: 1 "GFa"\n[0] 1 {0}\n[!0] 1\nState: 2 "a & G(b <-> Xa)" {0}\n[0&1] 2\n[0&!1] 3\nState: 3 "!a & G(b <-> Xa)" {0}\n[!0&1] 2\n[!0&!1] 3\n--END--\n';
     let result = parser.parse(hoaIn);
-    expect(result.toHoaString()).toBe(hoaOut);
+    expect(automatonToHoaString(result)).toBe(hoaOut);
 })

@@ -1,5 +1,5 @@
 
-const HOA = require('../../hoaObject').HOA;
+const Automaton = require('../../hoaData/automaton').Automaton;
 const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 const LexprField = require('./lexprField.js').LexprField;
 const AliasKeyVerifier = require('../verifiers/aliasKeyVerifier.js').AliasKeyVerifier;
@@ -7,15 +7,18 @@ const verifyAccCond = require('../verifiers/accConditionVerifier').verifyAccCond
 
 class AutomatonSidebar {
     constructor(automaton,translator) {
-        /**@type { HOA }*/
+        /**@type { Automaton }*/
         this.automaton = automaton;
         this.automatonChangedListeners = [];
         this.collapsedState = [];
         this.translator = translator;
         this.keyboard;
         this.selectedAliasIndex = -1;
-        this.aliasFields = [];
         this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
+        this.aliasFields = [];
+        for (let i = 0; i < automaton.aliases.length; i++) {
+            this.aliasFields.push(new LexprField(automaton,translator,true))
+        }
         this.oldAccCond;
         this.correctMap = new Map();
     }
@@ -56,7 +59,6 @@ class AutomatonSidebar {
 
     }
     createAliasList() {
-        this.aliasFields = [];
         this.automaton.aliases = this.automaton.aliases.filter((e) => e != null);
         let wrap = SidebarUtils.createList(this.createAlias.bind(this), this.automaton.aliases, "Aliases", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -65,6 +67,7 @@ class AutomatonSidebar {
         addButton.innerHTML = "Add";
         addButton.addEventListener("click", () => {
             this.automaton.aliases.push({ aname: "@", lexpr: [] })
+            this.aliasFields.push(new LexprField(this.automaton,this.translator,true))
             this.automatonChanged();
         });
         inner.append(addButton);
@@ -110,21 +113,39 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = SidebarUtils.createField(id, "number");
         field.value = this.automaton.acceptance.count;
-        field.min = this.automaton.getHighestAccSetUsed()+1;
-        field.oninput = (e) => { this.automaton.acceptance.count = e.target.value; };
+        field.min = this.maxAccSetUsed();
+        field.oninput = (e) => {
+                this.automaton.acceptance.count = e.target.value; 
+        };
+        field.onchange = () => {
+            document.activeElement.blur();
+        }
+        field.onblur = () => {
+            if (this.automaton.acceptance.count < field.min) {
+                this.automaton.acceptance.count = field.min;
+            }
+            this.automatonChanged();
+        }
+        
         return SidebarUtils.createDivWithChildren(label, field);
+    }
+    maxAccSetUsed() {
+        let inAutomaton = this.automaton.getHighestAccSetUsed();
+        let matcher = /\d+/g
+        let matches = [...this.automaton.acceptance.str.matchAll(matcher)];
+        return Math.max(...matches,inAutomaton)+1;
     }
     createAcceptanceCondition() {
         let id = "acccond";
         let label = SidebarUtils.createLabel(id, "Acceptance condition:");
         let field = SidebarUtils.createField(id);
         field.value = this.automaton.acceptance.str;
-        this.setFieldCorrectness(field,verifyAccCond(field.value)&&field.value!="")
+        this.setFieldCorrectness(field,verifyAccCond(field.value,this.automaton)&&field.value!="")
         field.oninput = (e) => {
-            this.setFieldCorrectness(field,verifyAccCond(e.target.value)&&e.target.value!="")
+            this.setFieldCorrectness(field,verifyAccCond(e.target.value,this.automaton)&&e.target.value!="")
         };
         field.onblur = (e) => {
-            if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value)) {
+            if (e.target.value != this.oldAccCond && verifyAccCond(e.target.value,this.automaton)) {
                 this.automaton.acceptance.str = e.target.value;
                 this.automaton.accname = "";
             }
@@ -155,12 +176,12 @@ class AutomatonSidebar {
         let isUsed = this.automaton.isAliasUsed(aliasObject.aname);
         let keyField = this.createAliasKey(aliasObject,index,isUsed)
         let valueLabel = SidebarUtils.createLabel(index + "v", ":");
-        let valueField = this.createLexprField(aliasObject)
+        let valueField = this.createLexprField(aliasObject,index)
         let removeButton = this.createAliasRemoveButton(array, index, isUsed);
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }
-    createLexprField(aliasObject,index) {
-        let lexprObj = new LexprField(this.automaton, this.translator,true)
+    createLexprField(aliasObject, index) {
+        let lexprObj = this.aliasFields[index];
         lexprObj.setExcludedObject(aliasObject);
         let valueField = document.createElement("div");
         valueField.className = "cell";
@@ -170,7 +191,6 @@ class AutomatonSidebar {
         };
         let valueContent = lexprObj.drawField(aliasObject.lexpr)
         valueField.appendChild(valueContent);
-        this.aliasFields.push(lexprObj);
         lexprObj.onSelected = () => {
             this.deselectAliases(lexprObj);
         }
@@ -200,6 +220,7 @@ class AutomatonSidebar {
     removeButton.disabled = isUsed;
     removeButton.addEventListener("click", () => {
         array[index] = null;
+        this.aliasFields.splice(index, 1);
         this.automatonChanged();
     });
         return removeButton;

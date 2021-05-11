@@ -1,19 +1,18 @@
 /* eslint-disable no-prototype-builtins */
-const Position = require('../hoaObject').Position;
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
-const HOA = require('../hoaObject').HOA;
-const State = require('../hoaObject').State;
-const Start = require('../hoaObject').Start;
-const Edge = require('../hoaObject').Edge;
-
+const Automaton = require('../hoaData/automaton').Automaton;
+const State = require('../hoaData/state').State;
+const Start = require('../hoaData/start').Start;
+const Edge = require('../hoaData/edge').Edge;
+const initializePositions = require('./automatonInitializer').initializePositions;
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
 class EditorCanvas {
     constructor(canvas) {
-        /**@type {HOA}*/
-        this.automaton = new HOA();
+        /**@type {Automaton}*/
+        this.automaton = new Automaton();
         /**@type {HTMLCanvasElement}*/
         this.canvas = canvas;
         this.circleSize = 25;
@@ -73,38 +72,27 @@ class EditorCanvas {
             fn(state);
         }
     }
-
-
-
-
-
     /**
      * Binds automaton to editor.
      * 
-     * @param {HOA} automaton - Automaton object.
+     * @param {Automaton} automaton - Automaton object.
      */
 
     setAutomaton(automaton,translator) {
-        /**@type {HOA}*/
+        /**@type {Automaton}*/
         this.automaton = automaton;
         if (!this.automaton.hasExplicitPositions) {
-            this.automaton.setImplicitPositions(this.canvas.width, this.canvas.height);
-            this.automaton.SetImplicitOffsets();
-            let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-            this.automaton.calculateLoopbackAnchors(blockedAngles, this.circleSize);
-            let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
-            let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-            this.automaton.calculateStartAnchors(mergedAngles)
+            initializePositions(automaton,this.canvas.width,this.canvas.height,this.circleSize)
         }
         this.labelTranslator = translator;
         this.draw();
     }
 
     draw() {
-        let blockedAngles = this.automaton.calculateBlockedAngles(this.circleSize);
-        let blockedLoopbackAngles = this.automaton.calculateLoopbackAngles()
+        let blockedAngles = EditorUtils.calculateBlockedAngles(this.automaton,this.circleSize);
+        let blockedLoopbackAngles = EditorUtils.calculateLoopbackAngles(this.automaton)
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-        let startAngles = this.automaton.calculateStartAngles(this.circleSize)
+        let startAngles = EditorUtils.calculateStartAngles(this.automaton,this.circleSize)
         mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
             this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator, this.selected);
 
@@ -187,7 +175,7 @@ class EditorCanvas {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                if (!this.backEdgeLocked) {
+                if (!this.backEdgeLocked || this.selected.number !=this.first.number) {
                     this.addEdge(this.first, [this.selected.number]);
                     this.changeState(EditorCanvas.stateEnum.IDLE);
                 }
@@ -265,10 +253,8 @@ class EditorCanvas {
                     else if(!this.first.stateConj.includes(this.selected.number)) {
                         this.first.stateConj.push(this.selected.number)
                     }
-                    console.log("adding edge to edge");
                 }
                 else if (this.first instanceof Start) {
-                    console.log("adding edge to start");
                     this.first.addEdge([this.selected.number]);
                 }
             }
@@ -284,8 +270,11 @@ class EditorCanvas {
         this.first = null;
         this.destinations = [];
         let edge = from.addEdge(to);
-        if (from.number == to[0]) {
-            edge.offset.x = this.circleSize * 4;
+        if (from instanceof State) {
+            edge.label = from.label.length == 0 ? ["t"] : [];
+            if (from.number == to[0]) {
+                edge.offset.x = this.circleSize * 4;
+            }
         }
     }
 
@@ -397,7 +386,6 @@ class EditorCanvas {
             this.draw();
             let midpoint;
             let fromPoint;
-            console.log("selected shift");
             if (this.selected instanceof Start) {
                 midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, midpoint, 0);
@@ -529,11 +517,10 @@ class EditorCanvas {
         return null;
     }
     checkLoopbackEdgeCollision(state, loopbacks, position) {
-        for (let [index, loopback] of loopbacks) {
+        for (let [_, loopback] of loopbacks) {
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position, loopback.offset, this.circleSize);
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
-            let label = EditorUtils.getLabel(state, index, this.automaton.ap);
-            label = this.labelTranslator.translate(label);
+            let label = this.labelTranslator.translate(loopback.label);
             if (this.checkLabelCollision(anchor, loopback.offset.angleDeg(), label, position)) {
                 return loopback;
             }
@@ -545,8 +532,7 @@ class EditorCanvas {
         let destination = this.automaton.getStateByNumber(edge.stateConj[0]);
         let anchor = EditorUtils.calculateSingleLabelPosition(state, destination, edge, this.circleSize);
 
-        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
-        label = this.labelTranslator.translate(label);
+        let label = this.labelTranslator.translate(edge.label);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, destination.position);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
         return this.checkLabelCollision(anchor, labelAngle, label, position);
@@ -556,10 +542,9 @@ class EditorCanvas {
         let destinations = this.automaton.numbersToStates(edge.stateConj);
         let midpoint = EditorUtils.calculateMultiEdgeMidpoint(state, destinations, edge.offset)[0];
         let anchor = EditorUtils.calculateMultiLabelPosition(state, destinations, midpoint);
-        let label = EditorUtils.getLabel(state, edgeIndex, this.automaton.ap);
+        let label = this.labelTranslator.translate(edge.label);
         let perpendicular = EditorUtils.calculatePerpendicular(state.position, anchor);
         let labelAngle = perpendicular.multiplyScalar(-1).angleDeg()
-        label = this.labelTranslator.translate(label);
         return this.checkLabelCollision(anchor, labelAngle, label, position);
     }
 
@@ -654,8 +639,8 @@ class EditorCanvas {
         return false;
     }
     changeZoom(e) {
-        let change = 1 - (e.deltaY / 10);
-        if ((this.renderer.scale * change) > 0.1) {
+        let change = 1 - (Math.sign(e.deltaY) / 10);
+        if ((this.renderer.scale * change) > 0.1 && (this.renderer.scale * change)<10) {
             this.renderer.scale *= change;
         }
         e.preventDefault();

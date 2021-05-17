@@ -390,11 +390,21 @@ class EditorCanvas {
                 midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.position, midpoint, 0);
             }
-            else if (this.selected instanceof Edge){
-                midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0]
+            else if (this.selected instanceof Edge) {
+                if (this.selected.stateConj.length == 1) {
+                    midpoint = EditorUtils.calculateMiddleWithOffset(this.selected.parent.position, this.automaton.numbersToStates(this.selected.stateConj)[0].position, this.selected.offset.clone().multiplyScalar(this.renderer.scale));
+                    console.log("if");
+                }
+                else {
+                    midpoint = EditorUtils.calculateMultiEdgeMidpoint(this.selected.parent, this.automaton.numbersToStates(this.selected.stateConj), this.selected.offset, this.offset, this.renderer.scale)[0];
+                    console.log("else");
+
+                }
                 fromPoint = EditorUtils.getNearestPointOnCircle(this.selected.parent.position, midpoint, this.circleSize);
             }
-            this.renderer.drawQuadraticCurveBetweenPositions(fromPoint,midpoint.multiplyScalar(this.renderer.scale),new Victor(x, y));
+            if (midpoint) {
+                this.renderer.drawQuadraticCurveBetweenPositions(fromPoint, midpoint.multiplyScalar(this.renderer.scale), new Victor(x, y));
+            }
         }
     }
 

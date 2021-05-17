@@ -24,24 +24,31 @@ class ObjectDetail {
     }
     generateDetail(object) {
         this.object = object;
-        this.currentLabel = [...object.label];
         this.sidebar = document.createElement("div");
+        this.draw();
+        return this.sidebar;
+    }
+    draw() {
+        this.currentLabel = [...this.object.label];
+        this.sidebar.innerHTML = "";
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
-        sidebarTable.append(this.createAccSet(object.accSets));
-        sidebarTable.append(this.createLabel(object));
-        if (object instanceof State) {
-            sidebarTable.append(this.createName(object));
-            sidebarTable.append(this.createAddStartButton(object));
-            if (object.areEdgesLabeled()) {
+        sidebarTable.append(this.createAccSet(this.object.accSets));
+        sidebarTable.append(this.createLabel(this.object));
+        if (this.object instanceof State) {
+            sidebarTable.append(this.createName(this.object));
+            sidebarTable.append(this.createAddStartButton(this.object));
+            if (this.object.areEdgesLabeled()) {
                 sidebarTable.append(this.createWarning());
+            }
+            else {
+                sidebarTable.append(this.createTransferButton(this.object));
             }
         }
         this.sidebar.append(sidebarTable);
         this.keyboardDiv = document.createElement("div")
         this.sidebar.append(this.keyboardDiv);
 
-        return this.sidebar;
     }
     onKeyboardGenerated(keyboardNode) {
         this.keyboardDiv.innerHTML = "";
@@ -108,6 +115,17 @@ class ObjectDetail {
         label.innerHTML = "Warning: ";
         warning.innerHTML = "Setting label to this state<br>will erase labels from outgoing edges"
         return SidebarUtils.createDivWithChildren(label, warning);
+    }
+    createTransferButton(state) {
+        let button = document.createElement("button");
+        button.className = "button";
+        button.innerHTML = "Transef labels to edge"
+        button.onclick = () => {
+            state.transferLabel();
+            this.draw();
+            this.onAutomatonChanged();
+        }
+        return button;
     }
 
 }

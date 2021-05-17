@@ -3,9 +3,9 @@ const hoaLexer = require('../../parser/generated/hoaLexer');
 const hoaParser = require('../../parser/generated/hoaParser');
 
 
-function verifyLabel(labelArray) {
+function verifyLabel(labelArray, canBeEmpty) {
     if (labelArray.length == 0) {
-        return true;
+        return canBeEmpty;
     }
     if (!checkDoubleInt(labelArray)) {
         return false;

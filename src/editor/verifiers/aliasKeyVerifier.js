@@ -7,7 +7,7 @@ class AliasKeyVerifier {
      */
     constructor(automaton) {
         this.automaton = automaton;
-        this.regex = /[0-9a-zA-Z_-]+/
+        this.regex = /^[0-9a-zA-Z_-]+$/
     }
 
     verify(alias) {

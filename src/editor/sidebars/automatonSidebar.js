@@ -35,6 +35,7 @@ class AutomatonSidebar {
         let sidebar = document.createElement("div");
         sidebar.append(this.createApList());
         sidebar.append(this.createAliasList());
+        sidebar.append(this.createPropsList());
         let sidebarTable = document.createElement("div");
         sidebarTable.setAttribute("class", "sidebarTable");
         sidebarTable.append(this.createAcceptanceCount());
@@ -57,6 +58,37 @@ class AutomatonSidebar {
         inner.append(SidebarUtils.createDivWithChildren(addButton));
         return wrap;
 
+    }
+    createPropsList() {
+        let wrap = SidebarUtils.createList(this.createProp.bind(this), this.automaton.properties, "Properties", this.collapsedState);
+        let inner = wrap.getElementsByTagName("div")[0];
+        let addButton = document.createElement("button")
+        addButton.setAttribute("type", "button");
+        addButton.innerHTML = "Add";
+        addButton.addEventListener("click", () => {
+            this.automaton.properties.push("")
+            this.automatonChanged();
+        });
+        inner.append(SidebarUtils.createDivWithChildren(addButton));
+        return wrap;
+    }
+    createProp(array,index) {
+        let id = index + "prop";
+        let field = SidebarUtils.createField(id);
+        field.value = array[index];
+        field.oninput = (e) => {
+            array[index] = e.target.value;
+        };
+        field.onblur = () => { this.automatonChanged(); };
+        let removeButton = document.createElement("button")
+        removeButton.setAttribute("type", "button");
+        removeButton.innerHTML = "X";
+        removeButton.disabled = this.automaton.isAPUsed(index);
+        removeButton.addEventListener("click", () => {
+            array.splice(index, 1);
+            this.automatonChanged();
+        });
+        return SidebarUtils.createDivWithChildren(field,removeButton);
     }
     createAliasList() {
         this.automaton.aliases = this.automaton.aliases.filter((e) => e != null);

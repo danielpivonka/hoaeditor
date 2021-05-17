@@ -3,7 +3,7 @@ const LabelKeyboard = require('./labelKeyboard.js').LabelKeyboard;
 const AbstractField = require('./abstractField').AbstractField;
 
 class LexprField extends AbstractField{
-    constructor(automaton, translator, mandatory) {
+    constructor(automaton, translator) {
         super(automaton)
         this.translator = translator;
         this.labelCursor = -1;
@@ -16,7 +16,6 @@ class LexprField extends AbstractField{
         this.onValueChanged;
         this.changed = false;
         this.isCorrect = false;
-        this.isMandatory = mandatory;
         this.keyboardNode;
         this.isSelected = false;
         this.onSelected;
@@ -71,7 +70,7 @@ class LexprField extends AbstractField{
         field.innerHTML = "";
         field.appendChild(this.createFiller());
         let cursorDrawn = false;
-        if ((labelArray.length!=0||!this.isMandatory)&&verifyLabel(labelArray)) {
+        if (verifyLabel(labelArray,this.originalArray.length==0)) {
             field.className = "label_area";
             this.isCorrect = true;
         }
@@ -149,7 +148,7 @@ class LexprField extends AbstractField{
         }
     }
     attemptCommit() {
-        if (this.localArray.length == 0 || verifyLabel(this.localArray)) {
+        if (verifyLabel(this.localArray)) {
             this.originalArray.splice(0, this.originalArray.length, ...this.localArray);
         }
         this.changed = true;

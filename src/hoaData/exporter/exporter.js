@@ -40,7 +40,7 @@ function automatonToHoaString(automaton,extended = false) {
         string += "name: " + "\"" + automaton.name + "\"" + "\n";
     }
     if (extended) {
-        string += "positions:";
+        string += "positions: ";
         string += "\"" + exportPositions(automaton) + "\"" + "\n";
     }
     for (const alias of automaton.aliases) {
@@ -71,7 +71,7 @@ function stateToString(state) {
         }
         str += " " + state.number;
         if (state.name) {
-            str += " \"" + state.name + "\"";
+            str += " \"" + state.name.replace(/"/g,"\\\"") + "\"";
         }
         if (state.accSets.length > 0) {
             str += " {";

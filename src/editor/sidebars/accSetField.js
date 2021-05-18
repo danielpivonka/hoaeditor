@@ -16,7 +16,7 @@ class AccSetField extends AbstractField{
         field.innerHTML = "";
         field.appendChild(this.createFiller());
         stateAccSetArray.sort();
-        for (let i = 1; i <= this.automaton.acceptance.count; i++) {
+        for (let i = 0; i < this.automaton.acceptance.count; i++) {
             
             field.appendChild(this.createElement(i,stateAccSetArray,field));
         }

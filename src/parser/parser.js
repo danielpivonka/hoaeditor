@@ -41,10 +41,8 @@ class Parser {
         }
         let list = new listener();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
-
-        if (!postParse(list.data)) {
-            this.errors.push("Invalid edge labelling");
-        };
+        console.log("calling post parse")
+        postParse(list.data,list.positions,this.errors)        
         return list.data;
     }
 }

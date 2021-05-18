@@ -14,8 +14,36 @@
             <button id="close" class="button" type="button">Close</button>
         </div>
     </div>
+    <div class="container help_area" id="helpWindow">
+        <div class="help_text"> 
+        <h1>Help</h1>
+        <h2>Adding Elements</h2>
+        State: Double click anywhere.<br><br>
+        Edge: Click on origin state, then click on destination state.<br><br>
+        Alternating edge: Click on origin state, hold shift, then click on destination states.<br><br>
+        Empty start: Shift+double click anywhere.<br><br>
+        <h2>Modifying elements</h2>
+        <h3>State/Edge</h3>
+        Open editing menu: Double click on state/edge.<br><br>
+        Modify acceptance sets: Click to select or deselect acceptance sets.<br><br>
+        Modify label: Left click to select cursor position for insertion position, right click to delete. A keyboard is presented after clicking on the label input field.<br><br>
+
+        <h2>Sidebar</h2>
+        <h3>Atomic propositions</h3>
+        Adding: Click add button<br><br>
+        Removing: Click “X” next to the atomic proposition you want to remove. Atomic propositions that are currently being used in the automaton can not be removed.<br><br>
+
+        <h3>Alias</h3>
+        Adding: Click add button.<br><br>
+        Alias key: Key can only contain letters, numbers, “_” and “-”. Alias key can not be changed if alias is currently being used in the automaton.<br><br>
+        Alias value : Alias value is inputted the same way as labels.<br><br>
+        Removing: Click “X” next to the alias you want to remove. Aliases that are currently being used in the automaton can not be removed.<br><br>
+    </div>
+    <button id="close_help" class="button" type="button">Close</button>
+    </div>
     <div class="header">
     <div class="button_row reverse">
+        <button id="help" class="button" type="button">Help</button>
         <button id="import" class="button" type="button">Import</button>
         <button id="export" class="button" type="button">Export</button>
         <button id="export_with_pos" class="button" type="button">Export with positions</button>

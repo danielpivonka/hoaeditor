@@ -5,21 +5,25 @@ const Parser = require('./parser/parser').Parser;
 const automatonToHoaString = require('./hoaData/exporter/exporter').automatonToHoaString;
 
 const Editor = require('./editor/editor').Editor
-const field = document.getElementById('HOA_input');
-const container = document.getElementById('input_container');
+const parseField = document.getElementById('HOA_input');
+const parseContainer = document.getElementById('input_container');
 const parseButton = document.getElementById('HOA_parse');
 const closeButton = document.getElementById("close");
 const importButton = document.getElementById("import");
 const exportButton = document.getElementById("export");
+const helpButton = document.getElementById("help");
+const closeHelpButton = document.getElementById("close_help");
+const helpWindow = document.getElementById("helpWindow");
 const errorArea = document.getElementById("error_log");
 const exportWithPosButton = document.getElementById("export_with_pos");
 const sidebarContainer = document.getElementById('sidebarContainer');
+
 const canvas = document.getElementById('canvas');
 let savedText = "";
 function parseClicked() {
-    if (field && field.value) {
+    if (parseField && parseField.value) {
         let parser = new Parser();
-        let oa = parser.parse(field.value);
+        let oa = parser.parse(parseField.value);
         if (oa) {
             editor.setAutomaton(oa);
             hide();
@@ -27,7 +31,7 @@ function parseClicked() {
         else {
             writeErrors(parser.errors);
         }
-        savedText = field.value;
+        savedText = parseField.value;
     }
 }
 
@@ -37,10 +41,10 @@ function enableExport(enabled) {
 }
 
 function showExport(withPositions) {
-    container.style.visibility = "visible"
+    parseContainer.style.visibility = "visible"
     parseButton.style.visibility = "collapse"
-    field.readOnly = true;
-    field.value = automatonToHoaString(editor.editorCanvas.automaton,withPositions);
+    parseField.readOnly = true;
+    parseField.value = automatonToHoaString(editor.editorCanvas.automaton,withPositions);
 }
 
 function writeErrors(array) {
@@ -53,11 +57,12 @@ function writeErrors(array) {
     }
 
 }
-function hide() {
-    container.style.visibility = "collapse"
+function hideExport() {
+    parseContainer.style.visibility = "collapse"
     parseButton.style.visibility = "collapse"
 
 }
+
 let editor = new Editor(canvas, sidebarContainer);
 editor.onAutomatonChanged = () => {
     enableExport(editor.isValid);
@@ -69,12 +74,12 @@ parseButton.addEventListener('click', ()=>{
 });
 
 
-closeButton.addEventListener('click',()=>hide());
+closeButton.addEventListener('click',()=>hideExport());
 importButton.addEventListener('click', function showImport() {
-    container.style.visibility = "visible"
+    parseContainer.style.visibility = "visible"
     parseButton.style.visibility = "visible"
-    field.value = savedText;
-    field.readOnly = false;
+    parseField.value = savedText;
+    parseField.readOnly = false;
 
 });
 exportButton.addEventListener('click', () => showExport(false));
@@ -96,6 +101,8 @@ document.addEventListener("keyup", function onPress(event) {
         editor.setShift(false);
     }
 });
+helpButton.addEventListener('click',()=> helpWindow.style.visibility = "visible")
+closeHelpButton.addEventListener('click',()=> helpWindow.style.visibility = "collapse")
 
 
 

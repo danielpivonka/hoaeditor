@@ -11,6 +11,7 @@ const parseButton = document.getElementById('HOA_parse');
 const closeButton = document.getElementById("close");
 const importButton = document.getElementById("import");
 const exportButton = document.getElementById("export");
+const lockButton = document.getElementById("lock");
 const helpButton = document.getElementById("help");
 const closeHelpButton = document.getElementById("close_help");
 const helpWindow = document.getElementById("helpWindow");
@@ -62,7 +63,10 @@ function hideExport() {
     parseButton.style.visibility = "collapse"
 
 }
-
+function lockClicked() {
+    editor.switchLock();
+    lockButton.innerHTML = editor.isLocked() ? "Unlock" : "Lock";
+}
 let editor = new Editor(canvas, sidebarContainer);
 editor.onAutomatonChanged = () => {
     enableExport(editor.isValid);
@@ -102,7 +106,8 @@ document.addEventListener("keyup", function onPress(event) {
     }
 });
 helpButton.addEventListener('click',()=> helpWindow.style.visibility = "visible")
-closeHelpButton.addEventListener('click',()=> helpWindow.style.visibility = "collapse")
+closeHelpButton.addEventListener('click', () => helpWindow.style.visibility = "collapse")
+lockButton.addEventListener('click', lockClicked.bind(this));
 
 
 

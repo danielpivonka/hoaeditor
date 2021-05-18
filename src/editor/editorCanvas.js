@@ -35,6 +35,7 @@ class EditorCanvas {
         this.labelTranslator;
         this.lastMove;
         this.backEdgeLocked = false;
+        this.isLocked = false;
 
     }
     lockBackEdge() {
@@ -135,6 +136,9 @@ class EditorCanvas {
     }
 
     removeClicked() {
+        if (this.isLocked) {
+            return;
+        }
         if (this.selected instanceof State) {
             this.automaton.removeState(this.selected);
         }
@@ -159,7 +163,7 @@ class EditorCanvas {
         this.onFocus();
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
+        if (this.isLocked || this.editorState == EditorCanvas.stateEnum.IDLE || this.editorState == EditorCanvas.stateEnum.SELECTED_MODIFY) {
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected) {
                 this.downLocation = new Victor(x, y);
@@ -279,6 +283,9 @@ class EditorCanvas {
     }
 
     doubleClick(e) {
+        if (this.isLocked) {
+            return;
+        }
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
@@ -307,6 +314,7 @@ class EditorCanvas {
 
     }
     mouseUp(e) {
+       
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
@@ -314,7 +322,7 @@ class EditorCanvas {
         e.stopPropagation();
         if (this.editorState == EditorCanvas.stateEnum.SELECTED) {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selected instanceof State || this.selected instanceof Start) {
+            if (this.selected instanceof State || this.selected instanceof Start && !this.isLocked) {
                 this.changeState(EditorCanvas.stateEnum.ADD_EDGE)
                 this.draw();
             }

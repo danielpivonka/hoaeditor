@@ -191,30 +191,12 @@ hoaListener.prototype.exitLexpr = function(ctx) {
 };
 
 
-// Enter a parse tree produced by hoaParser#lexpr2.
-hoaListener.prototype.enterLexpr2 = function(ctx) {
-};
-
-// Exit a parse tree produced by hoaParser#lexpr2.
-hoaListener.prototype.exitLexpr2 = function(ctx) {
-};
-
-
 // Enter a parse tree produced by hoaParser#acceptanceCond.
 hoaListener.prototype.enterAcceptanceCond = function(ctx) {
 };
 
 // Exit a parse tree produced by hoaParser#acceptanceCond.
 hoaListener.prototype.exitAcceptanceCond = function(ctx) {
-};
-
-
-// Enter a parse tree produced by hoaParser#acceptanceCond2.
-hoaListener.prototype.enterAcceptanceCond2 = function(ctx) {
-};
-
-// Exit a parse tree produced by hoaParser#acceptanceCond2.
-hoaListener.prototype.exitAcceptanceCond2 = function(ctx) {
 };
 
 

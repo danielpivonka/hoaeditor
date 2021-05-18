@@ -29,22 +29,17 @@ positions: 'positions:' STRING;
 props: 'properties:' propval;
 propval: IDENTIFIER*;
 etc: HEADERNAME (BOOLEAN | INT | STRING | IDENTIFIER)*;
-lexpr:
-	BOOLEAN lexpr2
-	| INT lexpr2
-	| ANAME lexpr2
-	| '!' lexpr lexpr2
-	| '(' lexpr ')' lexpr2;
-lexpr2: '&' lexpr lexpr2 | '|' lexpr lexpr2 |;
+lexpr: BOOLEAN | INT | ANAME | '!' lexpr
+             | '(' lexpr ')'
+             | lexpr '&' lexpr
+             | lexpr '|' lexpr;
 acceptanceCond:
-	'Inf' '(' '!'? INT ')' acceptanceCond2
-	| 'Fin' '(' '!'? INT ')' acceptanceCond2
-	| '(' acceptanceCond ')' acceptanceCond2
-	| BOOLEAN acceptanceCond2;
-acceptanceCond2:
-	'&' acceptanceCond acceptanceCond2
-	| '|' acceptanceCond acceptanceCond2
-	|;
+	 'Inf' '(' '!'? INT ')'
+	 |'Fin' '(' '!'? INT ')'
+     | '(' acceptanceCond ')'
+     | acceptanceCond '&' acceptanceCond
+     | acceptanceCond '|' acceptanceCond
+     | BOOLEAN;
 
 body: vertex*;
 vertex: stateName edge*;

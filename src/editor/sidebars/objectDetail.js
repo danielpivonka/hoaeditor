@@ -32,20 +32,20 @@ class ObjectDetail {
         this.currentLabel = [...this.object.label];
         this.sidebar.innerHTML = "";
         let sidebarTable = document.createElement("div");
+        this.sidebar.append(sidebarTable);
         sidebarTable.setAttribute("class", "sidebarTable");
         sidebarTable.append(this.createAccSet(this.object.accSets));
         sidebarTable.append(this.createLabel(this.object));
         if (this.object instanceof State) {
             sidebarTable.append(this.createName(this.object));
-            sidebarTable.append(this.createAddStartButton(this.object));
+            this.sidebar.append(this.createAddStartButton(this.object));
             if (this.object.areEdgesLabeled()) {
                 sidebarTable.append(this.createWarning());
             }
-            else {
-                sidebarTable.append(this.createTransferButton(this.object));
+            else if (this.object.label.length>0 ){
+                this.sidebar.append(this.createTransferButton(this.object));
             }
         }
-        this.sidebar.append(sidebarTable);
         this.keyboardDiv = document.createElement("div")
         this.sidebar.append(this.keyboardDiv);
 

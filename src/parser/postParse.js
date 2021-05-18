@@ -1,14 +1,33 @@
 const Automaton = require('../hoaData/automaton').Automaton;
 const State = require('../hoaData/state').State;
+const AccSetVerifier = require('../editor/verifiers/accSetVerifier').AccSetVerifier;
+const verifyAccCond = require('../editor/verifiers/accConditionVerifier').verifyAccCond;
+
     /**
      * Prepares the HOAObject for editing.
      * 
      * @param {Automaton} automaton - Automaton after being parsed.
      * @returns {boolean} If the labeling of the automaton is correct.
      */
-function postParse(automaton) {
+function postParse(automaton,json,errors) {
     if (!checkLabels(automaton)) {
+        console.log("failed labels")
         return false;
+    }
+    if (!verifyAccCond(automaton.acceptance.str, automaton)) {
+        console.log("failed acccond")
+        return false;
+    }
+    if (!checkAccSets(automaton)) {
+        console.log("failed accset")
+        return false;
+    }
+    console.log("postparse: " + json);
+    if (json) {
+        if(setPositions(automaton, json)||!hasPositions(automaton)){
+            console.log("error parsing posiitons");
+            return false;
+        }
     }
     fixImplicitLabels(automaton);
     return true;
@@ -97,6 +116,71 @@ function calculateImplicitLabel(edgeIndex, propositionCount,aps) {
     }
     return result;
 }
+
+
+    /**
+     * Checks whether acc sets on automaton elements are correct.
+     * 
+     * @param {Automaton} automaton - Automaton to adjust.
+     * @returns {boolean} Result of the check.
+     */
+function checkAccSets(automaton) {
+    let verifier = new AccSetVerifier(automaton);
+    for (const state of automaton.states.values()) {
+        if (!verifier.verify(state.accSets)) {
+            return false;
+        }
+        for (const edge of state.edges) {
+            if (!verifier.verify(edge.accSets)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+    /**
+     * Checks whether all elements have set position.
+     * 
+     * @param {Automaton} automaton - Automaton to check.
+     * @returns {boolean} Result of the check.
+     */
+function setPositions(automaton, json) {
+    try {
+        automaton.importPositions(json);
+        automaton.hasExplicitPositions = true;
+        return true
+    }
+    catch {
+        return false;
+    }
+}
+
+    /**
+     * Checks whether all elements have set position.
+     * 
+     * @param {Automaton} automaton - Automaton to check.
+     * @returns {boolean} Result of the check.
+     */
+function hasPositions(automaton) {
+    for (const state of automaton.states.values()) {
+        if (!state.position) {
+            return false;
+        }
+        for (const edge of state.edges) {
+            if (!edge.position) {
+                return false;
+            }
+        }
+    }
+    for (const start of automaton.start) {
+        if (!start.position) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 
 

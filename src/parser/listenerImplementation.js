@@ -51,7 +51,9 @@ class hoaListenerImpl extends listener {
         }
     }
     enterPositions(ctx) {
+        console.log("found positions")
         this.positions = ctx.STRING().getText();
+        console.log(this.positions)
     }
     enterEtc(ctx) {
         let etc = [];
@@ -87,12 +89,6 @@ class hoaListenerImpl extends listener {
             for (let i = 1; i < ctx.accSig().getChildCount() - 1; i++) {
                 edge.addAccSet(parseInt(ctx.accSig().getChild(i).getText(), 10));
             }
-        }
-    }
-    exitBody(ctx) {
-        if (this.positions) {
-            this.data.importPositions(this.positions);
-            this.data.hasExplicitPositions = true;
         }
     }
 }

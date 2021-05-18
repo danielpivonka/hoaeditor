@@ -53,7 +53,7 @@ input { display: table-cell;
     align-items: center;
     height: 75vh;
 }
-.parse_area{
+.parse_area,.help_area{
     visibility: collapse;
     border-width: thin;
 
@@ -61,6 +61,9 @@ input { display: table-cell;
 height: 90%;
 left: 30%;
 top: 5%;
+}
+.help_text{
+    overflow: auto;
 }
 .label_area
 {

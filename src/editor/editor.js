@@ -98,5 +98,17 @@ class Editor {
             document.getElementById("objectDetail").remove();
         }
     }
+    isLocked() {
+        if (this.editorCanvas) {
+            return this.editorCanvas.isLocked
+        }
+        return false;
+    }
+    switchLock() {
+        if (this.editorCanvas) {
+            this.editorCanvas.isLocked = !this.editorCanvas.isLocked;
+        }
+
+    }
 }
 exports.Editor = Editor;

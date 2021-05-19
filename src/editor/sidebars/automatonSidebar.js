@@ -134,6 +134,8 @@ class AutomatonSidebar {
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";
         removeButton.disabled = this.automaton.isAPUsed(index);
+        removeButton.title = this.automaton.isAPUsed(index) ? "Used atomic proposition can not be removed" : "";
+
         removeButton.addEventListener("click", () => {
             this.automaton.removeAP(index);
             this.automatonChanged();
@@ -233,6 +235,7 @@ class AutomatonSidebar {
         let keyField = SidebarUtils.createField(id);
         keyField.value = aliasObject.aname.substring(1);
         keyField.disabled = isUsed;
+        keyField.title = isUsed ? "Key can not be changed if alias is used" : "";
         this.setFieldCorrectness(keyField,keyField.value!="")
         keyField.oninput = (e) => {
             if (this.aliasKeyVerifier.verify(e.target.value)) {
@@ -250,6 +253,7 @@ class AutomatonSidebar {
     removeButton.setAttribute("type", "button");
     removeButton.innerHTML = "X";
     removeButton.disabled = isUsed;
+    removeButton.title = isUsed ? "Used aliases can not be removed" : "";
     removeButton.addEventListener("click", () => {
         array[index] = null;
         this.aliasFields.splice(index, 1);

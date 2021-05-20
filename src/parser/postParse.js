@@ -7,6 +7,8 @@ const verifyAccCond = require('../editor/verifiers/accConditionVerifier').verify
      * Prepares the HOAObject for editing.
      * 
      * @param {Automaton} automaton - Automaton after being parsed.
+     * @param {string} json - Json containing the postions.
+     * @param {string[]} errors - Array for storing error messages.
      * @returns {boolean} If the labeling of the automaton is correct.
      */
 function postParse(automaton,json,errors) {
@@ -142,8 +144,9 @@ function checkAccSets(automaton) {
     /**
      * Checks whether all elements have set position.
      * 
-     * @param {Automaton} automaton - Automaton to check.
-     * @returns {boolean} Result of the check.
+     * @param {Automaton} automaton - Automaton to which to import position.
+     * @param {string} json - Json containing the positions.
+     * @returns {boolean} Whether or not was the impor sucessful.
      */
 function setPositions(automaton, json) {
     try {

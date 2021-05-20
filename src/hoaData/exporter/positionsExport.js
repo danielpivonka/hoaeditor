@@ -4,7 +4,7 @@ const StateExport = require('./stateExport').StateExport;
 const PositionExport = require('./stateExport').StateExport;
 class PositionsExport {
 
-    /**
+   /**
     * Constructs an representation of positions in automaton.
     * 
     * @param {State[]} statesIn - Array of states.

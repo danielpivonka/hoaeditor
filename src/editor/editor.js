@@ -1,4 +1,4 @@
-const EditorCanvas = require('./editorCanvas').EditorCanvas;
+const CanvasController = require('./editorCanvas').CanvasController;
 const AutomatonSidebar = require('./sidebars/automatonSidebar').AutomatonSidebar;
 const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
 const Automaton = require('../hoaData/automaton').Automaton;
@@ -8,7 +8,7 @@ const LabelTranslator = require('../labelTranslator').LabelTranslator;
 class Editor {
     constructor(canvas, sidebarContainer) {
         this.sidebarContainer = sidebarContainer;
-        this.editorCanvas = new EditorCanvas(canvas);
+        this.editorCanvas = new CanvasController(canvas);
         this.editorCanvas.onComponentSelectedListeners.push(this.componentSelected.bind(this));
         this.automatonSidebar = null;
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
@@ -20,7 +20,7 @@ class Editor {
         document.body.addEventListener('mousedown', () => this.resetFocus());
         this.editorCanvas.addOnFocusListener(() => this.resetFocus());
         this.editorCanvas.addonStateChangedListener((state) => {
-            if (state == EditorCanvas.stateEnum.ADD_EDGE) {
+            if (state == CanvasController.stateEnum.ADD_EDGE) {
                 this.removeDetail();
             }
         })

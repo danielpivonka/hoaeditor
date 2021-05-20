@@ -1,6 +1,6 @@
 // @ts-nocheck
 const Parser = require('../src/parser/parser').Parser;
-const EditorCanvas = require('../src/editor/editorCanvas').EditorCanvas;
+const CanvasController = require('../src/editor/editorCanvas').CanvasController;
 const LabelTranslator = require('../src/labelTranslator').LabelTranslator;
 let canvas;
 let ctx;
@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 function createEditor(result){
   let translator = new LabelTranslator(result);
-  let editor = new EditorCanvas(canvas);
+  let editor = new CanvasController(canvas);
   editor.setAutomaton(result,translator);
   return editor;
 }

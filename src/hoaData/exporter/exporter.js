@@ -1,12 +1,13 @@
 const Automaton = require('../automaton').Automaton;
 const State = require('../state').State;
+const Edge = require('../edge').Edge;
 const PositionsExport = require('./positionsExport').PositionsExport;
 
 /**
  * Returns automaton in hoa format.
  * 
- * @param  {Automaton} automaton - Automaton to convert to string.
- * @param  {boolean} extended - Whether or not should positions be included.
+ * @param {Automaton} automaton - Automaton to convert to string.
+ * @param {boolean} extended - Whether or not should positions be included.
  * @returns {string} Hoa string.
  */
 function automatonToHoaString(automaton,extended = false) {
@@ -63,7 +64,12 @@ function automatonToHoaString(automaton,extended = false) {
     string += "--END--\n";
     return string;
 }
-
+/**
+ * Converts the state to a string representing the state in Hanoi omega-automata format.
+ * 
+ * @param {State} state - State to be converted.
+ * @returns {string} String representing the state.
+ */
 function stateToString(state) {
         let str = "State:"
         if (state.label.length!=0) {
@@ -87,7 +93,12 @@ function stateToString(state) {
         }
         return str;
 }
-
+/**
+ * Converts the edge to a string representing the edge in Hanoi omega-automata format.
+ * 
+ * @param {Edge} edge - Edge to be converted.
+ * @returns {string} String representing the state.
+ */
 function edgeToString(edge) {
     let str = "";
     if (edge.label.length!=0) {
@@ -105,7 +116,12 @@ function edgeToString(edge) {
     return str;
 }
 
-
+/**
+ * Extracts positions of elements in automaton and converts them into JSON string.
+ * 
+ * @param {Automaton} automaton - Automaton to be converted.
+ * @returns {string} JSON string containing the positions.
+ */
 function exportPositions(automaton) {
     let exportData = new PositionsExport(automaton.states.values(), automaton.start);
     return JSON.stringify(exportData).replace(/"/g, "\\\"");

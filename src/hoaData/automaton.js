@@ -3,6 +3,9 @@ const Start = require('./start').Start;
 const State = require('./state').State;
 
 class Automaton {
+    /**
+     * Creates a new empty omega-automaton.
+     */
     constructor() {
         /**@type {Start[]}*/
         this.start = []
@@ -161,9 +164,20 @@ class Automaton {
     getStateByNumber(number) {
         return this.states.get(number);
     }
+    /**
+     * Converts array of state indexes to array of states.
+     * 
+     * @param {number[]} numbers - Array of state indexes.
+     * @returns {State[]} Array of states with given indexes.
+     */
     numbersToStates(numbers) {
         return numbers.map((number) => { return this.getStateByNumber(number); });
     }
+    /**
+     * Checks whether or not the automaton has alternating edge.
+     * 
+     * @returns {boolean} True if the automaton has alternating edge.
+     */
     hasMultiEdge() {
         for (const state of this.states.values()) {
             for (const edge of state.edges.values()) {
@@ -174,6 +188,11 @@ class Automaton {
         }
         return false;
     }
+    /**
+     * Calculates the highest acceptance set index used in automaton.
+     * 
+     * @returns {number} The highest acceptance set number used.
+     */
     getHighestAccSetUsed() {
         let max = -0;
         for (const state of this.states.values()) {
@@ -184,10 +203,21 @@ class Automaton {
         }
         return max-1;
     }
+    /** Finds the highest number in a string.
+     * 
+     * @param {string} string - The string to search.
+     * @returns {number} The highest number.
+     */
     getMaxIntFromString(string) {
         let array = string.split(" ");
         return Math.max(...array);
     }
+    /**
+     * Checks if given alias is used in an automaton.
+     * 
+     * @param {string} aname - Key of the alias.
+     * @returns {boolean} True if alias is used.
+     */
     isAliasUsed(aname) {
         for (const state of this.states.values()) {
             if (state.label.find(lexpr => (lexpr == aname))) {
@@ -201,6 +231,12 @@ class Automaton {
         }
         return false;
     }
+    /**
+     * Checks if given atomic proposiiton is used in an automaton.
+     * 
+     * @param {string|number} ap - Number of the atomic proposiiton.
+     * @returns {boolean} True if atomic proposiiton is used.
+     */
     isAPUsed(ap) {
         let APString = String(ap);
         for (const alias of this.aliases) {
@@ -211,19 +247,31 @@ class Automaton {
         return this.isAliasUsed(APString);
 
     }
+    /**
+     * Removes atomic proposition with given index.
+     * 
+     * @param {number} index - Index of atomic proposition to remove.
+     */
     removeAP(index) {
         this.ap.splice(index, 1);
         for (const alias of this.aliases) {
-            this.replaceNumbersInLexpr(alias.lexpr, index);
+            this.decrementNumbersInLexpr(alias.lexpr, index);
         }
         for (const state of this.states.values()) {
-            this.replaceNumbersInLexpr(state.label, index);
+            this.decrementNumbersInLexpr(state.label, index);
             for (const edge of state.edges) {
-                this.replaceNumbersInLexpr(edge.label, index);
+                this.decrementNumbersInLexpr(edge.label, index);
             }
         }
     }
-    replaceNumbersInLexpr(lexprArray, threshold) {
+    
+    /**
+     * Decrements every number in given lexpr that is higher than treshold .
+     * 
+     * @param {string[]} lexprArray - Array representing the lexpr.
+     * @param {number} threshold - Number above which the numbers will be decreased (exclusive).
+     */
+    decrementNumbersInLexpr(lexprArray, threshold) {
         if (lexprArray) {
             for (let i = 0; i < lexprArray.length; i++) {
                 let element = lexprArray[i];
@@ -233,7 +281,11 @@ class Automaton {
             }
         }
     }
-
+    /**
+     * Removes state.
+     * 
+     * @param {number} stateToRemove - Number of state to remove.
+     */
     removeState(stateToRemove) {
         for (const state of this.states.values()) {
             state.edges = state.edges.filter((edge) => { return !edge.stateConj.includes(stateToRemove.number); });
@@ -242,6 +294,11 @@ class Automaton {
         this.states.delete(stateToRemove.number);
         this.collapseStateNumbers(stateToRemove.number)
     }
+    /**
+     * Decreases number of states with higher number than removed state.
+     * 
+     * @param {number} removedStateNumber - Number of state that was removed.
+     */
     collapseStateNumbers(removedStateNumber) {
         let size = this.states.size+1;
         for (let i = 0; i < size; i++) {
@@ -260,14 +317,19 @@ class Automaton {
             this.states.delete(this.states.size - 1);
         }
     }
+    /**
+     * Removes given start.
+     * 
+     * @param {Start} startToRemove - Start to be removed.
+     */
     removeStart(startToRemove) {
         this.start = this.start.filter((start) => { return start != startToRemove });
     }
 
     /**
-     * Constructs simplified representation of state.
+     * Imports positions from import string.
      * 
-     * @param {string} importString - string representing PositionsExport.
+     * @param {string} importString - String representing PositionsExport.
      */
     importPositions(importString) {
 
@@ -285,6 +347,13 @@ class Automaton {
             this.start[startIndex].position = Victor.fromObject(importData.starts[startIndex]);
         }
     }
+    /**
+     * Calculates how many edges are from one state to another.
+     * 
+     * @param {number} fromIndex - Index of the origin state.
+     * @param {number} toIndex - Index of the destination state.
+     * @returns {number} The ammount of the edges.
+     */
     getEdgeCount(fromIndex, toIndex) {
         let count = this.states.get(fromIndex).edges.filter((element) => element.stateConj.includes(toIndex)).length;
         return count;

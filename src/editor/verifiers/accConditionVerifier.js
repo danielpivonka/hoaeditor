@@ -2,7 +2,13 @@ const antlr4 = require('antlr4/index');
 const hoaLexer = require('../../parser/generated/hoaLexer');
 const hoaParser = require('../../parser/generated/hoaParser');
 const Automaton = require('../../hoaData/automaton').Automaton;
-
+/**
+ * Verifies if acceptance acceptance condition is valid.
+ * 
+ * @param {string} accCond - Acceptance condition to check.
+ * @param {Automaton} automaton - Automaton to which the acceptance condition belongs to.
+ * @returns {boolean} Result of the check.
+ */
 function verifyAccCond(accCond,automaton) {
     let chars = new antlr4.InputStream(accCond);
     let lexer = new hoaLexer.hoaLexer(chars);
@@ -23,9 +29,11 @@ function verifyAccCond(accCond,automaton) {
     return success && parsed == accCond && areNumbersValid(parsed,automaton);
 }
 /**
- * @param  {string} text
- * @param  {Automaton} automaton
- * @returns {boolean}
+ * Verifies if acceptance set numbers in acceptance condition are valid.
+ * 
+ * @param {string} text - Acceptance condition to check.
+ * @param {Automaton} automaton - Automaton to which the acceptance condition belongs to.
+ * @returns {boolean} Result of the check.
  */
 function areNumbersValid(text,automaton) {
     let maxAccSet = automaton.acceptance.count;

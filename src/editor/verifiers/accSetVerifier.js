@@ -8,7 +8,12 @@ class AccSetVerifier {
     constructor(automaton) {
         this.automaton = automaton;
     }
-
+    /**
+     * Check if all values in an array are valid acceptance sets.
+     * 
+     * @param {string|number[]} accSetArray - Array to be checked.
+     * @returns {boolean} Result of the check.
+     */
     verify(accSetArray) {
         for (const element of accSetArray) {
             if (isNaN(element)) {

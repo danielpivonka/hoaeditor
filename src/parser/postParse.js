@@ -3,6 +3,8 @@ const State = require('../hoaData/state').State;
 const AccSetVerifier = require('../editor/verifiers/accSetVerifier').AccSetVerifier;
 const verifyAccCond = require('../editor/verifiers/accConditionVerifier').verifyAccCond;
 
+//TODO: ADD SEMANTIC CHECKING FOR IMPORTED LABELS.
+
     /**
      * Prepares the HOAObject for editing.
      * 

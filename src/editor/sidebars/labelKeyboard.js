@@ -1,14 +1,25 @@
 const AbstratctKeyboard = require('./abstractKeyboard').AbstratctKeyboard;
-
+const Automaton = require('../../hoaData/automaton').Automaton;
+const LabelTranslator = require('../../labelTranslator').LabelTranslator;
 class LabelKeyboard extends AbstratctKeyboard
 {
+    /**
+     * Constructs a label keyboard generator.
+     * 
+     * @param {Automaton} automaton - Automaton whose label will be edited.
+     * @param {LabelTranslator} translator - Translator bound to the automaton.
+     */
     constructor(automaton, translator) {
         super(automaton)
         this.translator = translator;
         this.basicSymbols = ["!", "(", ")", "&", "|","t","f"]
     }
     
-
+    /**
+     * Generates row containing atomic propositions.
+     * 
+     * @returns {HTMLDivElement} Row containing atomic proposition buttons.
+     */
     generateAPRow() {
         let row = document.createElement("div");
         row.className = "button_row"
@@ -17,6 +28,12 @@ class LabelKeyboard extends AbstratctKeyboard
         }
         return row;
     }
+    /**
+     * Generates row containing aliases.
+     * 
+     * @param {{aname:string,lexpr:string}} excludedAlias - Alias to be excluded.
+     * @returns {HTMLDivElement} Row containing aliase buttons.
+     */
     generateAliasRow(excludedAlias) {
         let row = document.createElement("div");
         row.className = "button_row"
@@ -27,6 +44,11 @@ class LabelKeyboard extends AbstratctKeyboard
         }
         return row;
     }
+    /**
+     * Generates row containing basic elements of label.
+     * 
+     * @returns {HTMLDivElement} Row containing the basic element buttons.
+     */
     generateBasicRow() {
         let row = document.createElement("div");
         row.className = "button_row"
@@ -35,6 +57,12 @@ class LabelKeyboard extends AbstratctKeyboard
         }
         return row
     }
+    /**
+     * Generates the keyboard.
+     * 
+     * @param {{aname:string,lexpr:string}} excludedAlias - Alias to be excluded from the keyboard.
+     * @returns {HTMLDivElement} The keyboard HTML element.
+     */
     generateKeyboard(excludedAlias) {
         let keyboard = document.createElement("div");
         keyboard.id = "lexprKeyboard";

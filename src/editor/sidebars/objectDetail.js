@@ -1,13 +1,20 @@
-const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
-const AccSetVerifier = require('../verifiers/accSetVerifier.js').AccSetVerifier;
-const verifyLabel = require('../verifiers/labelVerifier.js').verifyLabel;
+const SidebarUtils = require('./sidebarUtils').SidebarUtils;
+const AccSetVerifier = require('../verifiers/accSetVerifier').AccSetVerifier;
+const verifyLabel = require('../verifiers/labelVerifier').verifyLabel;
 const State = require('../../hoaData/state').State;
-const LexprField = require('./lexprField.js').LexprField;
+const LexprField = require('./lexprField').LexprField;
 const Edge = require('../../hoaData/edge').Edge;
-
-const AccSetField = require('./accSetField.js').AccSetField;
+const Automaton = require('../../hoaData/automaton').Automaton;
+const LabelTranslator = require('../../labelTranslator').LabelTranslator;
+const AccSetField = require('./accSetField').AccSetField;
 
 class ObjectDetail {
+    /**
+     * Creates a new object which can be used to generate automaton element detail.
+     * 
+     * @param {Automaton} automaton - Automaton for which te details will be generated.
+     * @param {LabelTranslator} translator - Label translator associated with the automaton.
+     */
     constructor(automaton,translator) {
         this.sidebarRedrawRequestListener = null;
         this.translator = translator;
@@ -22,12 +29,21 @@ class ObjectDetail {
         this.sidebar;
         this.keyboardDiv;
     }
+    /**
+     * Generates the HTML of the detail.
+     * 
+     * @param {State|Edge} object - Generates detail from the given element.
+     * @returns {HTMLDivElement} The generated detail.
+     */
     generateDetail(object) {
         this.object = object;
         this.sidebar = document.createElement("div");
         this.draw();
         return this.sidebar;
     }
+    /**
+     * Updates current detail.
+     */
     draw() {
         this.currentLabel = [...this.object.label];
         this.sidebar.innerHTML = "";
@@ -50,10 +66,21 @@ class ObjectDetail {
         this.sidebar.append(this.keyboardDiv);
 
     }
+    /**
+     * Appends keyboard ro rhe detail.
+     * 
+     * @param {HTMLDivElement} keyboardNode - The keyboard to be generated.
+     */
     onKeyboardGenerated(keyboardNode) {
         this.keyboardDiv.innerHTML = "";
         this.keyboardDiv.appendChild(keyboardNode);
     }
+    /**
+     * Creates a row for editing name of state.
+     * 
+     * @param {State} object - State bound to the detail.
+     * @returns {HTMLDivElement} - The generated row.
+     */
     createName(object) {
         let id = "name";
         let label = SidebarUtils.createLabel(id, "name:");
@@ -62,6 +89,11 @@ class ObjectDetail {
         field.oninput = (e) => { object.name = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }
+    /**
+     * Creates a row for editing label of element.
+     * 
+     * @returns {HTMLDivElement} - The generated row.
+     */
     createLabel() {
         this.labelCursor = -1;
         let id = "label";
@@ -69,13 +101,25 @@ class ObjectDetail {
         let field = this.lexprField.drawField(this.currentLabel)
         return SidebarUtils.createDivWithChildren(label, field);
     }
-
+    /**
+     * Creates a row for editing acceptance sets.
+     * The supplied array is mutated by user actions.
+     * 
+     * @param {number[]} accSetArray - Array of acceptance sets of the element.
+     * @returns {HTMLDivElement} - The generated row.
+     */
     createAccSet(accSetArray) {
         let id = "accSet";
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = this.accSetField.drawField(accSetArray);
         return SidebarUtils.createDivWithChildren(label, field);
     }
+    /**
+     * Creates a button that marks the state as starting.
+     * 
+     * @param {State} state - The state bound to teh detail.
+     * @returns {HTMLButtonElement} The generated button.
+     */
     createAddStartButton(state) {
         let button = document.createElement("button");
         button.className = "button";
@@ -87,10 +131,16 @@ class ObjectDetail {
         }
         return button;
     }
+    /**
+     * Closes the current detail.
+     */
     close() {
         this.commitChanges();
         this.lexprField.deselect();
     }
+    /**
+     * Saves the changes made to the bound elements.
+     */
     commitChanges() {
         if (verifyLabel(this.currentLabel)) {
             if (this.object instanceof State) {
@@ -107,6 +157,11 @@ class ObjectDetail {
             this.onAutomatonChanged();
         }
     }
+    /**
+     * Creates warning text about potentially unwanted removal of labels from edges.
+     * 
+     * @returns {HTMLDivElement} Div containing the warining text.
+     */
     createWarning() {
         let warning = document.createElement("div");
         let label = document.createElement("div");
@@ -116,6 +171,12 @@ class ObjectDetail {
         warning.innerHTML = "Setting label to this state<br>will erase labels from outgoing edges"
         return SidebarUtils.createDivWithChildren(label, warning);
     }
+    /**
+     * Creates a button that transfers labels from state to outgoing edges.
+     * 
+     * @param {State} state - State bound to current detail.
+     * @returns {HTMLButtonElement} The generated button.
+     */
     createTransferButton(state) {
         let button = document.createElement("button");
         button.className = "button";

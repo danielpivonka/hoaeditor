@@ -4,10 +4,18 @@ const SidebarUtils = require('./sidebarUtils.js').SidebarUtils;
 const LexprField = require('./lexprField.js').LexprField;
 const AliasKeyVerifier = require('../verifiers/aliasKeyVerifier.js').AliasKeyVerifier;
 const verifyAccCond = require('../verifiers/accConditionVerifier').verifyAccCond;
+const LabelTranslator = require('../../labelTranslator').LabelTranslator;
 
 class AutomatonSidebar {
+
+    
+    /**
+     * Creates an automaton sidebar generator.
+     * 
+     * @param {Automaton} automaton - Automaton whose sidebar will be generated.
+     * @param {LabelTranslator} translator - Translator bound to the automaton.
+     */
     constructor(automaton,translator) {
-        /**@type { Automaton }*/
         this.automaton = automaton;
         this.automatonChangedListeners = [];
         this.collapsedState = [];
@@ -22,14 +30,27 @@ class AutomatonSidebar {
         this.oldAccCond;
         this.correctMap = new Map();
     }
+    /**
+     * Adds listener that will be called when automaton is changed.
+     * 
+     * @param {Function} func - Function that will be called.
+     */
     addAutomatonChangedListener(func) {
         this.automatonChangedListeners.push(func)
     }
+    /**
+     * Calls automaton checnged listeners.
+     */
     automatonChanged() {
         for (const func of this.automatonChangedListeners) {
             func();
         }
     }
+    /**
+     * Generates sidebar.
+     * 
+     * @returns {HTMLDivElement} The sidebar.
+     */
     generateSidebar() {
         this.correctMap = new Map();
         let sidebar = document.createElement("div");
@@ -45,6 +66,11 @@ class AutomatonSidebar {
         sidebar.append(sidebarTable);
         return sidebar;
     }
+    /**
+     * Creates a list of atomic proposition fields.
+     * 
+     * @returns {HTMLDivElement} The atomic proposition list.
+     */
     createApList() {
         let wrap = SidebarUtils.createList(this.createAP.bind(this), this.automaton.ap, "Atomic propositions", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -59,6 +85,11 @@ class AutomatonSidebar {
         return wrap;
 
     }
+    /**
+     * Creates a list of properties of the automaton.
+     * 
+     * @returns {HTMLDivElement} The properties list.
+     */
     createPropsList() {
         let wrap = SidebarUtils.createList(this.createProp.bind(this), this.automaton.properties, "Properties", this.collapsedState);
         let inner = wrap.getElementsByTagName("div")[0];
@@ -72,6 +103,13 @@ class AutomatonSidebar {
         inner.append(SidebarUtils.createDivWithChildren(addButton));
         return wrap;
     }
+    /**
+     * Creates a propery field.
+     * 
+     * @param {string[]} array - List of automaton properties.
+     * @param {number} index - Index of property to bind.
+     * @returns {HTMLDivElement} Div containing the property field.
+     */
     createProp(array,index) {
         let id = index + "prop";
         let field = SidebarUtils.createField(id);
@@ -90,6 +128,11 @@ class AutomatonSidebar {
         });
         return SidebarUtils.createDivWithChildren(field,removeButton);
     }
+    /**
+     * Creates a list of alias fields.
+     * 
+     * @returns {HTMLDivElement} Div containing the alias fields.
+     */
     createAliasList() {
         this.automaton.aliases = this.automaton.aliases.filter((e) => e != null);
         let wrap = SidebarUtils.createList(this.createAlias.bind(this), this.automaton.aliases, "Aliases", this.collapsedState);
@@ -105,6 +148,13 @@ class AutomatonSidebar {
         inner.append(addButton);
         return wrap;
     }
+    /**
+     * Creates an atomic proposition field.
+     * 
+     * @param {string[]} array - List of atomic propositions.
+     * @param {number} index - Index of atomic propositions to bind.
+     * @returns {HTMLDivElement} Div containing the atomic proposition field.
+     */
     createAP(array, index) {
         let id = "ap" + index;
         let label = SidebarUtils.createLabel(id, index + ":");
@@ -142,6 +192,11 @@ class AutomatonSidebar {
         });
         return SidebarUtils.createDivWithChildren(label, field,removeButton);
     }
+    /**
+     * Creates row for editing acceptance count of bound automaton.
+     * 
+     * @returns {HTMLDivElement} Row containing the field for editing and label.
+     */
     createAcceptanceCount() {
         let id = "acccount";
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
@@ -163,12 +218,22 @@ class AutomatonSidebar {
         
         return SidebarUtils.createDivWithChildren(label, field);
     }
+    /**
+     * Calculates max acceptance set used in this automaton bound to this sidebar.
+     * 
+     * @returns {number} Max acceptance set number.
+     */
     maxAccSetUsed() {
         let inAutomaton = this.automaton.getHighestAccSetUsed();
         let matcher = /\d+/g
         let matches = [...this.automaton.acceptance.str.matchAll(matcher)];
         return Math.max(...matches,inAutomaton)+1;
     }
+    /**
+     * Creates field for editing acceptance condition.
+     * 
+     * @returns {HTMLDivElement} Field for editing acceptance condition.
+     */
     createAcceptanceCondition() {
         let id = "acccond";
         let label = SidebarUtils.createLabel(id, "Acceptance condition:");
@@ -187,6 +252,11 @@ class AutomatonSidebar {
         }
         return SidebarUtils.createDivWithChildren(label, field);
     }
+    /**
+     * Creates field for editing acceptance name.
+     * 
+     * @returns {HTMLDivElement} Field for editing acceptance name.
+     */
     createAccname() {
         let id = "accname";
         let label = SidebarUtils.createLabel(id, "acceptance name:");
@@ -195,6 +265,11 @@ class AutomatonSidebar {
         field.oninput = (e) => { this.automaton.accname = e.target.value; };
         return SidebarUtils.createDivWithChildren(label, field);
     }
+    /**
+     * Creates field for editing automaton name.
+     * 
+     * @returns {HTMLDivElement} Field for editing automaton name.
+     */
     createName() {
         let id = "name";
         let label = SidebarUtils.createLabel(id, "name:");
@@ -204,6 +279,13 @@ class AutomatonSidebar {
         return SidebarUtils.createDivWithChildren(label, field);
     }
 
+    /**
+     * Creates field for editing alias.
+     * 
+     * @param {string[]} array - List of aliases.
+     * @param {number} index - Index of alias to bind.
+     * @returns {HTMLDivElement} Field for editing automaton name.
+     */
     createAlias(array, index) {
         let keyLabel = SidebarUtils.createLabel(index + "k", "@");
         let aliasObject = array[index]
@@ -214,6 +296,13 @@ class AutomatonSidebar {
         let removeButton = this.createAliasRemoveButton(array, index, isUsed);
         return SidebarUtils.createDivWithChildren(keyLabel, keyField, valueLabel, valueField, removeButton);
     }
+    /**
+     * Creates field for editing label expression for alias.
+     * 
+     * @param {{aname:string,lexpr:string}} aliasObject - The alias object which this field will mutate.
+     * @param {number} index - Index of given alias.
+     * @returns {HTMLDivElement} Field for editing alias label expression.
+     */
     createLexprField(aliasObject, index) {
         let lexprObj = this.aliasFields[index];
         lexprObj.setExcludedObject(aliasObject);
@@ -230,6 +319,14 @@ class AutomatonSidebar {
         }
         return valueField;
     }
+    /**
+     * Creates field for editing key for alias.
+     * 
+     * @param {{aname:string,lexpr:string}} aliasObject - The alias object which this field will mutate.
+     * @param {number} index - Index of given alias.
+     * @param {boolean} isUsed - Whether or not is the given alias used in automaton. 
+     * @returns {HTMLDivElement} Field for editing alias label expression.
+     */
     createAliasKey(aliasObject, index, isUsed) {
         let id = index + "k";
         let keyField = SidebarUtils.createField(id);
@@ -248,6 +345,14 @@ class AutomatonSidebar {
         }
         return keyField;
     }
+    /**
+     * Creates an atomic proposition field.
+     * 
+     * @param {{aname:string,lexpr:string}[]} array - List of aliases.
+     * @param {number} index - Index of alias to bind.
+     * @param {boolean} isUsed - Whether or not is the given alias used in automaton. 
+     * @returns {HTMLDivElement} Button to remove atomic proposition with given index.
+     */
     createAliasRemoveButton(array,index,isUsed) {
     let removeButton = document.createElement("button")
     removeButton.setAttribute("type", "button");
@@ -261,6 +366,11 @@ class AutomatonSidebar {
     });
         return removeButton;
     }
+    /**
+     * Deselects all aliases except one.
+     * 
+     * @param {{aname:string,lexpr:string}} except - The alias which wont be deselected.
+     */
     deselectAliases(except) {
         for (const field of this.aliasFields) {
             if (field != except) {
@@ -268,6 +378,12 @@ class AutomatonSidebar {
             }
         }
     }
+    /**
+     * Marks given field as correct.
+     * 
+     * @param {HTMLDivElement} field - Field to be marked.
+     * @param {boolean} isCorrect - True to mark field as correct, false to mark field as incorrect.
+     */
     setFieldCorrectness(field,isCorrect) {
         field.className = isCorrect ? "inputField" : "inputField error";
         this.correctMap.set(field, isCorrect);

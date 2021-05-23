@@ -42,8 +42,9 @@ class Parser {
         }
         let list = new listener();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
-        console.log("calling post parse")
-        postParse(list.data,list.positions,this.errors)        
+        if (!postParse(list.data, list.positions, this.errors)) {
+            return null;
+        }
         return list.data;
     }
 }

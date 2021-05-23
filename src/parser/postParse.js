@@ -15,21 +15,20 @@ const verifyAccCond = require('../editor/verifiers/accConditionVerifier').verify
      */
 function postParse(automaton,json,errors) {
     if (!checkLabels(automaton)) {
-        console.log("failed labels")
+        errors.push("Labels are incorrect")
         return false;
     }
     if (!verifyAccCond(automaton.acceptance.str, automaton)) {
-        console.log("failed acccond")
+        errors.push("Acceptance condition is incorrect")
         return false;
     }
     if (!checkAccSets(automaton)) {
-        console.log("failed accset")
+        errors.push("Acceptance sets are incorrect")
         return false;
     }
-    console.log("postparse: " + json);
     if (json) {
         if(setPositions(automaton, json)||!hasPositions(automaton)){
-            console.log("error parsing posiitons");
+            errors.push("Error parsing positons");
             return false;
         }
     }

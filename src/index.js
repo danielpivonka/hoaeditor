@@ -27,7 +27,7 @@ function parseClicked() {
         let oa = parser.parse(parseField.value);
         if (oa) {
             editor.setAutomaton(oa);
-            hide();
+            hideExport();
         }
         else {
             writeErrors(parser.errors);

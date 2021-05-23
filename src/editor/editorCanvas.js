@@ -390,7 +390,7 @@ class CanvasController {
         e.stopPropagation();
         if (this.editorState == CanvasController.stateEnum.SELECTED) {
             this.checkCollisionsAtPosition(new Victor(x, y));
-            if (this.selected instanceof State || this.selected instanceof Start && !this.isLocked) {
+            if ((this.selected instanceof State || this.selected instanceof Start) && !this.isLocked) {
                 this.changeState(CanvasController.stateEnum.ADD_EDGE)
                 this.draw();
             }
@@ -656,7 +656,7 @@ class CanvasController {
             stateLoopbacks.set(state, loopbacks);
         }
         for (let [state, loopbacks] of stateLoopbacks) {
-            let loobpackEdges = loopbacks.map(l=>l[1]);
+            let loobpackEdges = loopbacks.values();
             let collision = this.checkLoopbackEdgeCollision(state, loobpackEdges, position);
             if (collision != null) {
                 return collision;

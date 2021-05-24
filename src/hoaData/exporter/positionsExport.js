@@ -1,10 +1,10 @@
 const State = require('../state').State;
 const Start = require('../start').Start;
 const StateExport = require('./stateExport').StateExport;
-const PositionExport = require('./stateExport').StateExport;
+const PositionExport = require('./positionExport').PositionExport;
 class PositionsExport {
 
-    /**
+   /**
     * Constructs an representation of positions in automaton.
     * 
     * @param {State[]} statesIn - Array of states.

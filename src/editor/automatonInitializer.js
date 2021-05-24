@@ -1,6 +1,14 @@
 const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
-
+const Automaton = require('../hoaData/automaton').Automaton;
+/**
+ * Initializes positions of an automaton given the size of editor canvas.
+ * 
+ * @param {Automaton} automaton - Automaton to initialize.
+ * @param {number} width - Width of the canvas.
+ * @param {number} height - Height of the canvas.
+ * @param {number} circleSize - Radius of states.
+ */
 function initializePositions(automaton,width,height,circleSize) {
             setImplicitPositions(automaton, width, height);
             setImplicitOffsets(automaton);
@@ -10,6 +18,13 @@ function initializePositions(automaton,width,height,circleSize) {
             let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
             calculateStartAnchors(automaton,mergedAngles)
 }
+/**
+ * Sets implicit positions for states.
+ * 
+ * @param {Automaton} automaton - Automaton to initialize.
+ * @param {number} width - Width of the canvas.
+ * @param {number} height - Height of the canvas.
+ */
 function setImplicitPositions(automaton, width, height) {
     let rows = Math.round(Math.sqrt(automaton.states.size));
     let columns = Math.ceil(automaton.states.size / rows);
@@ -25,6 +40,11 @@ function setImplicitPositions(automaton, width, height) {
         }
     }
 }
+/**
+ * Sets implicit offsets for edges in automaton.
+ * 
+ * @param {Automaton} automaton - Automaton to initialize.
+ */
 function setImplicitOffsets(automaton) {
     automaton.stateCount = automaton.states.size;
     for (const state of automaton.states.values()) {
@@ -52,7 +72,12 @@ function setImplicitOffsets(automaton) {
         }
     }
 }
-
+/**
+ * Sets implicit positions for starts in automaton.
+ * 
+ * @param {Automaton} automaton - Automaton to initialize.
+ * @param {number[][]} blockedAngles - Array of arrays of angles blocked by edges.
+ */
 function calculateStartAnchors(automaton, blockedAngles) {
     for (const start of automaton.start) {
         let states = automaton.numbersToStates(start.stateConj);

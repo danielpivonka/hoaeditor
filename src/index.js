@@ -27,7 +27,7 @@ function parseClicked() {
         let oa = parser.parse(parseField.value);
         if (oa) {
             editor.setAutomaton(oa);
-            hide();
+            hideExport();
         }
         else {
             writeErrors(parser.errors);
@@ -61,6 +61,7 @@ function writeErrors(array) {
 function hideExport() {
     parseContainer.style.visibility = "collapse"
     parseButton.style.visibility = "collapse"
+    errorArea.innerHTML = "";
 
 }
 function lockClicked() {

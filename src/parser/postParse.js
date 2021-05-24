@@ -3,29 +3,32 @@ const State = require('../hoaData/state').State;
 const AccSetVerifier = require('../editor/verifiers/accSetVerifier').AccSetVerifier;
 const verifyAccCond = require('../editor/verifiers/accConditionVerifier').verifyAccCond;
 
+//TODO: ADD SEMANTIC CHECKING FOR IMPORTED LABELS.
+
     /**
      * Prepares the HOAObject for editing.
      * 
      * @param {Automaton} automaton - Automaton after being parsed.
+     * @param {string} json - Json containing the postions.
+     * @param {string[]} errors - Array for storing error messages.
      * @returns {boolean} If the labeling of the automaton is correct.
      */
 function postParse(automaton,json,errors) {
     if (!checkLabels(automaton)) {
-        console.log("failed labels")
+        errors.push("Labels are incorrect")
         return false;
     }
     if (!verifyAccCond(automaton.acceptance.str, automaton)) {
-        console.log("failed acccond")
+        errors.push("Acceptance condition is incorrect")
         return false;
     }
     if (!checkAccSets(automaton)) {
-        console.log("failed accset")
+        errors.push("Acceptance sets are incorrect")
         return false;
     }
-    console.log("postparse: " + json);
     if (json) {
-        if(setPositions(automaton, json)||!hasPositions(automaton)){
-            console.log("error parsing posiitons");
+        if(!setPositions(automaton, json)||!hasPositions(automaton)){
+            errors.push("Error parsing positons");
             return false;
         }
     }
@@ -142,8 +145,9 @@ function checkAccSets(automaton) {
     /**
      * Checks whether all elements have set position.
      * 
-     * @param {Automaton} automaton - Automaton to check.
-     * @returns {boolean} Result of the check.
+     * @param {Automaton} automaton - Automaton to which to import position.
+     * @param {string} json - Json containing the positions.
+     * @returns {boolean} Whether or not was the impor sucessful.
      */
 function setPositions(automaton, json) {
     try {
@@ -168,7 +172,7 @@ function hasPositions(automaton) {
             return false;
         }
         for (const edge of state.edges) {
-            if (!edge.position) {
+            if (!edge.offset) {
                 return false;
             }
         }

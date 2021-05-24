@@ -1,6 +1,6 @@
 // @ts-nocheck
 const Parser = require('../src/parser/parser').Parser;
-const EditorCanvas = require('../src/editor/editorCanvas').EditorCanvas;
+const CanvasController = require('../src/editor/editorCanvas').CanvasController;
 const LabelTranslator = require('../src/labelTranslator').LabelTranslator;
 let canvas;
 let ctx;
@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 function createEditor(result){
   let translator = new LabelTranslator(result);
-  let editor = new EditorCanvas(canvas);
+  let editor = new CanvasController(canvas);
   editor.setAutomaton(result,translator);
   return editor;
 }
@@ -98,27 +98,6 @@ test('alternating edge', () => {
   expect(events).toMatchSnapshot();
 })
 
-test('unlabeled edge', () => {
-  let hoaIn = 'HOA: v1\
-    Start: 0\
-    Acceptance: 1 Inf(0)\
-    AP: 2 "a" "b"\
-    --BODY--\
-    State: 0\
-     [t] 1\
-     2\
-    State: 1\
-     [0] 1 {0}\
-     1\
-    State: 2\
-     [0&1] 2 {0}\
-    --END--';
-
-  let result = parser.parse(hoaIn);
-  createEditor(result)
-  const events = ctx.__getEvents();
-  expect(events).toMatchSnapshot();
-})
 
 test('state label', () => {
   let hoaIn = 'HOA: v1\

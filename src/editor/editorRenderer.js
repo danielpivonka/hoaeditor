@@ -3,6 +3,9 @@ const Victor = require('victor');
 const EditorUtils = require('./editorUtils').EditorUtils;
 const Automaton = require('../hoaData/automaton').Automaton;
 const State = require('../hoaData/state').State;
+const Edge = require('../hoaData/edge').Edge;
+const Start = require('../hoaData/start').Start;
+const LabelTranslator = require('../labelTranslator').LabelTranslator;
 
 class EditorRenderer {
 
@@ -27,7 +30,9 @@ class EditorRenderer {
         this.hasMultiEdge = false;
         this.accColors = ["#285943", "#07020D", "#03F7EB", "#ea2b1f", "#13315c", "#8d80ad", "#FFA400", "#009FFD", "#20BF55", "#F6CA83"]
     }
-
+    /**
+     * Adjusts the canvas size to match the HTML element. 
+     */
     resize() {
         this.canvas.width = this.canvas.parentNode.clientWidth;
         this.canvas.height = this.canvas.parentNode.clientHeight;
@@ -38,9 +43,10 @@ class EditorRenderer {
      * Renders automaton onto bound canvas.
      * 
      * @param {Automaton} automaton - Automaton object.
-     * @param {Victor} offset - by how much should the canvas be offset.
-     * @param {Object} selected - the selected object.
-     * @param {number[][]} angles - blocked angles.
+     * @param {Victor} offset - By how much should the canvas be offset.
+     * @param {number[][]} angles - Blocked angles.
+     * @param {LabelTranslator} translator - Translator bound to te automaton.
+     * @param {object} selected - The selected object.
      */
     draw(automaton, offset, angles,translator, selected) {
         this.drawnEdges = [];
@@ -58,29 +64,34 @@ class EditorRenderer {
             for (const edgeIndex of state.edges.keys()) {
                 let edge = state.edges[edgeIndex];
                 if (edge.stateConj.length > 1) {
-                    this.drawMultiEdge(state, edgeIndex, automaton.numbersToStates(edge.stateConj), automaton.ap, selected);
+                    this.drawMultiEdge(state, edge, automaton.numbersToStates(edge.stateConj), selected);
                 }
                 else if (edge.stateConj[0] == state.number) {
                     loopbacks.set(edgeIndex, edge);
                 }
                 else {
-                    this.drawEdge(state, edgeIndex, automaton.getStateByNumber(edge.stateConj[0]), automaton.ap, selected);
+                    this.drawEdge(state, edge, automaton.getStateByNumber(edge.stateConj[0]), selected);
                 }
             }
             this.drawAccSetsOnState(state);
             stateLoopbacks.set(state, loopbacks);
         }
         for (let [state, loopbacks] of stateLoopbacks) {
-            this.drawLoop(state, loopbacks, automaton.ap, selected);
+            this.drawLoop(state, loopbacks, selected);
         }
         for (const state of automaton.states.values()) {
             if (state.name) {
-                this.drawStateLabels(state, angles);
+                this.drawStateName(state, angles);
             }
         }
     }
-
-    drawStateLabels(state, blockedAngles) {
+    /**
+     * Draws state name of given state in free spaces.
+     * 
+     * @param {State} state - State whose name to draw.
+     * @param {number[][]} blockedAngles - Angles occupied by edges.
+     */
+    drawStateName(state, blockedAngles) {
         let interval = EditorUtils.getFreeAngleInterval(blockedAngles[state.number]);
         let angle;
         if (interval) {
@@ -94,8 +105,14 @@ class EditorRenderer {
         anchor.rotateToDeg(angle).multiplyScalar(this.circleSize);
         anchor.add(state.position.clone().add(this.offset)).multiplyScalar(this.scale);
         let offset = 5 * state.edges.length + 3 * state.name.length;
-        this.drawLabelEdge(state.name, anchor, angle, offset, true);
+        this.drawLabel(state.name, anchor, angle, offset, true);
     }
+    /**
+     * Draws starts of given automaton.
+     * 
+     * @param {Automaton} automaton - The automaton whose starts to draw.
+     * @param {object} selected - Currently selected object.
+     */
     drawStarts(automaton, selected) {
         for (const start of automaton.start) {
             let color = start == selected ? "#8888FF" : "#000000";
@@ -108,6 +125,13 @@ class EditorRenderer {
             }
         }
     }
+    /**
+     * Draws alternating edge from ortigin state to destination states, plus an additional edge to the given position.
+     * 
+     * @param {State} originState - State from which the edge originates.
+     * @param {State[]} destinationStates - Array of destination states.
+     * @param {Victor} additionalPos - The position to which the additional edge will be drawn.
+     */
     drawPartialMultiEdge(originState, destinationStates, additionalPos) {
 
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -142,9 +166,15 @@ class EditorRenderer {
     }
 
 
-
-    drawMultiEdge(originState, edgeIndex, destinationStates, aps, selected) {
-        let edge = originState.edges[edgeIndex];
+    /**
+     * Draws alternating edge from origin state to destination states.
+     * 
+     * @param {State} originState - The origin state.
+     * @param {Edge} edge - The edge to be drawn.
+     * @param {State[]} destinationStates - Array of destinatinon states.
+     * @param {object} selected - 
+     */
+    drawMultiEdge(originState, edge, destinationStates, selected) {
         this.ctx.strokeStyle = selected == edge ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let [midpoint, angle] = EditorUtils.calculateMultiEdgeMidpoint(originState, destinationStates, edge.offset, this.offset, this.scale)
@@ -158,9 +188,18 @@ class EditorRenderer {
         let label = this.labelTranslator.translate(edge.label);
 
         let labelAnchor = EditorUtils.calculateMultiLabelPosition(originState, destinationStates, midpoint, this.offset, this.scale);
-        let pos = this.drawLabelEdge(label, labelAnchor, labelAngle);
+        let pos = this.drawLabel(label, labelAnchor, labelAngle);
         this.drawLabelAccSet(edge.accSets, pos, labelAngle)
     }
+    /**
+     * Draws a single alternating edge curve.
+     * 
+     * @param {State} originState - The origin state of the alternating edge.
+     * @param {State} destination - One of the destinations states of the alternating edge.
+     * @param {Victor} midpoint - Midpoint of the alternating edge.
+     * @param {number} angle - Angle of the alternating edge.
+     * @param {number} originCircleSize - Radius of state.
+     */
     drawMultiEdgeElement(originState, destination, midpoint, angle, originCircleSize) {
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = destination.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -189,10 +228,10 @@ class EditorRenderer {
      * @param {Victor} anchor - Where the label should be anchored.
      * @param {number} angle - Perpendicular angle to the edge in direction of anchor.
      * @param {number} extraPadding - Extra horizontal padding for the text.
-     * @param {number} background - should this label have background.
-     * @returns {Victor} position of the rendered label
+     * @param {number} background - Should this label have background.
+     * @returns {Victor} Position of the rendered label.
      */
-    drawLabelEdge(label, anchor, angle, extraPadding = 0, background = false) {
+    drawLabel(label, anchor, angle, extraPadding = 0, background = false) {
         this.ctx.font = EditorUtils.textStyle(20 * this.scale);
         let [width, height] = EditorUtils.calculateLabelSize(this.ctx, label, extraPadding, this.scale);
         let pos = EditorUtils.calculateLabelAnchor(anchor, angle, width, height)
@@ -206,6 +245,14 @@ class EditorRenderer {
         this.ctx.fillText(label, pos.x, pos.y);
         return pos;
     }
+    
+    /**
+     * Draws the given acceptance set at a posiiton of label.
+     * 
+     * @param {number[]} accSets - Array  of acceptance sets.
+     * @param {Victor} anchor - Position of label.
+     * @param {number} angle - Angle of label.
+     */
     drawLabelAccSet(accSets,anchor,angle) {
         let roundedAngle = this.roundAngle(angle);
         let verticalOffset = new Victor(this.circleSize, 0).rotateToDeg(roundedAngle);
@@ -219,10 +266,24 @@ class EditorRenderer {
         }
 
     }
+    
+    /**
+     * Rounds the angle to -90 degrees or to 90 degrees, whichever is closest.
+     * 
+     * @param {number} angle - Angle to be rounded.
+     * @returns {number} The rounded angle.
+     */
     roundAngle(angle) {
         if (angle < 0) return -90;
         return 90;
     }
+    /**
+     * Draws the given state.
+     * 
+     * @param {State} state - State to be drawn.
+     * @param {number} circleSize - Radius of the state.
+     * @param {object} selected -
+     */
     drawState(state, circleSize, selected) {
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
@@ -243,6 +304,14 @@ class EditorRenderer {
         this.drawCircle(pos.x, pos.y, circleSize, selected == state)
 
     }
+    /**
+     * Draws circle with given radius at given x, y coordinates.
+     * 
+     * @param {number} x - The x coordinate.
+     * @param {number} y - The y coordinate.
+     * @param {number} size - The radius.
+     * @param {boolean} isSelected - Whether or not should the circle be highlighted.
+     */
     drawCircle(x, y, size, isSelected) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, size, 0, Math.PI * 2);
@@ -252,7 +321,14 @@ class EditorRenderer {
             this.ctx.fill();
         }
     }
-    drawLoop(state, loopbacks, aps, selected) {
+    /**
+     * Draws looping edges for given state.
+     * 
+     * @param {State} state - The state whose looping edges should be drawn.
+     * @param {Edge[]} loopbacks - Array of edges to be drawn.
+     * @param {object} selected - Object currently selected by the user.  
+     */
+    drawLoop(state, loopbacks, selected) {
         for (let [_, loopback] of loopbacks) {
             this.ctx.strokeStyle = selected == loopback ? "#8888FF" : "#000000"
             let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position.clone().multiplyScalar(this.scale), loopback.offset.clone().multiplyScalar(this.scale), this.circleSize, this.offset.clone().multiplyScalar(this.scale));
@@ -263,7 +339,7 @@ class EditorRenderer {
             this.drawArrowhead(right.clone().subtract(upperRight), right)
             let anchor = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
             let label = this.labelTranslator.translate(loopback.label);
-            let pos = this.drawLabelEdge(label, anchor, loopback.offset.angleDeg());
+            let pos = this.drawLabel(label, anchor, loopback.offset.angleDeg());
             if (this.hasMultiEdge) {
                 this.drawLabelAccSet(loopback.accSets, pos, loopback.offset.angleDeg())
             }
@@ -278,12 +354,11 @@ class EditorRenderer {
      * Draws an edge from one state to another.
      * 
      * @param {State} originState - State from which the edge originates.
-     * @param {number} edgeIndex - Index of edge to be drawn.
+     * @param {Edge} edge - The edge to be drawn.
      * @param {State} destinationState - State to which the edge leads.
-     * @param {any[]} aps - Array of atomic propositions. 
+     * @param {object} selected - Object currently selected by the user. 
      */
-    drawEdge(originState, edgeIndex, destinationState, aps, selected) {
-        let edge = originState.edges[edgeIndex];
+    drawEdge(originState, edge, destinationState, selected) {
         this.ctx.strokeStyle = edge == selected ? "#8888FF" : "#000000"
         let originVector = originState.position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = destinationState.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -299,7 +374,7 @@ class EditorRenderer {
         let anchor = EditorUtils.getPointOnQuadraticBezier(fromPoint, midpoint, toPoint, 0.5);
         let angle = perpendicular.multiplyScalar(-1).angleDeg();
         let label = this.labelTranslator.translate(edge.label);
-        let labelPos = this.drawLabelEdge(label, anchor, angle);
+        let labelPos = this.drawLabel(label, anchor, angle);
         if (this.hasMultiEdge) {
             this.drawLabelAccSet(edge.accSets,labelPos,angle)
          }
@@ -308,6 +383,12 @@ class EditorRenderer {
         }
 
     }
+    /**
+     * Draws a straight line ending with arrow.
+     * 
+     * @param {Victor} fromPoint - Origin point of the line.
+     * @param {Victor} position - Destination point of the line.
+     */
     drawLineBetweenPositions(fromPoint, position) {
 
         fromPoint.add(this.offset).multiplyScalar(this.scale);
@@ -350,7 +431,8 @@ class EditorRenderer {
      * Draws multistart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {Automaton} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton to which the start belongs.
+     * @param {string} color - Which color should be used to draw the start.
      */
     drawMultiStart(start, automaton,color) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
@@ -366,7 +448,8 @@ class EditorRenderer {
      * Draws monostart.
      * 
      * @param {Start} start - Start to be drawn.
-     * @param {Automaton} automaton - The automaton.
+     * @param {Automaton} automaton - The automaton to which the start belongs.
+     * @param {string} color - Which color should be used to draw the start.
      */
     drawMonoStart(start, automaton,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
@@ -379,6 +462,12 @@ class EditorRenderer {
         this.ctx.stroke();
         this.drawArrowhead(destinationVector.clone().subtract(originVector), destinationVector);
     }
+    /**
+     * Draws the head of the start.
+     * 
+     * @param {Start} start - The start whose head should be drawn.
+     * @param {string} color - Which color should be used to draw the start.
+     */
     drawStartingPoint(start,color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         this.ctx.fillStyle = color;
@@ -415,6 +504,15 @@ class EditorRenderer {
             this.drawAccSet(point, sets[i]);
         }
     }
+    /**
+     * Draws acceptance sets along a cubic path.
+     * 
+     * @param {Victor} p0 - Point p0 of cubic curve.
+     * @param {Victor} p1 - Point p1 of cubic curve.
+     * @param {Victor} p2 - Point p2 of cubic curve.
+     * @param {Victor} p3 - Point p3 of cubic curve.
+     * @param {number[]} sets - Array of numbers of acceptance sets.
+     */
     drawAccSetsCubic(p0, p1, p2, p3, sets) {
         let s = this.circleSize;
         let points = EditorUtils.getPointsOnBezier(500, p0, p1, p2, p3);
@@ -430,6 +528,11 @@ class EditorRenderer {
             this.drawAccSet(point, sets[i]);
         }
     }
+    /**
+     * Draws acceptance sets on a state.
+     * 
+     * @param {State} state - State on which to draw the acceptance sets.
+     */
     drawAccSetsOnState(state) {
         let stateCenter = state.position.clone().add(this.offset).multiplyScalar(this.scale);
         let sets = state.accSets;
@@ -441,6 +544,12 @@ class EditorRenderer {
             this.drawAccSet(position, sets[i]);
         }
     }
+    /**
+     * Draws an acceptance set marker.
+     * 
+     * @param {Victor} point - Point at which to draw the marker.
+     * @param {number} label - Number of the acceptance set.
+     */
     drawAccSet(point, label) {
         this.ctx.beginPath();
         this.ctx.arc(point.x, point.y, this.circleSize / 3, 0, Math.PI * 2);
@@ -453,10 +562,10 @@ class EditorRenderer {
         this.ctx.fillText(label, point.x, point.y);
     }
     /**
-     * Draws an edge from one state to another.
+     * Calculates contrasting color to a given color.
      * 
-     * @param {String} color - hex representation of color.
-     * @returns {String} black or white
+     * @param {string} color - Hex representation of color.
+     * @returns {string} Black or white.
      */
     getContrastingColor(color) {
         let r = this.convertColor(color.slice(1, 3));
@@ -465,6 +574,12 @@ class EditorRenderer {
         let luminence = (0.2126 * r + 0.7152 * g + 0.0722 * b);
         return Math.sqrt(1.05 * 0.05) + 0.05 > luminence ? "#FFFFFF" : "#000000"
     }
+    /**
+     * Converts color to sRGB.
+     * 
+     * @param {string} colorHex - Hex representation of color.
+     * @returns {string} Converted color.
+     */
     convertColor(colorHex) {
         let color = parseInt(colorHex, 16);
         color = color / 255

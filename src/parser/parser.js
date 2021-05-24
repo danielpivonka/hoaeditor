@@ -3,6 +3,7 @@ const hoaLexer = require('./generated/hoaLexer');
 const hoaParser = require('./generated/hoaParser');
 const listener = require('./listenerImplementation').hoaListenerImpl;
 const postParse = require('./postParse').postParse;
+const Automaton = require('../hoaData/automaton').Automaton;
 
 class Parser {
     constructor() {
@@ -12,7 +13,7 @@ class Parser {
      * Parses hoa string.
      * 
      * @param {string} input - String in hoa format.
-     * @returns {HOA} Automaton object.
+     * @returns {Automaton} Automaton object.
      */
     parse(input) {
         this.errors = [];
@@ -39,10 +40,16 @@ class Parser {
         if (failed) {
             return null;
         }
+
         let list = new listener();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
-        console.log("calling post parse")
-        postParse(list.data,list.positions,this.errors)        
+        if (list.invalid) {
+            this.errors.push("Invalid automaton header");
+            return null;
+        }
+        if (!postParse(list.data, list.positions, this.errors)) {
+            return null;
+        }
         return list.data;
     }
 }

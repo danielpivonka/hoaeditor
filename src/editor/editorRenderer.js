@@ -561,6 +561,8 @@ class EditorRenderer {
         this.ctx.fillStyle = this.getContrastingColor(color);
         this.ctx.fillText(label, point.x, point.y);
     }
+
+    //formulas used below taken from https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html
     /**
      * Calculates contrasting color to a given color.
      * 
@@ -575,7 +577,7 @@ class EditorRenderer {
         return Math.sqrt(1.05 * 0.05) + 0.05 > luminence ? "#FFFFFF" : "#000000"
     }
     /**
-     * Converts color to sRGB.
+     * Converts color to sRGB luminence.
      * 
      * @param {string} colorHex - Hex representation of color.
      * @returns {string} Converted color.

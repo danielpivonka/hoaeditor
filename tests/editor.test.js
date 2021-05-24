@@ -98,27 +98,6 @@ test('alternating edge', () => {
   expect(events).toMatchSnapshot();
 })
 
-test('unlabeled edge', () => {
-  let hoaIn = 'HOA: v1\
-    Start: 0\
-    Acceptance: 1 Inf(0)\
-    AP: 2 "a" "b"\
-    --BODY--\
-    State: 0\
-     [t] 1\
-     2\
-    State: 1\
-     [0] 1 {0}\
-     1\
-    State: 2\
-     [0&1] 2 {0}\
-    --END--';
-
-  let result = parser.parse(hoaIn);
-  createEditor(result)
-  const events = ctx.__getEvents();
-  expect(events).toMatchSnapshot();
-})
 
 test('state label', () => {
   let hoaIn = 'HOA: v1\

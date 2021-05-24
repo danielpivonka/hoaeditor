@@ -61,6 +61,7 @@ function writeErrors(array) {
 function hideExport() {
     parseContainer.style.visibility = "collapse"
     parseButton.style.visibility = "collapse"
+    errorArea.innerHTML = "";
 
 }
 function lockClicked() {

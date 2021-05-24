@@ -27,7 +27,7 @@ function postParse(automaton,json,errors) {
         return false;
     }
     if (json) {
-        if(setPositions(automaton, json)||!hasPositions(automaton)){
+        if(!setPositions(automaton, json)||!hasPositions(automaton)){
             errors.push("Error parsing positons");
             return false;
         }
@@ -172,7 +172,7 @@ function hasPositions(automaton) {
             return false;
         }
         for (const edge of state.edges) {
-            if (!edge.position) {
+            if (!edge.offset) {
                 return false;
             }
         }

@@ -40,8 +40,13 @@ class Parser {
         if (failed) {
             return null;
         }
+
         let list = new listener();
         antlr4.tree.ParseTreeWalker.DEFAULT.walk(list, tree);
+        if (list.invalid) {
+            this.errors.push("Invalid automaton header");
+            return null;
+        }
         if (!postParse(list.data, list.positions, this.errors)) {
             return null;
         }

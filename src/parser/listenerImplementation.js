@@ -7,12 +7,20 @@ class hoaListenerImpl extends listener {
         listener.call(this);
         this.data = new Automaton();
         this.lastState = null;
+        this.invalid = false;
         this.positions;
     }
     enterFormatVersion(ctx) {
+        if (this.data.version) {
+            this.invalid = true;
+
+        }
         this.data.setVersion(ctx.IDENTIFIER().getText());
     }
     enterStates(ctx) {
+        if (this.data.stateCount) {
+            this.invalid = true;
+        }
         this.data.setStateCount(parseInt(ctx.INT().getText()));
     }
     enterStart(ctx) {
@@ -22,6 +30,10 @@ class hoaListenerImpl extends listener {
         this.data.addStart(intArray);
     }
     enterAp(ctx) {
+        if (this.data.ap) {
+            this.invalid = true;
+        }
+        this.data.ap = [];
         for (let i = 2; i < ctx.getChildCount(); i++) {
             this.data.addAp(ctx.getChild(i).getText().slice(1, -1));
         }
@@ -30,6 +42,9 @@ class hoaListenerImpl extends listener {
         this.data.addAlias(ctx.ANAME().getText(), ctx.lexpr().getText());
     }
     enterAcceptance(ctx) {
+        if (this.data.acceptance) {
+            this.invalid = true;
+        }
         this.data.setAcceptance(parseInt(ctx.INT().getText(), 10), ctx.acceptanceCond().getText());
     }
     enterAccname(ctx) {
@@ -51,9 +66,7 @@ class hoaListenerImpl extends listener {
         }
     }
     enterPositions(ctx) {
-        console.log("found positions")
         this.positions = ctx.STRING().getText();
-        console.log(this.positions)
     }
     enterEtc(ctx) {
         let etc = [];

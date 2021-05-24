@@ -15,6 +15,7 @@ class Editor {
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.selected = null;
         let automaton = new Automaton();
+        automaton.initializeEmpty();
         this.setAutomaton(automaton);
         this.currentDetail;
         document.body.addEventListener('mousedown', () => this.resetFocus());

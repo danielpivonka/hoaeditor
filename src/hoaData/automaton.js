@@ -10,20 +10,25 @@ class Automaton {
         /**@type {Start[]}*/
         this.start = []
         this.aliases = [];
-        this.ap = []
         this.properties = []
         /**@type {Position[]}*/
         this.startOffsets = []
-        this.acceptance = {
-            count: 0, str: ""
-        };
         this.hasExplicitPositions = false;
         this.etc = []
         /**@type {Map<number,State>}*/
         this.states = new Map();
-        this.version = "v1";
         this.accname = "";
         this.name = "";
+    }
+    /**
+     * Initializes empty automaton.
+     */
+    initializeEmpty() {
+        this.version = "v1";
+        this.acceptance = {
+            count: 0, str: ""
+        };
+        this.ap = [];
     }
     /**
      * Sets the hoa format version.

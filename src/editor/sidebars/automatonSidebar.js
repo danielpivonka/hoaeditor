@@ -115,9 +115,15 @@ class AutomatonSidebar {
         let field = SidebarUtils.createField(id);
         field.value = array[index];
         field.oninput = (e) => {
-            array[index] = e.target.value;
+            this.setFieldCorrectness(field, /^[a-zA-Z_][0-9a-zA-Z_-]*$/.test(e.target.value))
+            if (/^[a-zA-Z_][0-9a-zA-Z_-]*$/.test(e.target.value)) {
+                array[index] = e.target.value;
+            }
         };
-        field.onblur = () => { this.automatonChanged(); };
+        field.onblur = (e) => {
+            e.target.value = array[index]; 
+        }
+
         let removeButton = document.createElement("button")
         removeButton.setAttribute("type", "button");
         removeButton.innerHTML = "X";

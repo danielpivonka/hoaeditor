@@ -53,7 +53,7 @@ class LexprField extends AbstractField{
             e.stopPropagation();
             e.preventDefault();
             this.selected(this.localArray.length);
-            this.drawElements(this.field, this.localArray);
+            this.drawElements(this.localArray);
          }
         this.field.onclick = sel;
         this.field.oncontextmenu = sel;
@@ -77,7 +77,7 @@ class LexprField extends AbstractField{
 
         this.changed = false;
         this.isSelected = true;
-        this.createKeyboard(this.field, this.localArray);
+       this.createKeyboard(this.localArray);
     }
 
 }
@@ -171,7 +171,7 @@ class LexprField extends AbstractField{
             this.labelKeyboard.onInput = (str) => {
                 labelArray.splice(this.labelCursor, 0, str)
                 this.labelCursor++;
-                this.drawElements(this.field, labelArray)
+                this.drawElements(labelArray)
                 this.attemptCommit();
             };
             this.keyboardNode = this.labelKeyboard.generateKeyboard(this.excluded);
@@ -183,7 +183,7 @@ class LexprField extends AbstractField{
                 this.keyboardNode.className = "container keyboard";
                 document.getElementsByTagName("body")[0].appendChild(this.keyboardNode);
             }
-            this.drawElements(this.field,labelArray)
+            this.drawElements(labelArray)
         }
     }
     /**

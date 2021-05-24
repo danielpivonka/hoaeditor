@@ -56,5 +56,5 @@ WHITESPACE: (' ' | '\r' | '\t' | '\n') -> skip;
 BOOLEAN: [tf];
 IDENTIFIER: [a-zA-Z_][0-9a-zA-Z_-]*;
 ANAME: '@' [0-9a-zA-Z_-]+;
-
 COMMENT: '/*' .*? '*/' -> skip;
+ERROR: . ;

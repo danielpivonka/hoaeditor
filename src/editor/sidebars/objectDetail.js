@@ -19,7 +19,7 @@ class ObjectDetail {
         this.sidebarRedrawRequestListener = null;
         this.translator = translator;
         this.accSetVerifier = new AccSetVerifier(automaton);
-        this.lexprField = new LexprField(automaton, translator, false)
+        this.lexprField = new LexprField(automaton, translator)
         this.accSetField = new AccSetField(automaton);
         this.automaton = automaton;
         this.currentLabel;

@@ -30,7 +30,7 @@ function automatonToHoaString(automaton,extended = false) {
         string += "AP: ";
         string += automaton.ap.length;
         for (const ap of automaton.ap) {
-            string += " \"" + ap + "\"";
+            string += " \"" + ap.replace(/"/g,"\\\"") + "\"";
         }
         string += "\n";
     }

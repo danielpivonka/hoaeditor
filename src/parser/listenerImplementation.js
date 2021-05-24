@@ -35,7 +35,7 @@ class hoaListenerImpl extends listener {
         }
         this.data.ap = [];
         for (let i = 2; i < ctx.getChildCount(); i++) {
-            this.data.addAp(ctx.getChild(i).getText().slice(1, -1));
+            this.data.addAp(ctx.getChild(i).getText().slice(1, -1).replace(/\\"/g,"\""));
         }
     }
     enterAlias(ctx) {

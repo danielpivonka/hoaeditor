@@ -9,7 +9,7 @@ const Automaton = require('../hoaData/automaton').Automaton;
  * @param {number} height - Height of the canvas.
  * @param {number} circleSize - Radius of states.
  */
-function initializePositions(automaton,width,height,circleSize) {
+function initializePositions(automaton, width, height, circleSize) {
             setImplicitPositions(automaton, width, height);
             setImplicitOffsets(automaton);
             let blockedAngles = EditorUtils.calculateBlockedAngles(automaton,circleSize);

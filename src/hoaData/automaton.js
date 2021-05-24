@@ -24,11 +24,17 @@ class Automaton {
      * Initializes empty automaton.
      */
     initializeEmpty() {
-        this.version = "v1";
-        this.acceptance = {
-            count: 0, str: ""
-        };
-        this.ap = [];
+        if (!this.version) {
+            this.version = "v1";
+        }
+        if (!this.acceptance) {
+            this.acceptance = {
+                count: 0, str: ""
+            };
+        }
+        if (!this.ap) {
+            this.ap = [];
+        }
     }
     /**
      * Sets the hoa format version.

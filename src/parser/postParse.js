@@ -32,6 +32,7 @@ function postParse(automaton,json,errors) {
             return false;
         }
     }
+    automaton.initializeEmpty();
     fixImplicitLabels(automaton);
     return true;
 }

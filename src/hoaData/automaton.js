@@ -324,6 +324,9 @@ class Automaton {
                 }
             }
         }
+        for (const start of this.start) {
+            start.stateConj = start.stateConj.map(n => n > removedStateNumber ? n - 1 : n);
+        }
         if (removedStateNumber != size-1) {
             this.states.delete(this.states.size - 1);
         }

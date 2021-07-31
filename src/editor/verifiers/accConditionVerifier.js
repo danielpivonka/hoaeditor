@@ -26,7 +26,7 @@ function verifyAccCond(accCond,automaton) {
         reportContextSensitivity: () => { },
     });
     let parsed = parser.acceptanceCond().getText();
-    return success && parsed == accCond && areNumbersValid(parsed,automaton);
+    return success && parsed == accCond.replace(/\s+/g, '') && areNumbersValid(parsed,automaton);
 }
 /**
  * Verifies if acceptance set numbers in acceptance condition are valid.

@@ -180,7 +180,7 @@ class ObjectDetail {
     createTransferButton(state) {
         let button = document.createElement("button");
         button.className = "button";
-        button.innerHTML = "Transef labels to edge"
+        button.innerHTML = "Transfer labels to edge"
         button.onclick = () => {
             state.transferLabel();
             this.draw();

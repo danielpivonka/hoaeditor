@@ -40,6 +40,11 @@ input { display: table-cell;
 }
 .error{
     border-color: red !important;
+
+}
+.error:focus{
+    outline-style: solid;
+    outline-color: red;
 }
 .collapsibleButton{
     text-align: left;
@@ -154,4 +159,8 @@ label { display: table-cell;
 .detailText{
     display: table-cell;
     white-space: pre-wrap;
+}
+input:focus{
+    outline-style: solid;
+    outline-color: black;
 }

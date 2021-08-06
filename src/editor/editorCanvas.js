@@ -9,10 +9,10 @@ const initializePositions = require('./automatonInitializer').initializePosition
 const EditorRenderer = require('./editorRenderer').EditorRenderer;
 
 
-
 class CanvasController {
     constructor(canvas) {
         /**@type {Automaton}*/
+        /**@private */
         this.automaton = new Automaton();
         /**@type {HTMLCanvasElement}*/
         this.canvas = canvas;
@@ -26,6 +26,8 @@ class CanvasController {
         this.canvas.onmousemove = this.mouseMove.bind(this);
         this.canvas.ondblclick = this.doubleClick.bind(this);
         this.canvas.onwheel = this.changeZoom.bind(this);
+        /**@type {function(Automaton): void}*/
+        this.onSaveRequested;
         this.editorState = CanvasController.stateEnum.IDLE;
         this.destinations = [];
         this.onStateChangedListeners = [];
@@ -37,9 +39,10 @@ class CanvasController {
         this.lastMove;
         this.backEdgeLocked = false;
         this.isLocked = false;
-
     }
-    
+
+
+
     /**
      * Temorarily sets the backEdgeLocked variable to true.
      */
@@ -56,6 +59,11 @@ class CanvasController {
         if (this.renderer) {
             this.renderer.resize();
             this.draw();
+        }
+    }
+    requestSave() {
+        if (this.onSaveRequested) {
+            this.onSaveRequested(this.automaton);
         }
     }
     /**
@@ -182,15 +190,17 @@ class CanvasController {
             return;
         }
         if (this.selected instanceof State) {
+            this.requestSave();
             this.automaton.removeState(this.selected);
         }
         else if (this.selected instanceof Start) {
+            this.requestSave();
             this.automaton.removeStart(this.selected);
         } else if (this.selected instanceof Edge) {
+            this.requestSave();
             for (const state of this.automaton.states.values()) {
                 state.edges = state.edges.filter(edge => edge != this.selected);
             }
-            
         }
         else return;
         this.draw();
@@ -226,7 +236,8 @@ class CanvasController {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
-                if (!this.backEdgeLocked || this.selected.number !=this.first.number) {
+                if (!this.backEdgeLocked || this.selected.number != this.first.number) {
+                    this.requestSave();
                     this.addEdge(this.first, [this.selected.number]);
                     this.changeState(CanvasController.stateEnum.IDLE);
                 }
@@ -248,7 +259,8 @@ class CanvasController {
                     this.changeState(CanvasController.stateEnum.IDLE);
                 }
             }
-            else if (this.first instanceof Start){
+            else if (this.first instanceof Start) {
+                this.requestSave();
                 this.first.addEdge([this.selected.number]);
             }
                 this.setSelected(this.first);
@@ -270,6 +282,7 @@ class CanvasController {
                 this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
             }
             else {
+                this.requestSave();
                 this.addEdge(this.first, this.destinations);
                 this.changeState(CanvasController.stateEnum.IDLE);
                 this.setSelected(this.first);
@@ -287,6 +300,7 @@ class CanvasController {
                     this.destinations = this.destinations.filter(e => this.selected.number != e);
                 }
             }
+            this.requestSave();
             this.addEdge(this.first, this.destinations);
             this.changeState(CanvasController.stateEnum.IDLE);
             this.setSelected(this.first);
@@ -299,13 +313,16 @@ class CanvasController {
             if (this.selected instanceof State) {
                 if (this.first instanceof Edge) {
                     if (this.first.stateConj.includes(this.selected.number) && this.first.stateConj.length > 1) {
+                        this.requestSave();
                         this.first.stateConj = this.first.stateConj.filter(n => n != this.selected.number);
                     }
-                    else if(!this.first.stateConj.includes(this.selected.number)) {
+                    else if (!this.first.stateConj.includes(this.selected.number)) {
+                        this.requestSave();
                         this.first.stateConj.push(this.selected.number)
                     }
                 }
                 else if (this.first instanceof Start) {
+                    this.requestSave();
                     this.first.addEdge([this.selected.number]);
                 }
             }
@@ -356,10 +373,12 @@ class CanvasController {
             this.draw();
         }
         else if (this.editorState == CanvasController.stateEnum.IDLE) {
+            this.requestSave();
             this.addStateAtPosition(x, y);
             this.draw();
         }
         else if (this.editorState == CanvasController.stateEnum.ADD_START) {
+            this.requestSave();
             let start = this.automaton.addStart();
             start.position = new Victor(x, y);
             this.draw();
@@ -426,6 +445,9 @@ class CanvasController {
         if (this.editorState == CanvasController.stateEnum.SELECTED||this.editorState == CanvasController.stateEnum.MOVE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
+            }
+            if (this.editorState == CanvasController.stateEnum.SELECTED) {
+                this.requestSave();
             }
             this.changeState(CanvasController.stateEnum.MOVE)
             let dx = x - this.downLocation.x;

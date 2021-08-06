@@ -3,6 +3,7 @@ const AutomatonSidebar = require('./sidebars/automatonSidebar').AutomatonSidebar
 const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
 const Automaton = require('../hoaData/automaton').Automaton;
 const LabelTranslator = require('../labelTranslator').LabelTranslator;
+const cloneDeep = require('lodash/cloneDeep');
 
 
 class Editor {
@@ -13,6 +14,7 @@ class Editor {
         this.automatonSidebar = null;
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
+        this.editorCanvas.onSaveRequested = this.saveState.bind(this);
         this.selected = null;
         let automaton = new Automaton();
         automaton.initializeEmpty();
@@ -27,6 +29,7 @@ class Editor {
         })
         this.onAutomatonChanged;
         this.isValid;
+        this.savedStates = [];
     }
 
     resetFocus() {
@@ -110,6 +113,18 @@ class Editor {
             this.editorCanvas.isLocked = !this.editorCanvas.isLocked;
         }
 
+    }
+    saveState(automaton) {
+        this.savedStates.push(cloneDeep(automaton));
+        if (this.savedStates.length > 100) {
+            this.savedStates.shift();
+        }
+    }
+    undo() {
+        if (this.savedStates.length > 0) {
+            this.setAutomaton(this.savedStates.pop());
+            console.log("undo succesful")
+        }
     }
 }
 exports.Editor = Editor;

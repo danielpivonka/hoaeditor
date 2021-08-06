@@ -100,6 +100,10 @@ document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Escape") {
         editor.escapeClicked();
     }
+    if (event.key == "z" && event.ctrlKey) {
+        console.log("undoing");
+        editor.undo();
+    }
 });
 document.addEventListener("keyup", function onPress(event) {
     if (event.key === "Shift") {

@@ -25,6 +25,7 @@ class ObjectDetail {
         this.currentLabel;
         this.object;
         this.onAutomatonChanged;
+        this.onSaveRequested;
         this.lexprField.onKeyboardGenerated = (keyboardNode) =>this.onKeyboardGenerated(keyboardNode)
         this.sidebar;
         this.keyboardDiv;
@@ -143,6 +144,7 @@ class ObjectDetail {
      */
     commitChanges() {
         if (verifyLabel(this.currentLabel)) {
+            this.requestSave();
             if (this.object instanceof State) {
                 this.object.setLabel(this.currentLabel);
             }
@@ -187,6 +189,11 @@ class ObjectDetail {
             this.onAutomatonChanged();
         }
         return button;
+    }
+    requestSave() {
+        if (this.onSaveRequested) {
+            this.onSaveRequested();
+        }
     }
 
 }

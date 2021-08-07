@@ -66,7 +66,6 @@ class Editor {
         if (this.onAutomatonChanged) {
             this.onAutomatonChanged();
         }
-        this.saveState()
     }
     drawSidebar() {
         this.sidebarContainer.innerHTML = "";
@@ -92,7 +91,8 @@ class Editor {
             this.detail.lexprField.deselect();
         });
         this.currentDetail = this.detail;
-        this.currentDetail.onAutomatonChanged = () => this.refresh();
+        this.currentDetail.onAutomatonChanged = this.refresh.bind(this);
+        this.currentDetail.onSaveRequested = this.saveState.bind(this);
         document.getElementsByTagName("body")[0].appendChild(container);
     }
 

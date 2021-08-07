@@ -94,15 +94,18 @@ document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Delete") {
         editor.removeClicked();
     }
-    if (event.key === "Shift") {
+    if (event.key === "Shift" && !event.ctrlKey) {
+        console.log("setting shift")
         editor.setShift(true);
     }
     if (event.key === "Escape") {
         editor.escapeClicked();
     }
-    if (event.key == "z" && event.ctrlKey) {
-        console.log("undoing");
+    if (event.key == "z" && event.ctrlKey && !event.shiftKey) {
         editor.undo();
+    }
+    if (event.key == "Z" && event.ctrlKey) {
+        editor.redo();
     }
 });
 document.addEventListener("keyup", function onPress(event) {

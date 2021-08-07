@@ -33,6 +33,7 @@ class Editor {
         this.onAutomatonChanged;
         this.isValid;
         this.savedStates = [];
+        this.futureStates = [];
     }
 
     resetFocus() {
@@ -117,15 +118,27 @@ class Editor {
 
     }
     saveState() {
+        console.log("saving")
         this.savedStates.push(cloneDeep(this.automaton));
+        this.futureStates = [];
         if (this.savedStates.length > 100) {
             this.savedStates.shift();
         }
     }
     undo() {
         if (this.savedStates.length > 0) {
-            this.setAutomaton(this.savedStates.pop());
-            console.log("undo succesful")
+            console.log("undoing");
+            let state = this.savedStates.pop();
+            this.futureStates.push(cloneDeep(this.automaton));
+            this.setAutomaton(state);
+        }
+    }
+    redo() {
+        if (this.futureStates.length > 0) {
+            console.log("redoing");
+            let state = this.futureStates.pop();
+            this.savedStates.push(cloneDeep(this.automaton));
+            this.setAutomaton(state);
         }
     }
 }

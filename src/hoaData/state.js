@@ -44,7 +44,7 @@ class State {
      */
     areEdgesLabeled() {
         for (const edge of this.edges) {
-            if (edge.label!=0) {
+            if (edge.label != 0) {
                 return true
             }
         }
@@ -71,7 +71,7 @@ class State {
         if (label.length != 0) {
             for (const edge of this.edges) {
                 edge.label = [];
-            
+
             }
         }
     }

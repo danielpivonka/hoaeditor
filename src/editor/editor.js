@@ -4,6 +4,7 @@ const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
 const Automaton = require('../hoaData/automaton').Automaton;
 const LabelTranslator = require('../labelTranslator').LabelTranslator;
 const cloneDeep = require('lodash/cloneDeep');
+const Exporter = require('../hoaData/exporter/exporter').automatonToHoaString;
 
 
 class Editor {
@@ -15,6 +16,8 @@ class Editor {
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.editorCanvas.onSaveRequested = this.saveState.bind(this);
+        /**@type {Automaton}*/
+        this.automaton = null;
         this.selected = null;
         let automaton = new Automaton();
         automaton.initializeEmpty();
@@ -38,10 +41,11 @@ class Editor {
     }
     setAutomaton(automaton) {
         this.translator = new LabelTranslator(automaton);
-        this.editorCanvas.setAutomaton(automaton,this.translator);
-        this.automatonSidebar = new AutomatonSidebar(automaton,this.translator);
-        this.detail = new ObjectDetail(automaton,this.translator);
+        this.editorCanvas.setAutomaton(automaton, this.translator);
+        this.automatonSidebar = new AutomatonSidebar(automaton, this.translator);
+        this.detail = new ObjectDetail(automaton, this.translator);
         this.automatonSidebar.addAutomatonChangedListener(() => this.refresh());
+        this.automaton = automaton;
         this.drawSidebar();
     }
     setShift(val) {
@@ -61,26 +65,24 @@ class Editor {
         if (this.onAutomatonChanged) {
             this.onAutomatonChanged();
         }
+        this.saveState()
     }
     drawSidebar() {
         this.sidebarContainer.innerHTML = "";
         this.sidebarContainer.append(this.automatonSidebar.generateSidebar());
         this.isValid = Array.from(this.automatonSidebar.correctMap.values()).every(e => e == true);
-        if (this.onAutomatonChanged) {
-            this.onAutomatonChanged();
-        }
     }
     resized() {
         this.editorCanvas.resized();
     }
     componentSelected(component) {
-            this.selected = component;
-            this.drawSidebar();
+        this.selected = component;
+        this.drawSidebar();
     }
     showDetails(object, mousePosition) {
         let container = document.createElement("div");
         container.className = "container detail_area"
-        container.style.left = mousePosition.x+10+ "px";
+        container.style.left = mousePosition.x + 10 + "px";
         container.style.top = mousePosition.y + "px";
         container.setAttribute("id", "objectDetail");
         container.appendChild(this.detail.generateDetail(object));
@@ -92,7 +94,7 @@ class Editor {
         this.currentDetail.onAutomatonChanged = () => this.refresh();
         document.getElementsByTagName("body")[0].appendChild(container);
     }
-    
+
     removeDetail() {
         if (this.currentDetail) {
             this.currentDetail.close();
@@ -114,8 +116,10 @@ class Editor {
         }
 
     }
-    saveState(automaton) {
-        this.savedStates.push(cloneDeep(automaton));
+    saveState() {
+        this.savedStates.push(cloneDeep(this.automaton));
+        console.log("saving state");
+        console.log(JSON.stringify(this.automaton.states.get(0)?.edges[0]?.offset));
         if (this.savedStates.length > 100) {
             this.savedStates.shift();
         }

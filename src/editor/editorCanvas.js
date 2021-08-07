@@ -49,8 +49,8 @@ class CanvasController {
     lockBackEdge() {
         this.backEdgeLocked = true;
         setTimeout(
-            ()=> this.backEdgeLocked = false
-        , 750);
+            () => this.backEdgeLocked = false
+            , 750);
     }
     /**
      * Adjusts the size of canvas to fit the page.
@@ -63,7 +63,7 @@ class CanvasController {
     }
     requestSave() {
         if (this.onSaveRequested) {
-            this.onSaveRequested(this.automaton);
+            this.onSaveRequested();
         }
     }
     /**
@@ -113,27 +113,27 @@ class CanvasController {
      * @param {Automaton} automaton - Automaton object.
      */
 
-    setAutomaton(automaton,translator) {
+    setAutomaton(automaton, translator) {
         /**@type {Automaton}*/
         this.automaton = automaton;
         if (!this.automaton.hasExplicitPositions) {
-            initializePositions(automaton,this.canvas.width,this.canvas.height,this.circleSize)
+            initializePositions(automaton, this.canvas.width, this.canvas.height, this.circleSize)
         }
         this.labelTranslator = translator;
         this.draw();
     }
 
-    
+
     /**
      * Passes current automaton to current renderer.
      */
     draw() {
-        let blockedAngles = EditorUtils.calculateBlockedAngles(this.automaton,this.circleSize);
+        let blockedAngles = EditorUtils.calculateBlockedAngles(this.automaton, this.circleSize);
         let blockedLoopbackAngles = EditorUtils.calculateLoopbackAngles(this.automaton)
         let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-        let startAngles = EditorUtils.calculateStartAngles(this.automaton,this.circleSize)
+        let startAngles = EditorUtils.calculateStartAngles(this.automaton, this.circleSize)
         mergedAngles = mergedAngles.map((arr1, index) => arr1.concat(startAngles[index]));
-        this.renderer.draw(this.automaton, this.offset, mergedAngles,this.labelTranslator, this.selected);
+        this.renderer.draw(this.automaton, this.offset, mergedAngles, this.labelTranslator, this.selected);
 
     }
     /**
@@ -232,7 +232,7 @@ class CanvasController {
             }
         }
         else if (this.editorState == CanvasController.stateEnum.ADD_EDGE) {
-            
+
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             if (this.selected instanceof State) {
@@ -263,9 +263,9 @@ class CanvasController {
                 this.requestSave();
                 this.first.addEdge([this.selected.number]);
             }
-                this.setSelected(this.first);
-                this.draw();
-                this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
+            this.setSelected(this.first);
+            this.draw();
+            this.renderer.drawPartialMultiEdge(this.selected, this.automaton.numbersToStates(this.destinations), new Victor(x, y));
         }
         else if (this.editorState == CanvasController.stateEnum.ADD_EDGE_MULTI) {
             this.first = this.selected;
@@ -306,7 +306,7 @@ class CanvasController {
             this.setSelected(this.first);
             this.draw();
         }
-        else if (this.editorState == CanvasController.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge||this.selected instanceof Start) {
+        else if (this.editorState == CanvasController.stateEnum.SELECTED_SHIFT && this.selected instanceof Edge || this.selected instanceof Start) {
             this.first = this.selected;
             this.checkCollisionsAtPosition(new Victor(x, y));
             let wasMono = this.first.stateConj.length == 1;
@@ -365,7 +365,7 @@ class CanvasController {
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
         e.preventDefault();
         e.stopPropagation();
-        if (this.editorState == CanvasController.stateEnum.SELECTED || this.editorState == CanvasController.stateEnum.ADD_EDGE||this.editorState ==CanvasController.stateEnum.SELECTED_MODIFY) {
+        if (this.editorState == CanvasController.stateEnum.SELECTED || this.editorState == CanvasController.stateEnum.ADD_EDGE || this.editorState == CanvasController.stateEnum.SELECTED_MODIFY) {
             this.changeState(CanvasController.stateEnum.SELECTED_MODIFY);
             if (this.selected instanceof State || this.selected instanceof Edge) {
                 this.requestDetail(this.selected, this.downLocation.clone().add(this.offset).multiplyScalar(this.renderer.scale));
@@ -401,7 +401,7 @@ class CanvasController {
      * @param {MouseEvent} e - The mouse event.
      */
     mouseUp(e) {
-       
+
         let boundingBox = this.canvas.getBoundingClientRect();
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
@@ -442,7 +442,7 @@ class CanvasController {
         let boundingBox = this.canvas.getBoundingClientRect()
         let x = (e.clientX - boundingBox.left) / this.renderer.scale - this.offset.x;
         let y = (e.clientY - boundingBox.top) / this.renderer.scale - this.offset.y;
-        if (this.editorState == CanvasController.stateEnum.SELECTED||this.editorState == CanvasController.stateEnum.MOVE) {
+        if (this.editorState == CanvasController.stateEnum.SELECTED || this.editorState == CanvasController.stateEnum.MOVE) {
             if (this.selected == null || this.downLocation == null) {
                 return;
             }
@@ -529,7 +529,7 @@ class CanvasController {
                 return
             }
         }
-        
+
         let labelResult = this.checkEdgeLabelCollision(position);
         if (labelResult) {
             this.setSelected(labelResult);
@@ -560,9 +560,9 @@ class CanvasController {
      * @param {State|Edge} object - Object for which the detail should be displayed.
      * @param {Victor} position - Position at which the detail should be displayed.
      */
-    requestDetail(object,position) {
+    requestDetail(object, position) {
         if (this.detailRequestedListener) {
-            this.detailRequestedListener(object,position);
+            this.detailRequestedListener(object, position);
         }
     }
     /**
@@ -812,18 +812,18 @@ class CanvasController {
     }
 
 
-   /**
-    * Checks collision with quadratic curve.
-    *
-    * @param {Victor} p0 - First point.
-    * @param {Victor} p1 - Second point.
-    * @param {Victor} p2 - Third point.
-    * @param {Victor} position - The position at which to check for collision.
-    * @param {number} distance - Maximum distance for collision to be registered.
-    * @returns {boolean} Whether or not is the point near quadratic curve.    
-    */
+    /**
+     * Checks collision with quadratic curve.
+     *
+     * @param {Victor} p0 - First point.
+     * @param {Victor} p1 - Second point.
+     * @param {Victor} p2 - Third point.
+     * @param {Victor} position - The position at which to check for collision.
+     * @param {number} distance - Maximum distance for collision to be registered.
+     * @returns {boolean} Whether or not is the point near quadratic curve.    
+     */
     checkQuadraticCollision(p0, p1, p2, position, distance) {
-        var dist = EditorUtils.approxBezierLength(10,p0, p1, p2);
+        var dist = EditorUtils.approxBezierLength(10, p0, p1, p2);
         let steps = Math.ceil(dist)
         let stepSize = 1 / steps;
         let distanceLimitSquared = distance * distance;
@@ -836,19 +836,19 @@ class CanvasController {
         }
         return false;
     }
-   /**
-    * Checks collision with cubic curve.
-    *
-    * @param {Victor} p0 - First point.
-    * @param {Victor} p1 - Second point.
-    * @param {Victor} p2 - Third point.
-    * @param {Victor} p3 - Fourth point.
-    * @param {Victor} position - The position at which to check for collision.
-    * @param {number} distance - Maximum distance for collision to be registered.
-    * @returns {boolean} Whether or not is the point near quadratic curve.    
-    */
+    /**
+     * Checks collision with cubic curve.
+     *
+     * @param {Victor} p0 - First point.
+     * @param {Victor} p1 - Second point.
+     * @param {Victor} p2 - Third point.
+     * @param {Victor} p3 - Fourth point.
+     * @param {Victor} position - The position at which to check for collision.
+     * @param {number} distance - Maximum distance for collision to be registered.
+     * @returns {boolean} Whether or not is the point near quadratic curve.    
+     */
     checkCubicCollision(p0, p1, p2, p3, position, distance) {
-        var dist = EditorUtils.approxBezierLength(10,p0, p1, p2, p3);
+        var dist = EditorUtils.approxBezierLength(10, p0, p1, p2, p3);
         let steps = Math.ceil(dist)
         let stepSize = 1 / steps;
         let distanceLimitSquared = distance * distance;
@@ -868,7 +868,7 @@ class CanvasController {
      */
     changeZoom(e) {
         let change = 1 - (Math.sign(e.deltaY) / 10);
-        if ((this.renderer.scale * change) > 0.1 && (this.renderer.scale * change)<10) {
+        if ((this.renderer.scale * change) > 0.1 && (this.renderer.scale * change) < 10) {
             this.renderer.scale *= change;
         }
         e.preventDefault();

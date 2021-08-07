@@ -48,14 +48,14 @@ class EditorRenderer {
      * @param {LabelTranslator} translator - Translator bound to te automaton.
      * @param {object} selected - The selected object.
      */
-    draw(automaton, offset, angles,translator, selected) {
+    draw(automaton, offset, angles, translator, selected) {
         this.drawnEdges = [];
         this.offset = offset;
         this.labelTranslator = translator;
         this.circleSize = this.baseCircleSize * this.scale;
         this.ctx.lineWidth = this.scale * 1.5;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawStarts(automaton,selected);
+        this.drawStarts(automaton, selected);
         this.hasMultiEdge = automaton.hasMultiEdge();
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
@@ -116,12 +116,12 @@ class EditorRenderer {
     drawStarts(automaton, selected) {
         for (const start of automaton.start) {
             let color = start == selected ? "#8888FF" : "#000000";
-            this.drawStartingPoint(start,color);
+            this.drawStartingPoint(start, color);
             if (start.stateConj.length > 1) {
-                this.drawMultiStart(start, automaton,color);
+                this.drawMultiStart(start, automaton, color);
             }
             else if (start.stateConj.length == 1) {
-                this.drawMonoStart(start, automaton,color);
+                this.drawMonoStart(start, automaton, color);
             }
         }
     }
@@ -245,7 +245,7 @@ class EditorRenderer {
         this.ctx.fillText(label, pos.x, pos.y);
         return pos;
     }
-    
+
     /**
      * Draws the given acceptance set at a posiiton of label.
      * 
@@ -253,7 +253,7 @@ class EditorRenderer {
      * @param {Victor} anchor - Position of label.
      * @param {number} angle - Angle of label.
      */
-    drawLabelAccSet(accSets,anchor,angle) {
+    drawLabelAccSet(accSets, anchor, angle) {
         let roundedAngle = this.roundAngle(angle);
         let verticalOffset = new Victor(this.circleSize, 0).rotateToDeg(roundedAngle);
         let baseAnchor = anchor.clone().add(verticalOffset);
@@ -266,7 +266,7 @@ class EditorRenderer {
         }
 
     }
-    
+
     /**
      * Rounds the angle to -90 degrees or to 90 degrees, whichever is closest.
      * 
@@ -288,7 +288,7 @@ class EditorRenderer {
         this.ctx.strokeStyle = 'black';
         this.ctx.fillStyle = 'black';
         let pos = state.position.clone().add(this.offset).multiplyScalar(this.scale);
-        if (state.label.length!=0) {
+        if (state.label.length != 0) {
             this.ctx.beginPath();
             this.ctx.moveTo(pos.x - circleSize, pos.y);
             this.ctx.lineTo(pos.x + circleSize, pos.y);
@@ -349,7 +349,7 @@ class EditorRenderer {
             }
         }
     }
-    
+
     /**
      * Draws an edge from one state to another.
      * 
@@ -376,8 +376,8 @@ class EditorRenderer {
         let label = this.labelTranslator.translate(edge.label);
         let labelPos = this.drawLabel(label, anchor, angle);
         if (this.hasMultiEdge) {
-            this.drawLabelAccSet(edge.accSets,labelPos,angle)
-         }
+            this.drawLabelAccSet(edge.accSets, labelPos, angle)
+        }
         else {
             this.drawAccSetsQuadratic(fromPoint, midpoint, toPoint, edge.accSets)
         }
@@ -399,16 +399,16 @@ class EditorRenderer {
         this.ctx.stroke();
         this.drawArrowhead(position.clone().subtract(fromPoint), position)
     }
-    drawQuadraticCurveBetweenPositions(fromPoint,midpoint, position) {
+    drawQuadraticCurveBetweenPositions(fromPoint, midpoint, position) {
         fromPoint.add(this.offset).multiplyScalar(this.scale);
-    position.add(this.offset).multiplyScalar(this.scale);
-    this.ctx.beginPath();
-    this.ctx.moveTo(fromPoint.x, fromPoint.y);
-    this.ctx.quadraticCurveTo(midpoint.x,midpoint.y,position.x, position.y)
-    this.ctx.stroke();
-    this.drawArrowhead(position.clone().subtract(midpoint), position)
+        position.add(this.offset).multiplyScalar(this.scale);
+        this.ctx.beginPath();
+        this.ctx.moveTo(fromPoint.x, fromPoint.y);
+        this.ctx.quadraticCurveTo(midpoint.x, midpoint.y, position.x, position.y)
+        this.ctx.stroke();
+        this.drawArrowhead(position.clone().subtract(midpoint), position)
     }
-    
+
     /**
      * Draws an arrowhead onto bound canvas.
      * 
@@ -434,7 +434,7 @@ class EditorRenderer {
      * @param {Automaton} automaton - The automaton to which the start belongs.
      * @param {string} color - Which color should be used to draw the start.
      */
-    drawMultiStart(start, automaton,color) {
+    drawMultiStart(start, automaton, color) {
         let statePositions = EditorUtils.statesToPositions(automaton.numbersToStates(start.stateConj));
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         let offsetPositions = statePositions.map(position => position.clone().add(this.offset).multiplyScalar(this.scale));
@@ -451,7 +451,7 @@ class EditorRenderer {
      * @param {Automaton} automaton - The automaton to which the start belongs.
      * @param {string} color - Which color should be used to draw the start.
      */
-    drawMonoStart(start, automaton,color) {
+    drawMonoStart(start, automaton, color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         let statePosition = automaton.getStateByNumber(start.stateConj[0]).position.clone().add(this.offset).multiplyScalar(this.scale);
         let destinationVector = EditorUtils.getNearestPointOnCircle(statePosition, originVector, this.circleSize);
@@ -468,7 +468,7 @@ class EditorRenderer {
      * @param {Start} start - The start whose head should be drawn.
      * @param {string} color - Which color should be used to draw the start.
      */
-    drawStartingPoint(start,color) {
+    drawStartingPoint(start, color) {
         let originVector = start.position.clone().add(this.offset).multiplyScalar(this.scale);
         this.ctx.fillStyle = color;
         this.ctx.beginPath();
@@ -487,19 +487,19 @@ class EditorRenderer {
      */
     drawAccSetsQuadratic(from, mid, end, sets) {
         let s = this.circleSize;
-       
+
         let steps = 500;
         let points = EditorUtils.getPointsOnBezier(steps, from, mid, end);
         let bezierLength = points.slice(-1)[0];
         let centerDistance = points[Math.round(steps / 2)];
         let center = centerDistance / bezierLength;
-        if (s * sets.length > bezierLength*0.9) {
-            s = bezierLength*0.9 / sets.length;
+        if (s * sets.length > bezierLength * 0.9) {
+            s = bezierLength * 0.9 / sets.length;
         }
         for (let i = 0; i < sets.length; i++) {
             let absoluteOffset = (((1 - sets.length) / 2) + i) * s;
             let relativeOffset = absoluteOffset / bezierLength + center;
-            let convertedOffset = EditorUtils.getTAtPercentage(points,relativeOffset);
+            let convertedOffset = EditorUtils.getTAtPercentage(points, relativeOffset);
             let point = EditorUtils.getPointOnQuadraticBezier(from, mid, end, convertedOffset);
             this.drawAccSet(point, sets[i]);
         }
@@ -523,7 +523,7 @@ class EditorRenderer {
         for (let i = 0; i < sets.length; i++) {
             let absoluteOffset = (((1 - sets.length) / 2) + i) * (s);
             let relativeOffset = absoluteOffset / bezierLength + 0.5;
-            let convertedOffset = EditorUtils.getTAtPercentage(points,relativeOffset);
+            let convertedOffset = EditorUtils.getTAtPercentage(points, relativeOffset);
             let point = EditorUtils.getPointOnCubicBezier(p0, p1, p2, p3, convertedOffset);
             this.drawAccSet(point, sets[i]);
         }

@@ -16,7 +16,8 @@ function initializePositions(automaton, width, height, circleSize) {
             EditorUtils.calculateLoopbackAnchors(automaton,blockedAngles, circleSize);
             let blockedLoopbackAngles = EditorUtils.calculateLoopbackAngles(automaton)
             let mergedAngles = blockedAngles.map((arr1, index) => arr1.concat(blockedLoopbackAngles[index]));
-            calculateStartAnchors(automaton,mergedAngles)
+    calculateStartAnchors(automaton, mergedAngles)
+    automaton.hasExplicitPositions = true;
 }
 /**
  * Sets implicit positions for states.

@@ -118,8 +118,6 @@ class Editor {
     }
     saveState() {
         this.savedStates.push(cloneDeep(this.automaton));
-        console.log("saving state");
-        console.log(JSON.stringify(this.automaton.states.get(0)?.edges[0]?.offset));
         if (this.savedStates.length > 100) {
             this.savedStates.shift();
         }

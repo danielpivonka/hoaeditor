@@ -15,20 +15,22 @@ class AutomatonSidebar {
      * @param {Automaton} automaton - Automaton whose sidebar will be generated.
      * @param {LabelTranslator} translator - Translator bound to the automaton.
      */
-    constructor(automaton,translator) {
-        this.automaton = automaton;
+    constructor(translator) {
         this.automatonChangedListeners = [];
         this.collapsedState = [];
         this.translator = translator;
         this.keyboard;
         this.selectedAliasIndex = -1;
-        this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
         this.aliasFields = [];
-        for (let i = 0; i < automaton.aliases.length; i++) {
-            this.aliasFields.push(new LexprField(automaton,translator,true))
-        }
         this.oldAccCond;
         this.correctMap = new Map();
+    }
+    setAutomaton(automaton) {
+        this.automaton = automaton;
+        this.aliasKeyVerifier = new AliasKeyVerifier(automaton);
+        for (let i = 0; i < automaton.aliases.length; i++) {
+            this.aliasFields.push(new LexprField(automaton,this.translator,true))
+        }
     }
     /**
      * Adds listener that will be called when automaton is changed.
@@ -208,7 +210,7 @@ class AutomatonSidebar {
         let label = SidebarUtils.createLabel(id, "Acceptance sets:");
         let field = SidebarUtils.createField(id, "number");
         field.value = this.automaton.acceptance.count;
-        field.min = this.maxAccSetUsed();
+        field.min = this.maxAccSetUsed()+1;
         field.oninput = (e) => {
                 this.automaton.acceptance.count = e.target.value; 
         };

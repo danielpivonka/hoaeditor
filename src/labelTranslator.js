@@ -11,6 +11,9 @@ class LabelTranslator {
         this.aliasRegex = /!?\s*@[0-9a-zA-Z_-]+/g;
         this.apRegex = /\d+/g;
     }
+    setAutomaton(automaton) {
+        this.automaton = automaton;
+    }
     /**
      * Replaces atomic expression numbers with atomic expression values.
      * 

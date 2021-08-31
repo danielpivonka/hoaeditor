@@ -4,7 +4,6 @@ const ObjectDetail = require('./sidebars/objectDetail').ObjectDetail;
 const Automaton = require('../hoaData/automaton').Automaton;
 const LabelTranslator = require('../labelTranslator').LabelTranslator;
 const cloneDeep = require('lodash/cloneDeep');
-const Exporter = require('../hoaData/exporter/exporter').automatonToHoaString;
 
 
 class Editor {
@@ -12,7 +11,6 @@ class Editor {
         this.sidebarContainer = sidebarContainer;
         this.editorCanvas = new CanvasController(canvas);
         this.editorCanvas.onComponentSelectedListeners.push(this.componentSelected.bind(this));
-        this.automatonSidebar = null;
         this.editorCanvas.detailRequestedListener = this.showDetails.bind(this);
         this.editorCanvas.detailRemoveListener = this.removeDetail.bind(this);
         this.editorCanvas.onSaveRequested = this.saveState.bind(this);
@@ -21,6 +19,8 @@ class Editor {
         this.selected = null;
         let automaton = new Automaton();
         automaton.initializeEmpty();
+        this.translator = new LabelTranslator(automaton);
+        this.automatonSidebar = new AutomatonSidebar(this.translator);
         this.setAutomaton(automaton);
         this.currentDetail;
         document.body.addEventListener('mousedown', () => this.resetFocus());
@@ -41,10 +41,10 @@ class Editor {
         this.removeDetail()
     }
     setAutomaton(automaton) {
-        this.translator = new LabelTranslator(automaton);
+        this.translator.setAutomaton(automaton);
         this.editorCanvas.setAutomaton(automaton, this.translator);
-        this.automatonSidebar = new AutomatonSidebar(automaton, this.translator);
         this.detail = new ObjectDetail(automaton, this.translator);
+        this.automatonSidebar.setAutomaton(automaton);
         this.automatonSidebar.addAutomatonChangedListener(() => this.refresh());
         this.automaton = automaton;
         this.drawSidebar();

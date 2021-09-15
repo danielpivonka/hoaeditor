@@ -3,6 +3,7 @@ require('./index.html')
 require('./index.css')
 const Parser = require('./parser/parser').Parser;
 const automatonToHoaString = require('./hoaData/exporter/exporter').automatonToHoaString;
+const automatonToTikz = require('./tikzExporter/exporter').automatonToTikz;
 
 const Editor = require('./editor/editor').Editor
 const parseField = document.getElementById('HOA_input');
@@ -17,6 +18,8 @@ const closeHelpButton = document.getElementById("close_help");
 const helpWindow = document.getElementById("helpWindow");
 const errorArea = document.getElementById("error_log");
 const exportWithPosButton = document.getElementById("export_with_pos");
+const exportAsTikz = document.getElementById('export_as_tikz');
+
 const sidebarContainer = document.getElementById('sidebarContainer');
 
 const canvas = document.getElementById('canvas');
@@ -41,11 +44,11 @@ function enableExport(enabled) {
     exportWithPosButton.disabled = !enabled;
 }
 
-function showExport(withPositions) {
+function showExport(data) {
     parseContainer.style.visibility = "visible"
     parseButton.style.visibility = "collapse"
     parseField.readOnly = true;
-    parseField.value = automatonToHoaString(editor.editorCanvas.automaton,withPositions);
+    parseField.value = data;
 }
 
 function writeErrors(array) {
@@ -74,12 +77,12 @@ editor.onAutomatonChanged = () => {
 }
 enableExport(editor.isValid);
 window.addEventListener('resize', () => editor.resized());
-parseButton.addEventListener('click', ()=>{
+parseButton.addEventListener('click', () => {
     parseClicked();
 });
 
 
-closeButton.addEventListener('click',()=>hideExport());
+closeButton.addEventListener('click', () => hideExport());
 importButton.addEventListener('click', function showImport() {
     parseContainer.style.visibility = "visible"
     parseButton.style.visibility = "visible"
@@ -87,9 +90,9 @@ importButton.addEventListener('click', function showImport() {
     parseField.readOnly = false;
 
 });
-exportButton.addEventListener('click', () => showExport(false));
-exportWithPosButton.addEventListener('click', () => showExport(true));
-
+exportButton.addEventListener('click', () => showExport(automatonToHoaString(editor.editorCanvas.automaton, false)));
+exportWithPosButton.addEventListener('click', () => showExport(automatonToHoaString(editor.editorCanvas.automaton, true)));
+exportAsTikz.addEventListener('click', () => showExport(automatonToTikz(editor.editorCanvas.automaton)));
 document.addEventListener("keydown", function onPress(event) {
     if (event.key === "Delete") {
         editor.removeClicked();
@@ -106,7 +109,7 @@ document.addEventListener("keyup", function onPress(event) {
         editor.setShift(false);
     }
 });
-helpButton.addEventListener('click',()=> helpWindow.style.visibility = "visible")
+helpButton.addEventListener('click', () => helpWindow.style.visibility = "visible")
 closeHelpButton.addEventListener('click', () => helpWindow.style.visibility = "collapse")
 lockButton.addEventListener('click', lockClicked.bind(this));
 

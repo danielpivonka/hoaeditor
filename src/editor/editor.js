@@ -35,9 +35,9 @@ class Editor {
     }
     setAutomaton(automaton) {
         this.translator = new LabelTranslator(automaton);
-        this.editorCanvas.setAutomaton(automaton,this.translator);
-        this.automatonSidebar = new AutomatonSidebar(automaton,this.translator);
-        this.detail = new ObjectDetail(automaton,this.translator);
+        this.editorCanvas.setAutomaton(automaton, this.translator);
+        this.automatonSidebar = new AutomatonSidebar(automaton, this.translator);
+        this.detail = new ObjectDetail(automaton, this.translator);
         this.automatonSidebar.addAutomatonChangedListener(() => this.refresh());
         this.drawSidebar();
     }
@@ -71,13 +71,13 @@ class Editor {
         this.editorCanvas.resized();
     }
     componentSelected(component) {
-            this.selected = component;
-            this.drawSidebar();
+        this.selected = component;
+        this.drawSidebar();
     }
     showDetails(object, mousePosition) {
         let container = document.createElement("div");
         container.className = "container detail_area"
-        container.style.left = mousePosition.x+10+ "px";
+        container.style.left = mousePosition.x + 10 + "px";
         container.style.top = mousePosition.y + "px";
         container.setAttribute("id", "objectDetail");
         container.appendChild(this.detail.generateDetail(object));
@@ -89,7 +89,7 @@ class Editor {
         this.currentDetail.onAutomatonChanged = () => this.refresh();
         document.getElementsByTagName("body")[0].appendChild(container);
     }
-    
+
     removeDetail() {
         if (this.currentDetail) {
             this.currentDetail.close();

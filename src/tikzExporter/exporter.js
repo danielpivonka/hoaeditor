@@ -53,14 +53,15 @@ const header = "\\documentclass{standalone}\n\
  * @returns {string} TikZ string.
  */
 function automatonToTikz(automaton) {
-	let tikzString = header + "\\begin{document}\n \\begin{automaton}\n" 
+	let tikzString = header + "\\begin{document}\n \\begin{automaton}\n"
 	tikzString += serializeStates(automaton);
+	tikzString += serializeTransitions(automaton);
 	tikzString += "\\end{automaton}\n \\end{document}\n";
 	return tikzString;
 
 }
 /**
- * Returns automaton in TikZ format.
+ * Returns states in TikZ format.
  *
  * @param {Automaton} automaton - Array containing states to convert to TikZ format.
  * @returns {string} - string containing states in TikZ format.
@@ -68,8 +69,32 @@ function automatonToTikz(automaton) {
 function serializeStates(automaton) {
 	let statesString = "";
 	for (const state of automaton.states.values()) {
-		statesString += ("\\node[state," + (automaton.start.includes(state.number) ? "initial," : "") +"\"$a \\U b$\" statename] (" + state.number + ") at(" + state.position.x + ", " + state.position.y + ") {" + state.number + "}; \n")
+		statesString += ("\\node[state," + (automaton.start.includes(state.number) ? "initial," : "") + "(" + state.number + ") at(" + state.position.x + ", " + state.position.y + ") {" + state.number + "}; \n")
 	}
 	return statesString;
+}
+/**
+ * Returns transitions in TikZ format.
+ *
+ * @param {Automaton} automaton - Array containing states to convert to TikZ format.
+ * @returns {string} - string containing transitions in TikZ format.
+ */
+function serializeTransitions(automaton) {
+	let transitionString = "\\path[->]";
+	for (const state of automaton.states.values()) {
+		transitionString += "(" + state.number + ")"
+		for (const transition of state.edges) {
+			if (state.number == transition.stateConj[0]) {
+				transitionString += "edge" + generateLoop(transition.offset.angleDeg()) + "(" + state.number + ")\n"
+			}
+		}
+	}
+	return transitionString + ";";
+}
+function generateLoop(angle) {
+	angle = angle - 90;
+	let start = angle - 14;
+	let end = angle + 16;
+	return "[in= " + start + ", out = " + end + ", loop, right]";
 }
 exports.automatonToTikz = automatonToTikz;

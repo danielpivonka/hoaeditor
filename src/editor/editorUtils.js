@@ -166,7 +166,7 @@ class EditorUtils {
      * @returns {number[]} Array containing the start and end angle of the gap. 
      */
     static getFreeAngleInterval(angles, offset = 0) {
-        if (angles.length==0) {
+        if (angles.length == 0) {
             return [0, 359];
         }
         angles.sort((a, b) => { return a - b });
@@ -186,7 +186,7 @@ class EditorUtils {
      * @param {Victor} edgeOffset - Offset of the edge.
      * @param {number} circleSize - Radius of state.
      * @param {Victor} offset - Global offset of the renderer.
-     * @returns {Victor[]} Array of the four control points.
+     * @returns {Victor[]} Array of the four control points (left, right, upperLeft, upperRight).
      */
     static calculateLoopbackPoints(position, edgeOffset, circleSize, offset = new Victor(0, 0)) {
         let angle = edgeOffset.angleDeg();
@@ -390,7 +390,7 @@ class EditorUtils {
      * @param {number} circleSize - Circle size of automaton.
      * @returns {number[][]} Array of arrays representing angles of each state.
      */
-     static calculateBlockedAngles(automaton, circleSize) {
+    static calculateBlockedAngles(automaton, circleSize) {
         let blockedAngles = [];
         for (const state of automaton.states.values()) {
             blockedAngles[state.number] = [];
@@ -447,7 +447,7 @@ class EditorUtils {
         }
         return blockedAngles;
     }
-    
+
     /**
      * Calculates implicit anchors for loopbacks for automatons without positions.
      * 
@@ -455,7 +455,7 @@ class EditorUtils {
      * @param {number[][]} blockedAngles - Array containing occupiend angles for every state.
      * @param {number} circleSize - Radius of state.
      */
-    static calculateLoopbackAnchors(automaton,blockedAngles, circleSize) {
+    static calculateLoopbackAnchors(automaton, blockedAngles, circleSize) {
         let stateLoopbacks = new Map();
         for (const state of automaton.states.values()) {
             let loopbacks = [];
@@ -484,7 +484,7 @@ class EditorUtils {
      * @param {number} circleSize - Rendering radius of state.
      * @returns {number[][]} Array containing array of angles for each state.
      */
-    static calculateStartAngles(automaton,circleSize) {
+    static calculateStartAngles(automaton, circleSize) {
         let blockedAngles = [];
         for (const stateKey of automaton.states.keys()) {
             blockedAngles[stateKey] = [];
@@ -500,7 +500,7 @@ class EditorUtils {
                     blockedAngles[destinationState.number].push(this.calculateBlockedAngle(toPoint, destinationVector));
                 }
             }
-            else if (start.stateConj.length == 1){
+            else if (start.stateConj.length == 1) {
                 let stateNumber = start.stateConj[0];
                 let statePosition = automaton.getStateByNumber(stateNumber).position;
                 let originVector = start.position;
@@ -536,9 +536,9 @@ class EditorUtils {
      * @param {Victor} p3 - Point p3 of bezier the curve, if the curve si cubic.
      * @returns {Victor[]} Array of points along the curve.
      */
-    static getPointsOnBezier(count, p0, p1, p2, p3=null) {
+    static getPointsOnBezier(count, p0, p1, p2, p3 = null) {
         let points = [];
-        for (let i = 0; i < count-1; i++) {
+        for (let i = 0; i < count - 1; i++) {
             let step = 1 / count;
             let segment1;
             let segment2;
@@ -550,7 +550,7 @@ class EditorUtils {
                 segment1 = this.getPointOnQuadraticBezier(p0, p1, p2, step * i);
                 segment2 = this.getPointOnQuadraticBezier(p0, p1, p2, step * (i + 1));
             }
-            points.push((points[points.length-1]||0) + segment1.subtract(segment2).length());
+            points.push((points[points.length - 1] || 0) + segment1.subtract(segment2).length());
         }
         return points
     }
@@ -573,9 +573,9 @@ class EditorUtils {
                 optimalIndex = i;
             }
         }
-        return optimalIndex / (arrayOfPoints.length-1);
+        return optimalIndex / (arrayOfPoints.length - 1);
     }
-    
+
     /**
      * Generates text style string with given size.
      * 

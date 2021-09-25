@@ -1,6 +1,7 @@
 const { Automaton } = require("../hoaData/automaton");
 const { Edge } = require("../hoaData/edge");
 const { State } = require("../hoaData/state");
+const { EditorUtils } = require("../editor/editorUtils");
 const header = "\\documentclass{standalone}\n\
 \\usepackage[utf8]{inputenc}\n\
 \\usepackage{tikz}\n\
@@ -69,7 +70,7 @@ function automatonToTikz(automaton) {
 function serializeStates(automaton) {
 	let statesString = "";
 	for (const state of automaton.states.values()) {
-		statesString += ("\\node[state," + (automaton.start.includes(state.number) ? "initial," : "") + "(" + state.number + ") at(" + state.position.x + ", " + state.position.y + ") {" + state.number + "}; \n")
+		statesString += ("\\node[state]" + (automaton.start.includes(state.number) ? "initial," : "") + "(" + state.number + ") at(" + state.position.x + ", " + state.position.y + ") {" + state.number + "}; \n")
 	}
 	return statesString;
 }
@@ -85,16 +86,27 @@ function serializeTransitions(automaton) {
 		transitionString += "(" + state.number + ")"
 		for (const transition of state.edges) {
 			if (state.number == transition.stateConj[0]) {
-				transitionString += "edge" + generateLoop(transition.offset.angleDeg()) + "(" + state.number + ")\n"
+				transitionString += "edge" + generateLoop(state, transition) + "(" + state.number + ")\n"
 			}
 		}
 	}
 	return transitionString + ";";
 }
-function generateLoop(angle) {
-	angle = angle - 90;
-	let start = angle - 14;
-	let end = angle + 16;
-	return "[in= " + start + ", out = " + end + ", loop, right]";
+/**
+ * Returns transitions in TikZ format.
+ *
+ * @param {State} state - Object representing state from which the transition originates.
+ * @param {Edge} transition - Object representing loop transition.
+ * @returns {string} - string containing transitions in TikZ format.
+ */
+function generateLoop(state, transition) {
+	let adjustedOffset = transition.offset.clone();
+	let [left, right, upperLeft, upperRight] = EditorUtils.calculateLoopbackPoints(state.position, adjustedOffset, 25)
+	let angle = adjustedOffset.angleDeg() * -1;
+	let startAngle = angle - 14;
+	let endAngle = angle + 16;
+	let peak = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
+	let relativePeak = peak.subtract(state.position);
+	return "[distance=" + (relativePeak.magnitude() - 25) * 0.01 + "cm, in= " + startAngle + ", out = " + endAngle + ", loop, right, looseness=10] node{$" + transition.label + "$}";
 }
 exports.automatonToTikz = automatonToTikz;

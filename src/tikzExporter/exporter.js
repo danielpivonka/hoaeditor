@@ -15,7 +15,7 @@ const header = "\\documentclass{standalone}\n\
   % Reduce the size of the hidden node at the beginning of the initial arrow.\n\
   every initial by arrow/.style={every node/.style={inner sep=0pt}},\n\
   % Encourage a common size of all states that is smaller than the default.\n\
-  every state/.style={minimum size=7.5mm,fill=white}\n\
+  every state/.style={minimum size=7.5mm,scale = 0.666666666, fill=white}\n\
 ]\n\
 \\tikzstyle{state-labels}=[state/.style=state with output,inner sep=2pt]\n\
 % State names are labels displayed below a state\n\
@@ -107,6 +107,38 @@ function generateLoop(state, transition) {
 	let endAngle = angle + 16;
 	let peak = EditorUtils.getPointOnCubicBezier(left, upperLeft, upperRight, right, 0.5);
 	let relativePeak = peak.subtract(state.position);
-	return "[distance=" + (relativePeak.magnitude() - 25) * 0.01 + "cm, in= " + startAngle + ", out = " + endAngle + ", loop, right, looseness=10] node{$" + transition.label + "$}";
+	//return "[distance=" + (relativePeak.magnitude() - 25) * 0.01 * (1 / 0.666666) + "cm, in= " + startAngle + ", out = " + endAngle + ", loop, right, looseness=10] node[" + labelPosition(angle) + "]{$" + transition.label + "$}";
+	return "[in= " + startAngle + ", out = " + endAngle + ", loop, right, looseness=10] node[" + labelPosition(angle) + "]{$" + transition.label + "$}(" + state.number + ")";
+
+}
+
+function labelPosition(angle) {
+	angle = EditorUtils.angle360(angle);
+	if (angle > 360 - 22.5 - 45 * 0) {
+		return "right";
+	}
+	if (angle > 360 - 22.5 - 45 * 1) {
+		return "below right";
+	}
+	if (angle > 360 - 22.5 - 45 * 2) {
+		return "below";
+	}
+	if (angle > 360 - 22.5 - 45 * 3) {
+		return "below left";
+	}
+	if (angle > 360 - 22.5 - 45 * 4) {
+		return "left";
+	}
+	if (angle > 360 - 22.5 - 45 * 5) {
+		return "above left";
+	}
+	if (angle > 360 - 22.5 - 45 * 6) {
+		return "above";
+	}
+	if (angle > 360 - 22.5 - 45 * 7) {
+		return "above right";
+	}
+	return "right";
+
 }
 exports.automatonToTikz = automatonToTikz;
